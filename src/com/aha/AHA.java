@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package com.aha;
+
 /*Hi*/
 import com.aha.businesslogic.model.Airport;
 import com.aha.businesslogic.model.Flight;
@@ -23,6 +24,8 @@ public class AHA {
      */
     public static void main(String[] args) {
         AirportRepository repo = new AirportRepository();
+        List<Airport> airports = repo.getAirports();
+
         Airport budapest = repo.getAirportByCode("BUD");
         Airport dublin = repo.getAirportByCode("DUB");
 
@@ -30,18 +33,15 @@ public class AHA {
             budapest = new Airport();
             budapest.setCity("Budapest");
             budapest.setCode("BUD");
+            airports.add(budapest);
         }
 
         if (dublin == null) {
             dublin = new Airport();
             dublin.setCity("Dublin");
             dublin.setCode("DUB");
+            airports.add(dublin);
         }
-
-        //repo.addAirport(budapest);
-        List<Airport> airports = FileSystemManager.getInstance().getState().getAirports();
-        airports.add(dublin);
-        airports.add(budapest);
 
         Flight dubBud = new Flight();
         dubBud.setAirportFrom(budapest);

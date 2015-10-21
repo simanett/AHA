@@ -29,6 +29,5 @@ public class Booking {
     public String getBookingNumber() {
         return bookingNumber;
     }
-    
-    
+   
 }

@@ -8,6 +8,8 @@ package com.aha.data;
 import com.aha.businesslogic.model.Airplane;
 import com.aha.businesslogic.model.Airport;
 import com.aha.businesslogic.model.Booking;
+import com.aha.businesslogic.model.Flight;
+import com.aha.businesslogic.model.User;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
@@ -28,11 +30,19 @@ public class ApplicationState {
     
     @XmlElement
     private List<Booking> bookings;
+    
+    @XmlElement
+    private List<Flight> flights;
+    
+    @XmlElement
+    private List<User> users;
 
     public ApplicationState() {
         airplanes = new ArrayList<>();
         airports = new ArrayList<>();
         bookings = new ArrayList<>();
+        flights = new ArrayList<>();
+        users = new ArrayList<>();
     }
     
     public List<Airplane> getAirplanes() {
@@ -47,4 +57,15 @@ public class ApplicationState {
         return bookings;
     }
     
+    public List<Flight> getFlights() {
+        return flights;
+    }
+
+    List<Booking> getBooking() {
+        return bookings; 
+    }
+
+    List<User> getUsers() {
+        return users;
+    }
 }

@@ -6,6 +6,7 @@
 package com.aha.businesslogic.model;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -26,6 +27,7 @@ public class Airport {
         return city;
     }
 
+    @XmlID
     @XmlElement
     public void setCode(String code) {
         this.code = code;

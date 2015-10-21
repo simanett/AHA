@@ -7,6 +7,7 @@ package com.aha.businesslogic.model;
 
 import java.util.Date;
 import java.util.List;
+import javax.xml.bind.annotation.XmlIDREF;
 
 /**
  *
@@ -66,6 +67,7 @@ public class Flight {
         return airportTo;
     }
 
+    @XmlIDREF
     public void setAirportTo(Airport airportTo) {
         this.airportTo = airportTo;
     }
@@ -74,6 +76,7 @@ public class Flight {
         return airportFrom;
     }
 
+    @XmlIDREF
     public void setAirportFrom(Airport airportFrom) {
         this.airportFrom = airportFrom;
     }
