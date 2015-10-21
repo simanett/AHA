@@ -6,7 +6,11 @@
 package com.aha;
 
 import com.aha.businesslogic.model.Airport;
+import com.aha.businesslogic.model.Flight;
 import com.aha.data.AirportRepository;
+import com.aha.data.FileSystemManager;
+import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -20,15 +24,33 @@ public class AHA {
     public static void main(String[] args) {
         AirportRepository repo = new AirportRepository();
         Airport budapest = repo.getAirportByCode("BUD");
-        
+        Airport dublin = repo.getAirportByCode("DUB");
+
         if (budapest == null) {
             budapest = new Airport();
             budapest.setCity("Budapest");
             budapest.setCode("BUD");
         }
 
-        repo.addAirport(budapest);
+        if (dublin == null) {
+            dublin = new Airport();
+            dublin.setCity("Dublin");
+            dublin.setCode("DUB");
+        }
 
+        //repo.addAirport(budapest);
+        List<Airport> airports = FileSystemManager.getInstance().getState().getAirports();
+        airports.add(dublin);
+        airports.add(budapest);
+
+        Flight dubBud = new Flight();
+        dubBud.setAirportFrom(budapest);
+        dubBud.setAirportTo(dublin);
+        dubBud.setDeparture(new Date());
+
+        List<Flight> flights = FileSystemManager.getInstance().getState().getFlights();
+        flights.add(dubBud);
+        FileSystemManager.getInstance().saveState();
     }
 
 }
