@@ -12,6 +12,7 @@ package com.aha.businesslogic.model;
 public class Airplane {
     
     private int maxDistance ;
+    //Airplane model is a unique property.
     private String model;
     private String seat;
 
