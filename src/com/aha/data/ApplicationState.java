@@ -61,11 +61,11 @@ public class ApplicationState {
         return flights;
     }
 
-    List<Booking> getBooking() {
+    public List<Booking> getBooking() {
         return bookings; 
     }
 
-    List<User> getUsers() {
+    public List<User> getUsers() {
         return users;
     }
 }
