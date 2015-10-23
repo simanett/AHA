@@ -19,8 +19,9 @@ public class FileSystemManager {
 
     private String fileName = "aha.xml";
     private ApplicationState applicationState;
+    
+    //Singleton pattern
     private static FileSystemManager instance;
-
     private FileSystemManager() {
         applicationState = new ApplicationState();
     }
@@ -55,7 +56,7 @@ public class FileSystemManager {
             JAXBContext jaxbContext = JAXBContext.newInstance(ApplicationState.class);
             Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
 
-            // output pretty printed
+            //Formatting output
             jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 
             jaxbMarshaller.marshal(applicationState, file);
