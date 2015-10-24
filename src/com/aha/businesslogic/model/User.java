@@ -5,11 +5,14 @@
  */
 package com.aha.businesslogic.model;
 
+import javax.xml.bind.annotation.XmlSeeAlso;
+
 /**
  *
  * @author simonicsanett
  */
-public class User {
+@XmlSeeAlso({Employee.class, Passenger.class})
+public abstract class User {
 
     private int id;
     private String name;
