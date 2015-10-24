@@ -5,26 +5,37 @@
  */
 package com.aha.businesslogic.model;
 
+import java.util.List;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlID;
+import javax.xml.bind.annotation.XmlIDREF;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  *
  * @author simonicsanett
  */
+@XmlRootElement
 public class Airplane {
     
     private int maxDistance ;
     //Airplane model is a unique property.
     private String model;
-    private String seat;
+    private List<Seat> seat;
 
+    @XmlElement
     public void setMaxDistance(int maxDistance) {
         this.maxDistance = maxDistance;
     }
-
+    
+    @XmlID
+    @XmlElement
     public void setModel(String model) {
         this.model = model;
     }
 
-    public void setSeat(String seat) {
+    @XmlIDREF
+    public void setSeat(List<Seat> seat) {
         this.seat = seat;
     }
 
@@ -36,7 +47,7 @@ public class Airplane {
         return model;
     }
 
-    public String getSeat() {
+    public List<Seat> getSeat() {
         return seat;
     }
     
