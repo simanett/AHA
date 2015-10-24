@@ -5,10 +5,13 @@
  */
 package com.aha.businesslogic.model;
 
+import javax.xml.bind.annotation.XmlSeeAlso;
+
 /**
  *
  * @author simonicsanett
  */
-public class Employee extends User {
+@XmlSeeAlso({Operator.class, Administrator.class, CrewMember.class})
+public abstract class Employee extends User {
     
 }
