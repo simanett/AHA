@@ -19,14 +19,6 @@ public class Airport {
     private String code;
     private String city;
 
-    public String getCode() {
-        return code;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
     @XmlID
     @XmlElement
     public void setCode(String code) {
@@ -38,6 +30,12 @@ public class Airport {
         this.city = city;
     }
     
-    
+     public String getCode() {
+        return code;
+    }
+
+    public String getCity() {
+        return city;
+    }
     
 }
