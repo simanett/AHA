@@ -5,27 +5,32 @@
  */
 package com.aha.businesslogic.model;
 
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
 /**
  *
  * @author simonicsanett
  */
+@XmlRootElement
 public class Booking {
     
     private String bookingNumber;
     private Seat seat;
-
+    
+    //@XmlTransient
     public void setSeat(Seat seat) {
         this.seat = seat;
+    }
+
+    public void setBookingNumber(String bookingNumber) {
+        this.bookingNumber = bookingNumber;
     }
 
     public Seat getSeat() {
         return seat;
     }
     
-    public void setBookingNumber(String bookingNumber) {
-        this.bookingNumber = bookingNumber;
-    }
-
     public String getBookingNumber() {
         return bookingNumber;
     }
