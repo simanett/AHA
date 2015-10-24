@@ -14,6 +14,15 @@ import java.util.List;
  */
 public class UserRepository {
     
+    public User getUserById(int id) {
+        for(User user : users()) {
+            if(user.getId() == id) {
+                return user;
+            }
+        }
+        return null;
+    }
+    
     public User getUserByName(String name) {
         for(User user : users()) {
             if(user.getName().equals(name)) {
