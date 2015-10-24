@@ -7,12 +7,16 @@ package com.aha.businesslogic.model;
 
 import java.util.Date;
 import java.util.List;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlIDREF;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author simonicsanett
  */
+@XmlRootElement
 public class Flight {
     
     private int flightNumber;
@@ -27,6 +31,7 @@ public class Flight {
         return flightNumber;
     }
 
+    @XmlElement
     public void setFlightNumber(int flightNumber) {
         this.flightNumber = flightNumber;
     }
@@ -34,7 +39,8 @@ public class Flight {
     public Date getDeparture() {
         return departure;
     }
-
+    
+    @XmlElement
     public void setDeparture(Date departure) {
         this.departure = departure;
     }
@@ -43,6 +49,7 @@ public class Flight {
         return flightDuration;
     }
 
+    @XmlElement
     public void setFlightDuration(int flightDuration) {
         this.flightDuration = flightDuration;
     }
@@ -51,6 +58,7 @@ public class Flight {
         return seat;
     }
 
+    @XmlIDREF
     public void setSeat(List<Seat> seat) {
         this.seat = seat;
     }
@@ -59,6 +67,7 @@ public class Flight {
         return airplane;
     }
 
+    @XmlIDREF
     public void setAirplane(Airplane airplane) {
         this.airplane = airplane;
     }
