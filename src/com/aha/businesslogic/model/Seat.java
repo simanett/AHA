@@ -16,19 +16,18 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @XmlRootElement
 public class Seat {
-    
+
     private int row;
     private String letter;
-    
-    @XmlID
-    @XmlElement
-    private String seatId;
+
+//    private String seatId;
     private Booking booking;
-    
-    public void setSeatId() {
-        this.seatId = this.row + this.letter;
-    }
-    
+//
+//    @XmlElement
+//    public void setSeatId() {
+//        this.seatId = this.row + this.letter;
+//    }
+
     @XmlElement
     public void setRow(int row) {
         this.row = row;
@@ -38,7 +37,7 @@ public class Seat {
     public void setLetter(String letter) {
         this.letter = letter;
     }
-    
+
     @XmlTransient
     public void setBooking(Booking booking) {
         this.booking = booking;
@@ -52,14 +51,12 @@ public class Seat {
         return letter;
     }
 
-    public String getSeatId() {
-        return seatId;
-    }
-    
+//    public String getSeatId() {
+//        return seatId;
+//    }
+
     public Booking getBooking() {
         return booking;
     }
 
-   
-    
 }

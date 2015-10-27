@@ -22,7 +22,7 @@ public class Flight {
     private int flightNumber;
     private Date departure;
     private int flightDuration;
-    private List<Seat> seat;
+    private List<Seat> seats;
     private Airplane airplane;
     private Airport airportTo;
     private Airport airportFrom;
@@ -31,6 +31,7 @@ public class Flight {
         return flightNumber;
     }
 
+    //@XmlID
     @XmlElement
     public void setFlightNumber(int flightNumber) {
         this.flightNumber = flightNumber;
@@ -54,13 +55,12 @@ public class Flight {
         this.flightDuration = flightDuration;
     }
 
-    public List<Seat> getSeat() {
-        return seat;
+    public List<Seat> getSeats() {
+        return seats;
     }
 
-    @XmlIDREF
-    public void setSeat(List<Seat> seat) {
-        this.seat = seat;
+    public void setSeats(List<Seat> seats) {
+        this.seats = seats;
     }
 
     public Airplane getAirplane() {

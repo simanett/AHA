@@ -21,7 +21,7 @@ public class Airplane {
     private int maxDistance ;
     //Airplane model is a unique property.
     private String model;
-    private List<Seat> seat;
+    private List<String> rows;
 
     @XmlElement
     public void setMaxDistance(int maxDistance) {
@@ -34,9 +34,20 @@ public class Airplane {
         this.model = model;
     }
 
-    @XmlIDREF
-    public void setSeat(List<Seat> seat) {
-        this.seat = seat;
+    
+    /*
+    
+    ABCDEF
+    ABCDEF
+    ABCDEF
+    ..
+    ..
+    ..
+    ACDF
+    
+    */
+    public void setRows(List<String> rows) {
+        this.rows = rows;
     }
 
     public int getMaxDistance() {
@@ -47,8 +58,8 @@ public class Airplane {
         return model;
     }
 
-    public List<Seat> getSeat() {
-        return seat;
+    public List<String> getRows() {
+        return rows;
     }
     
 }
