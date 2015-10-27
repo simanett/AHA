@@ -7,7 +7,10 @@ package com.aha.userinterface;
 
 import com.aha.businesslogic.model.Booking;
 import com.aha.businesslogic.model.Flight;
+import com.aha.businesslogic.model.Passenger;
 import com.aha.businesslogic.model.Seat;
+import com.aha.data.BookingRepository;
+import com.aha.data.UserRepository;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -235,7 +238,15 @@ public class SelectSeatForm extends javax.swing.JFrame {
         Booking booking = new Booking();
         booking.setBookingNumber(flight.getFlightNumber() + "");
         
+        booking.setSeat(selectedSeat);
+        selectedSeat.setBooking(booking);
         
+        UserRepository userRepo = new UserRepository();
+
+        booking.setPassenger((Passenger)userRepo.getUserById(103));
+        
+        BookingRepository repository = new BookingRepository();
+        repository.addBooking(booking);
     }//GEN-LAST:event_okButtonActionPerformed
 
 

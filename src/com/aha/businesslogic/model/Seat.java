@@ -6,7 +6,7 @@
 package com.aha.businesslogic.model;
 
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlID;
+import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -20,13 +20,7 @@ public class Seat {
     private int row;
     private String letter;
 
-//    private String seatId;
     private Booking booking;
-//
-//    @XmlElement
-//    public void setSeatId() {
-//        this.seatId = this.row + this.letter;
-//    }
 
     @XmlElement
     public void setRow(int row) {
@@ -38,7 +32,7 @@ public class Seat {
         this.letter = letter;
     }
 
-    @XmlTransient
+    @XmlIDREF
     public void setBooking(Booking booking) {
         this.booking = booking;
     }
@@ -50,10 +44,6 @@ public class Seat {
     public String getLetter() {
         return letter;
     }
-
-//    public String getSeatId() {
-//        return seatId;
-//    }
 
     public Booking getBooking() {
         return booking;

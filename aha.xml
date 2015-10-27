@@ -32,10 +32,18 @@
         <city>Dublin</city>
         <code>DUB</code>
     </airports>
+    <bookings>
+        <bookingNumber>1252</bookingNumber>
+        <passenger>
+            <email>tomi@notaha.com</email>
+            <id>103</id>
+            <name>Tomi</name>
+        </passenger>
+    </bookings>
     <flights>
         <airportFrom>BUD</airportFrom>
         <airportTo>DUB</airportTo>
-        <departure>2015-10-27T20:50:04.188Z</departure>
+        <departure>2015-10-27T21:09:32.454Z</departure>
         <flightDuration>0</flightDuration>
         <flightNumber>1252</flightNumber>
         <seats>
@@ -95,6 +103,7 @@
             <row>3</row>
         </seats>
         <seats>
+            <booking>1252</booking>
             <letter>C</letter>
             <row>3</row>
         </seats>
