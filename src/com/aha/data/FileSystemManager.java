@@ -24,6 +24,8 @@ public class FileSystemManager {
     private static FileSystemManager instance;
     private FileSystemManager() {
         applicationState = new ApplicationState();
+        //Added for testing: to print xml to console
+        printState();
     }
 
     public static FileSystemManager getInstance() {
@@ -68,6 +70,27 @@ public class FileSystemManager {
         }
     }
 
+    //Added for testing: to print xml to console
+    public void printState() {
+        try {
+            //File file = new File(fileName);
+            loadState();
+            System.out.println("Printing state to console");
+            JAXBContext jaxbContext = JAXBContext.newInstance(ApplicationState.class);
+            Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+
+            //Formatting output
+            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            //jaxbMarshaller.marshal(applicationState, file);
+            jaxbMarshaller.marshal(applicationState, System.out);
+
+        } catch (JAXBException ex) {
+            System.out.println("Could not print application state.");
+            System.out.println(ex);
+        }
+    }
+    
+    
     public ApplicationState getState() {
         return applicationState;
     }

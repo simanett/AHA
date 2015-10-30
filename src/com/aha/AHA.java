@@ -7,8 +7,12 @@ package com.aha;
 
 /*Hi*/
 import com.aha.businesslogic.model.Flight;
+import com.aha.businesslogic.model.User;
 import com.aha.data.FlightRepository;
+import com.aha.data.UserRepository;
+import com.aha.userinterface.ListFlightsForm;
 import com.aha.userinterface.SelectSeatForm;
+import java.util.List;
 
 /**
  *
@@ -25,9 +29,19 @@ public class AHA {
         
         FlightRepository repository = new FlightRepository();
         Flight flight = repository.getFlightByFlightNumber(1252);
+        List<Flight> flights = repository.getFlights();
         
+        UserRepository userRepo = new UserRepository();
+        User user = userRepo.getUserById(101);
+        
+        /*
         SelectSeatForm selectSeatForm = new SelectSeatForm(flight);
         selectSeatForm.setVisible(true);
+        */
+        
+        //Show passenger welcome screen with flight list
+        ListFlightsForm listFlightsForm = new ListFlightsForm(user, flights);
+        listFlightsForm.setVisible(true);
     }
 
 }

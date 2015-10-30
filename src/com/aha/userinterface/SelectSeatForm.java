@@ -9,6 +9,7 @@ import com.aha.businesslogic.model.Booking;
 import com.aha.businesslogic.model.Flight;
 import com.aha.businesslogic.model.Passenger;
 import com.aha.businesslogic.model.Seat;
+import com.aha.businesslogic.model.User;
 import com.aha.data.BookingRepository;
 import com.aha.data.UserRepository;
 import java.awt.GridLayout;
@@ -27,12 +28,13 @@ public class SelectSeatForm extends javax.swing.JFrame {
 
     private Flight flight;
     private Seat selectedSeat;
-    
+    private User user;
     /**
      * Creates new form BookingForm
      */
-    public SelectSeatForm(Flight flight) {
+    public SelectSeatForm(Flight flight, User user) {
         this.flight = flight;
+        this.user = user;
         initComponents();
         flightNumber.setText(String.valueOf(flight.getFlightNumber()));
         jLabel3.setText(flight.getAirportFrom().getCity());
@@ -71,7 +73,7 @@ public class SelectSeatForm extends javax.swing.JFrame {
                 }
             };
             seatButton.addActionListener(seatButtonListener);
-
+            //Only allow booking for seat if no booking exists for it
             seatButton.setEnabled(seat.getBooking() == null);
             seatButtonGroup.add(seatButton);
             seatsPanel.add(seatButton);
@@ -91,7 +93,6 @@ public class SelectSeatForm extends javax.swing.JFrame {
 
         seatButtonGroup = new javax.swing.ButtonGroup();
         selectSeatLabel = new javax.swing.JLabel();
-        seatsPanel = new javax.swing.JPanel();
         flightNumber = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         okButton = new javax.swing.JButton();
@@ -103,22 +104,12 @@ public class SelectSeatForm extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         javax.swing.JLabel dateLabel = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
+        seatsPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         selectSeatLabel.setText("jLabel1");
         selectSeatLabel.setName(""); // NOI18N
-
-        javax.swing.GroupLayout seatsPanelLayout = new javax.swing.GroupLayout(seatsPanel);
-        seatsPanel.setLayout(seatsPanelLayout);
-        seatsPanelLayout.setHorizontalGroup(
-            seatsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 253, Short.MAX_VALUE)
-        );
-        seatsPanelLayout.setVerticalGroup(
-            seatsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
 
         flightNumber.setText("jLabel1");
 
@@ -152,21 +143,32 @@ public class SelectSeatForm extends javax.swing.JFrame {
 
         jLabel5.setText("jLabel5");
 
+        javax.swing.GroupLayout seatsPanelLayout = new javax.swing.GroupLayout(seatsPanel);
+        seatsPanel.setLayout(seatsPanelLayout);
+        seatsPanelLayout.setHorizontalGroup(
+            seatsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 248, Short.MAX_VALUE)
+        );
+        seatsPanelLayout.setVerticalGroup(
+            seatsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 374, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(seatsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(57, 57, 57)
                         .addComponent(okButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 95, Short.MAX_VALUE)
                         .addComponent(cancelButton)
                         .addGap(46, 46, 46))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -195,7 +197,7 @@ public class SelectSeatForm extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -211,7 +213,7 @@ public class SelectSeatForm extends javax.swing.JFrame {
                     .addComponent(jLabel3)
                     .addComponent(fromLabel, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(toLabel)
                     .addComponent(jLabel4))
                 .addGap(34, 34, 34)
@@ -221,9 +223,9 @@ public class SelectSeatForm extends javax.swing.JFrame {
                     .addComponent(okButton)
                     .addComponent(cancelButton))
                 .addGap(69, 69, 69))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(seatsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(seatsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -235,6 +237,7 @@ public class SelectSeatForm extends javax.swing.JFrame {
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
+        
         Booking booking = new Booking();
         booking.setBookingNumber(flight.getFlightNumber() + "");
         
@@ -243,7 +246,7 @@ public class SelectSeatForm extends javax.swing.JFrame {
         
         UserRepository userRepo = new UserRepository();
 
-        booking.setPassenger((Passenger)userRepo.getUserById(103));
+        booking.setPassenger((Passenger)userRepo.getUserById(user.getId()));
         
         BookingRepository repository = new BookingRepository();
         repository.addBooking(booking);

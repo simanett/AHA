@@ -75,20 +75,37 @@ public class DataGenerator {
         AirplaneRepository repoAirplane = new AirplaneRepository();
 
         Flight dubBud1252 = repoFlight.getFlightByFlightNumber(1252);
-
+        
         if (dubBud1252 == null) {
             Airport budapest = repoAirport.getAirportByCode("BUD");
             Airport dublin = repoAirport.getAirportByCode("DUB");
             Airplane boeing = repoAirplane.getAirplaneByModel("Boeing");
 
-            dubBud1252 = FlightFactory.createFlight(budapest, dublin, boeing, new Date(), 0, 0);
+            dubBud1252 = FlightFactory.createFlight(dublin, budapest, boeing, new Date(), 0, 0);
             dubBud1252.setFlightNumber(1252);
-            dubBud1252.setAirportFrom(budapest);
-            dubBud1252.setAirportTo(dublin);
+            dubBud1252.setAirportFrom(dublin);
+            dubBud1252.setAirportTo(budapest);
             dubBud1252.setDeparture(new Date());
-            
+            dubBud1252.setPrice(75600);
             repoFlight.addFlight(dubBud1252);
         }
+        
+        Flight dubBud1262 = repoFlight.getFlightByFlightNumber(1262);
+        
+        if (dubBud1262 == null) {
+            Airport budapest = repoAirport.getAirportByCode("BUD");
+            Airport dublin = repoAirport.getAirportByCode("DUB");
+            Airplane boeing = repoAirplane.getAirplaneByModel("Boeing");
+
+            dubBud1262 = FlightFactory.createFlight(dublin, budapest, boeing, new Date(), 0, 0);
+            dubBud1262.setFlightNumber(1262);
+            dubBud1262.setAirportFrom(dublin);
+            dubBud1262.setAirportTo(budapest);
+            dubBud1262.setDeparture(new Date());
+            dubBud1262.setPrice(86500);
+            repoFlight.addFlight(dubBud1262);
+        }
+        
     }
 
     public void generateUsers() {
