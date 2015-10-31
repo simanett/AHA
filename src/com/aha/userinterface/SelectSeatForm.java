@@ -15,6 +15,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
@@ -76,7 +77,6 @@ public class SelectSeatForm extends javax.swing.JFrame {
             seatButtonGroup.add(seatButton);
             seatsPanel.add(seatButton);
         }
-        seatsPanel.updateUI();
 
     }
 
@@ -236,9 +236,12 @@ public class SelectSeatForm extends javax.swing.JFrame {
 
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
         Booking booking = new Booking();
-        booking.setBookingNumber(flight.getFlightNumber() + "");
+        booking.setBookingNumber(flight.getFlightNumber() + selectedSeat.getRow() + selectedSeat.getLetter());
         
-        booking.setSeat(selectedSeat);
+        booking.setRow(selectedSeat.getRow());
+        booking.setLetter(selectedSeat.getLetter());
+        booking.setFlight(flight);
+        booking.setBookingDate(new Date());
         selectedSeat.setBooking(booking);
         
         UserRepository userRepo = new UserRepository();
@@ -247,7 +250,9 @@ public class SelectSeatForm extends javax.swing.JFrame {
         
         BookingRepository repository = new BookingRepository();
         repository.addBooking(booking);
+        this.dispose();
     }//GEN-LAST:event_okButtonActionPerformed
+
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

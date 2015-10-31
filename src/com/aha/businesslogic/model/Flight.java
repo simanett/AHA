@@ -19,7 +19,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class Flight {
     
-    private int flightNumber;
+    private String flightNumber;
     private Date departure;
     private int flightDuration;
     private List<Seat> seats;
@@ -27,13 +27,12 @@ public class Flight {
     private Airport airportTo;
     private Airport airportFrom;
 
-    public int getFlightNumber() {
+    public String getFlightNumber() {
         return flightNumber;
     }
 
-    //@XmlID
-    @XmlElement
-    public void setFlightNumber(int flightNumber) {
+    @XmlID
+    public void setFlightNumber(String flightNumber) {
         this.flightNumber = flightNumber;
     }
 

@@ -33,24 +33,91 @@
         <code>DUB</code>
     </airports>
     <bookings>
-        <bookingNumber>1252</bookingNumber>
+        <approved>true</approved>
+        <bookingNumber>12521A</bookingNumber>
+        <flight>1252</flight>
+        <letter>A</letter>
         <passenger>
             <email>tomi@notaha.com</email>
             <id>103</id>
             <name>Tomi</name>
         </passenger>
+        <row>1</row>
+    </bookings>
+    <bookings>
+        <approved>true</approved>
+        <bookingNumber>12521B</bookingNumber>
+        <flight>1252</flight>
+        <letter>B</letter>
+        <passenger>
+            <email>tomi@notaha.com</email>
+            <id>103</id>
+            <name>Tomi</name>
+        </passenger>
+        <row>1</row>
+    </bookings>
+    <bookings>
+        <approved>true</approved>
+        <bookingNumber>12525D</bookingNumber>
+        <flight>1252</flight>
+        <letter>D</letter>
+        <passenger>
+            <email>tomi@notaha.com</email>
+            <id>103</id>
+            <name>Tomi</name>
+        </passenger>
+        <row>5</row>
+    </bookings>
+    <bookings>
+        <approved>true</approved>
+        <bookingNumber>12528D</bookingNumber>
+        <flight>1252</flight>
+        <letter>D</letter>
+        <passenger>
+            <email>tomi@notaha.com</email>
+            <id>103</id>
+            <name>Tomi</name>
+        </passenger>
+        <row>8</row>
+    </bookings>
+    <bookings>
+        <approved>true</approved>
+        <bookingNumber>125211D</bookingNumber>
+        <flight>1252</flight>
+        <letter>D</letter>
+        <passenger>
+            <email>tomi@notaha.com</email>
+            <id>103</id>
+            <name>Tomi</name>
+        </passenger>
+        <row>11</row>
+    </bookings>
+    <bookings>
+        <approved>true</approved>
+        <bookingDate>2015-10-31T10:38:04.673Z</bookingDate>
+        <bookingNumber>125213F</bookingNumber>
+        <flight>1252</flight>
+        <letter>F</letter>
+        <passenger>
+            <email>tomi@notaha.com</email>
+            <id>103</id>
+            <name>Tomi</name>
+        </passenger>
+        <row>13</row>
     </bookings>
     <flights>
         <airportFrom>BUD</airportFrom>
         <airportTo>DUB</airportTo>
-        <departure>2015-10-27T21:09:32.454Z</departure>
+        <departure>2015-10-30T22:49:09.369Z</departure>
         <flightDuration>0</flightDuration>
         <flightNumber>1252</flightNumber>
         <seats>
+            <booking>12521A</booking>
             <letter>A</letter>
             <row>1</row>
         </seats>
         <seats>
+            <booking>12521B</booking>
             <letter>B</letter>
             <row>1</row>
         </seats>
@@ -103,7 +170,6 @@
             <row>3</row>
         </seats>
         <seats>
-            <booking>1252</booking>
             <letter>C</letter>
             <row>3</row>
         </seats>
@@ -156,6 +222,7 @@
             <row>5</row>
         </seats>
         <seats>
+            <booking>12525D</booking>
             <letter>D</letter>
             <row>5</row>
         </seats>
@@ -228,6 +295,7 @@
             <row>8</row>
         </seats>
         <seats>
+            <booking>12528D</booking>
             <letter>D</letter>
             <row>8</row>
         </seats>
@@ -300,6 +368,7 @@
             <row>11</row>
         </seats>
         <seats>
+            <booking>125211D</booking>
             <letter>D</letter>
             <row>11</row>
         </seats>
@@ -356,6 +425,7 @@
             <row>13</row>
         </seats>
         <seats>
+            <booking>125213F</booking>
             <letter>F</letter>
             <row>13</row>
         </seats>

@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class FlightFactory {
 
-    public static Flight createFlight(Airport from, Airport to, Airplane plane, Date departure, int duration, int flightNumber) {
+    public static Flight createFlight(Airport from, Airport to, Airplane plane, Date departure, int duration, String flightNumber) {
         Flight flight = new Flight();
         flight.setAirportFrom(from);
         flight.setAirportTo(to);

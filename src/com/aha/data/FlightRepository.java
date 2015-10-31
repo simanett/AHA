@@ -14,9 +14,9 @@ import java.util.List;
  */
 public class FlightRepository {
 
-    public Flight getFlightByFlightNumber(int flightNumber) {
+    public Flight getFlightByFlightNumber(String flightNumber) {
         for (Flight flight : this.flights()) {
-            if (flight.getFlightNumber() == flightNumber) {
+            if (flight.getFlightNumber().equals(flightNumber)) {
                 return flight;
             }
         }

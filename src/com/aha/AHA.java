@@ -8,6 +8,7 @@ package com.aha;
 /*Hi*/
 import com.aha.businesslogic.model.Flight;
 import com.aha.data.FlightRepository;
+import com.aha.userinterface.ApproveBookingForm;
 import com.aha.userinterface.SelectSeatForm;
 
 /**
@@ -24,10 +25,13 @@ public class AHA {
         generator.generate();
         
         FlightRepository repository = new FlightRepository();
-        Flight flight = repository.getFlightByFlightNumber(1252);
+        Flight flight = repository.getFlightByFlightNumber("1252");
         
         SelectSeatForm selectSeatForm = new SelectSeatForm(flight);
         selectSeatForm.setVisible(true);
+        
+        ApproveBookingForm approveForm = new ApproveBookingForm();
+        approveForm.setVisible(true);
     }
 
 }

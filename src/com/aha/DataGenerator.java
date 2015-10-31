@@ -74,19 +74,14 @@ public class DataGenerator {
         AirportRepository repoAirport = new AirportRepository();
         AirplaneRepository repoAirplane = new AirplaneRepository();
 
-        Flight dubBud1252 = repoFlight.getFlightByFlightNumber(1252);
+        Flight dubBud1252 = repoFlight.getFlightByFlightNumber("1252");
 
         if (dubBud1252 == null) {
             Airport budapest = repoAirport.getAirportByCode("BUD");
             Airport dublin = repoAirport.getAirportByCode("DUB");
             Airplane boeing = repoAirplane.getAirplaneByModel("Boeing");
 
-            dubBud1252 = FlightFactory.createFlight(budapest, dublin, boeing, new Date(), 0, 0);
-            dubBud1252.setFlightNumber(1252);
-            dubBud1252.setAirportFrom(budapest);
-            dubBud1252.setAirportTo(dublin);
-            dubBud1252.setDeparture(new Date());
-            
+            dubBud1252 = FlightFactory.createFlight(budapest, dublin, boeing, new Date(), 0, "1252");
             repoFlight.addFlight(dubBud1252);
         }
     }
