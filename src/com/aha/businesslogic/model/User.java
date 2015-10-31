@@ -5,6 +5,7 @@
  */
 package com.aha.businesslogic.model;
 
+import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlSeeAlso;
 
 /**
@@ -30,6 +31,7 @@ public abstract class User {
         return name;
     }
 
+    @XmlID
     public void setName(String name) {
         this.name = name;
     }
@@ -41,5 +43,5 @@ public abstract class User {
     public void setEmail(String email) {
         this.email = email;
     }
-    
+
 }

@@ -9,7 +9,6 @@ import java.util.Date;
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -17,9 +16,8 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @XmlRootElement
 public class Booking {
-    
+
     private String bookingNumber;
-    //private Seat seat;
     private Passenger passenger;
     private boolean approved;
     private Date bookingDate;
@@ -67,21 +65,12 @@ public class Booking {
     public void setApproved(boolean approved) {
         this.approved = approved;
     }
-    
-//    @XmlTransient
-//    public void setSeat(Seat seat) {
-//        this.seat = seat;
-//    }
 
     @XmlID
     public void setBookingNumber(String bookingNumber) {
         this.bookingNumber = bookingNumber;
     }
-//
-//    public Seat getSeat() {
-//        return seat;
-//    }
-//    
+
     public String getBookingNumber() {
         return bookingNumber;
     }
@@ -90,6 +79,7 @@ public class Booking {
         return passenger;
     }
 
+    @XmlIDREF
     public void setPassenger(Passenger passenger) {
         this.passenger = passenger;
     }
