@@ -97,5 +97,5 @@ public class Flight {
     public void setAirportFrom(Airport airportFrom) {
         this.airportFrom = airportFrom;
     }
-    
+
 }
