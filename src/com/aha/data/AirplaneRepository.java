@@ -9,31 +9,53 @@ import com.aha.businesslogic.model.Airplane;
 import java.util.List;
 
 /**
+ * Repository class to handle airplane data
  *
  * @author HB
  */
 public class AirplaneRepository {
-    
-    public Airplane getAirplaneByModel(String model){
-        for(Airplane airplane : airplanes()) {
-            if(airplane.getModel().equals(model)) {
+
+    /**
+     * Return the Airplane object with the given model name
+     *
+     * @param model String representing the model of the airplane, e.g "Boeing"
+     * @return The Airplane object if exists, null otherwise
+     */
+    public Airplane getAirplaneByModel(String model) {
+        for (Airplane airplane : airplanes()) {
+            if (airplane.getModel().equals(model)) {
                 return airplane;
             }
         }
         return null;
     }
-    
-    public List<Airplane> getAirplanes(){
+
+    /**
+     * Return all Airplane objects
+     *
+     * @return All Airplanes in the application state
+     */
+    public List<Airplane> getAirplanes() {
         return airplanes();
     }
-    
-    public void addAirplane(Airplane airplane){
+
+    /**
+     * Add a new Airplane object to the application state and save it to the XML
+     *
+     * @param airplane The Airplane object to add
+     */
+    public void addAirplane(Airplane airplane) {
         airplanes().add(airplane);
         FileSystemManager.getInstance().saveState();
     }
-    
-    private List<Airplane> airplanes(){
+
+    /**
+     * Helper method to get all Airplane objects from application state
+     *
+     * @return List of Airplane objects
+     */
+    private List<Airplane> airplanes() {
         return FileSystemManager.getInstance().getState().getAirplanes();
     }
-    
+
 }

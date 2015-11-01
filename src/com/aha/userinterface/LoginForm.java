@@ -18,7 +18,7 @@ import javax.swing.JOptionPane;
  */
 public class LoginForm extends javax.swing.JFrame {
 
-    private UserRepository alma = new UserRepository();
+    private UserRepository userRepository = new UserRepository();
     private FlightRepository flightRepository = new FlightRepository();
 
     /**
@@ -99,7 +99,7 @@ public class LoginForm extends javax.swing.JFrame {
 
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
         String userName = userNameBox.getText();
-        User user = alma.getUserByName(userName);
+        User user = userRepository.getUserByName(userName);
         if (user == null) {
             JOptionPane.showMessageDialog(null, "Invalid user name");
         } else if (user instanceof Passenger) {

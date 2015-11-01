@@ -27,11 +27,18 @@ import javax.swing.JRadioButton;
  */
 public class SelectSeatForm extends javax.swing.JFrame {
 
+    UserRepository userRepository = new UserRepository();
+    BookingRepository repository = new BookingRepository();
+
     private Flight flight;
     private Seat selectedSeat;
     private User user;
+
     /**
-     * Creates new form BookingForm
+     * Form to
+     *
+     * @param flight
+     * @param user
      */
     public SelectSeatForm(Flight flight, User user) {
         this.flight = flight;
@@ -74,7 +81,8 @@ public class SelectSeatForm extends javax.swing.JFrame {
                 }
             };
             seatButton.addActionListener(seatButtonListener);
-            //Only allow booking for seat if no booking exists for it
+
+            // Only allow booking there is no existing booking on seat
             seatButton.setEnabled(seat.getBooking() == null);
             seatButtonGroup.add(seatButton);
             seatsPanel.add(seatButton);
@@ -237,25 +245,21 @@ public class SelectSeatForm extends javax.swing.JFrame {
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
-        
+
         Booking booking = new Booking();
         booking.setBookingNumber(flight.getFlightNumber() + selectedSeat.getRow() + selectedSeat.getLetter());
-        
+
         booking.setRow(selectedSeat.getRow());
         booking.setLetter(selectedSeat.getLetter());
         booking.setFlight(flight);
         booking.setBookingDate(new Date());
         selectedSeat.setBooking(booking);
-        
-        UserRepository userRepo = new UserRepository();
 
-        booking.setPassenger((Passenger)userRepo.getUserById(user.getId()));
-        
-        BookingRepository repository = new BookingRepository();
+        booking.setPassenger((Passenger) userRepository.getUserById(user.getId()));
+
         repository.addBooking(booking);
         this.dispose();
     }//GEN-LAST:event_okButtonActionPerformed
-
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

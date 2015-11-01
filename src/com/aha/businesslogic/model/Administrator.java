@@ -9,7 +9,6 @@ package com.aha.businesslogic.model;
  *
  * @author simonicsanett
  */
-public class Administrator extends Employee{
-    
-    
+public class Administrator extends Employee {
+
 }

@@ -9,7 +9,6 @@ package com.aha.businesslogic.model;
  *
  * @author bernothelga
  */
-public class Operator extends Employee{
-    
-    
+public class Operator extends Employee {
+
 }

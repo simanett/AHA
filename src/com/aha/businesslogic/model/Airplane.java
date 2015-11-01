@@ -16,8 +16,8 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement
 public class Airplane {
-    
-    private int maxDistance ;
+
+    private int maxDistance;
     //Airplane model is a unique property.
     private String model;
     private List<String> rows;
@@ -26,14 +26,13 @@ public class Airplane {
     public void setMaxDistance(int maxDistance) {
         this.maxDistance = maxDistance;
     }
-    
+
     @XmlID
     @XmlElement
     public void setModel(String model) {
         this.model = model;
     }
 
-    
     /*
     
     ABCDEF
@@ -44,7 +43,7 @@ public class Airplane {
     ..
     ACDF
     
-    */
+     */
     public void setRows(List<String> rows) {
         this.rows = rows;
     }
@@ -60,5 +59,5 @@ public class Airplane {
     public List<String> getRows() {
         return rows;
     }
-    
+
 }

@@ -25,6 +25,10 @@ public class ApproveBookingForm extends javax.swing.JFrame {
         refreshTables();
     }
 
+    /**
+     * Read booking data and update contents of pending and approved bookings
+     * tables
+     */
     private void refreshTables() {
         DefaultTableModel pendingModel = (DefaultTableModel) jTable1.getModel();
         pendingModel.setRowCount(0);
@@ -183,9 +187,10 @@ public class ApproveBookingForm extends javax.swing.JFrame {
         for (int i = 0; i < pendingModel.getRowCount(); i++) {
             boolean approved = (boolean) pendingModel.getValueAt(i, 7);
             if (approved == true) {
+                // "Approve" checkbox checked, set booking state to approved
                 String bookingnumber = (String) pendingModel.getValueAt(i, 0);
-                Booking alma = repository.getBookingByBookingNumber(bookingnumber);
-                alma.setApproved(true);
+                Booking pendingBooking = repository.getBookingByBookingNumber(bookingnumber);
+                pendingBooking.setApproved(true);
             }
 
         }

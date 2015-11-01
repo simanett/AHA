@@ -5,15 +5,7 @@
  */
 package com.aha;
 
-/*Hi*/
-import com.aha.businesslogic.model.Flight;
-import com.aha.businesslogic.model.User;
-import com.aha.data.FlightRepository;
-import com.aha.data.UserRepository;
-import com.aha.userinterface.ListFlightsForm;
-import com.aha.userinterface.ApproveBookingForm;
 import com.aha.userinterface.LoginForm;
-import java.util.List;
 
 /**
  *
@@ -28,26 +20,9 @@ public class AHA {
         DataGenerator generator = new DataGenerator();
         generator.generate();
         
-        FlightRepository repository = new FlightRepository();
-        Flight flight = repository.getFlightByFlightNumber("1252");
-        List<Flight> flights = repository.getFlights();
-        
-        UserRepository userRepo = new UserRepository();
-        User user = userRepo.getUserById(101);
-        
-        /*
-        SelectSeatForm selectSeatForm = new SelectSeatForm(flight);
-        selectSeatForm.setVisible(true);
-        */
-        
-        //Show passenger welcome screen with flight list
-        
+        // Show login form
         LoginForm loginForm = new LoginForm();
         loginForm.setVisible(true);
         
-
-//        
-
     }
-
 }
