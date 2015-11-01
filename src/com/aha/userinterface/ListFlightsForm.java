@@ -5,21 +5,17 @@
  */
 package com.aha.userinterface;
 
-import com.aha.businesslogic.model.Airport;
 import com.aha.businesslogic.model.Flight;
 import com.aha.businesslogic.model.User;
+import com.aha.data.FlightRepository;
 import java.awt.Color;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
-import javax.swing.ButtonGroup;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JRadioButton;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -27,82 +23,79 @@ import javax.swing.JRadioButton;
  */
 public class ListFlightsForm extends javax.swing.JFrame {
 
-    private User user;
-    //private Flight flights;
-    List<Flight> allFlights;
+    FlightRepository flightRepo = new FlightRepository();
+    private final User user;
+    private final List<Flight> allFlights;
     private Flight selectedFlight;
+    SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy h:mm a");
+    
     /**
      * Creates new form ListFlights
+     * @param user
+     * @param flights
      */
+    
     public ListFlightsForm(User user, List<Flight> flights) {
         this.user = user;
         this.allFlights = flights;
         initComponents();
         jLbl_User.setText(user.getName());
         jLbl_UserType.setText("[" + user.getClass().getSimpleName() + "]");
-        listAllFlights();
-        //jLabel2.setText(String.valueOf(flights.getFlightNumber()));
+        listFlights();
+        showSelectedFlightId();
+        //Set jTable rows sortable
+        jTable1.setAutoCreateRowSorter(true);
+        
     }
     
-    private void listAllFlights(){
-        List <Flight> flights = allFlights;
-        jPnl_FlightList.setLayout(new GridLayout(0, 7));
-        String[] titleBar = {"Flight number", "From", "Departure", "To", "Arrival", "Price", "Book this flight"};
-        for (int i = 0; i < titleBar.length; i++) {
-             JLabel label = new JLabel(titleBar[i]);
-             jPnl_FlightList.add(label);
-        }
+    private String flightDepartureToString(Flight flight){
+        String departure = DATE_FORMAT.format(flight.getDeparture());
+        return departure;
+    }
+    
+    private String flightArrivalToString(Flight flight){
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(flight.getDeparture());
+        cal.add(Calendar.MINUTE, flight.getFlightDuration());
+        String arrival = DATE_FORMAT.format(cal.getTime());
+        return arrival;
+    }
+    
+    private void listFlights(){
+        DefaultTableModel listFlightModel = (DefaultTableModel) jTable1.getModel();
+        listFlightModel.setRowCount(0);
 
-        ButtonGroup radioGroup = new ButtonGroup();
-        
-        for (final Flight flight : allFlights) {
-            //Flight number
-            JLabel label = new JLabel(String.valueOf(flight.getFlightNumber()));
-            jPnl_FlightList.add(label);
-            
-            //From
-            label = new JLabel(String.valueOf(flight.getAirportFrom().getCode()));
-            jPnl_FlightList.add(label);
-            
-            //Departure
-            SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy h:mm a");
-            String departure = DATE_FORMAT.format(flight.getDeparture());
-            label = new JLabel(departure);
-            jPnl_FlightList.add(label);
-            
-            //To
-            label = new JLabel(String.valueOf(flight.getAirportTo().getCode()));
-            jPnl_FlightList.add(label);
-            
-            //Arrival
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(flight.getDeparture());
-            
-            cal.add(Calendar.MINUTE, flight.getFlightDuration());
-            String arrival = DATE_FORMAT.format(cal.getTime());
-            label = new JLabel(arrival);
-            jPnl_FlightList.add(label);
-            
-            //Price
-            label = new JLabel(String.valueOf(flight.getPrice()));
-            jPnl_FlightList.add(label);
-            
-            //Radio button for booking
-            JRadioButton bookFlightRadioButton = new JRadioButton();
-            //Put radio button into button group
-            radioGroup.add(bookFlightRadioButton);
-            
-            ActionListener flightBookingListener = new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    selectedFlight = flight;
-                    bookedFlightLabel.setText(String.valueOf(flight.getFlightNumber()));
-                    bookFlightError.setText("");
-                }
-            };
-            bookFlightRadioButton.addActionListener(flightBookingListener);
-            jPnl_FlightList.add(bookFlightRadioButton);
+        for(Flight flight : flightRepo.getFlights()){
+            listFlightModel.addRow(new Object[]{
+                //Flight number
+                flight.getFlightNumber(),
+                //From
+                flight.getAirportFrom().getCity(),
+                //Departure
+                flightDepartureToString(flight),
+                //To
+                flight.getAirportTo().getCity(),
+                //Arrival
+                flightArrivalToString(flight),
+                //Price
+                flight.getPrice(),
+                //Book flight
+            });
         }
+    }
+    
+    private void showSelectedFlightId(){
+        DefaultTableModel listFlightModel = (DefaultTableModel) jTable1.getModel();
+        jTable1.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                bookFlightError.setText("");
+                String selectedflightNumber = String.valueOf(listFlightModel.getValueAt(jTable1.getSelectedRow(), 0));
+                selectedFlight = flightRepo.getFlightByFlightNumber(selectedflightNumber);
+                bookedFlightLabel.setText(String.valueOf(selectedFlight.getFlightNumber()));
+                selectedFlight = flightRepo.getFlightByFlightNumber(selectedflightNumber);
+            }
+        });
     }
 
     /**
@@ -131,11 +124,12 @@ public class ListFlightsForm extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLbl_User = new javax.swing.JLabel();
         jLbl_UserType = new javax.swing.JLabel();
-        jPnl_FlightList = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         bookedFlightLabel = new javax.swing.JLabel();
         bookFlightButton = new javax.swing.JButton();
         bookFlightError = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
 
         jLbl_FlightNum.setText("Flight number");
 
@@ -170,35 +164,55 @@ public class ListFlightsForm extends javax.swing.JFrame {
         });
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(800, 600));
 
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel1.setText("Welcome");
 
+        jLbl_User.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLbl_User.setText("user");
 
+        jLbl_UserType.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLbl_UserType.setText("user type");
 
-        jPnl_FlightList.setToolTipText("");
-        jPnl_FlightList.setAutoscrolls(true);
-
-        javax.swing.GroupLayout jPnl_FlightListLayout = new javax.swing.GroupLayout(jPnl_FlightList);
-        jPnl_FlightList.setLayout(jPnl_FlightListLayout);
-        jPnl_FlightListLayout.setHorizontalGroup(
-            jPnl_FlightListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 445, Short.MAX_VALUE)
-        );
-        jPnl_FlightListLayout.setVerticalGroup(
-            jPnl_FlightListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 102, Short.MAX_VALUE)
-        );
-
-        jLabel8.setText("Selected flight:");
+        jLabel8.setText("Your flight preference:");
 
         bookFlightButton.setText("Book flight");
+        bookFlightButton.setAlignmentY(0.0F);
         bookFlightButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bookFlightButtonActionPerformed(evt);
             }
         });
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Flight number", "From", "Departure", "To", "Arrival", "Price"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTable1.setToolTipText("Highlight row to select flight");
+        jTable1.setPreferredSize(new java.awt.Dimension(790, 100));
+        jTable1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jTable1.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setViewportView(jTable1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -207,7 +221,7 @@ public class ListFlightsForm extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel8)
                         .addGap(18, 18, 18)
                         .addComponent(bookedFlightLabel)
@@ -216,14 +230,17 @@ public class ListFlightsForm extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jLbl_User)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLbl_UserType))
-                    .addComponent(jPnl_FlightList, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLbl_UserType)
+                        .addGap(41, 41, 41))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(bookFlightError)
-                        .addGap(18, 18, 18)
-                        .addComponent(bookFlightButton)))
-                .addContainerGap())
+                        .addGap(24, 24, 24)
+                        .addComponent(bookFlightButton)
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 780, Short.MAX_VALUE)
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -236,12 +253,15 @@ public class ListFlightsForm extends javax.swing.JFrame {
                     .addComponent(jLabel8)
                     .addComponent(bookedFlightLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPnl_FlightList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(bookFlightButton)
-                    .addComponent(bookFlightError))
-                .addContainerGap(128, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addComponent(bookFlightError))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(13, 13, 13)
+                        .addComponent(bookFlightButton)))
+                .addContainerGap(153, Short.MAX_VALUE))
         );
 
         pack();
@@ -253,11 +273,14 @@ public class ListFlightsForm extends javax.swing.JFrame {
 
     private void bookFlightButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bookFlightButtonActionPerformed
         // TODO add your handling code here:
+        DefaultTableModel listFlightModel = (DefaultTableModel) jTable1.getModel();
+
         if (selectedFlight!=null) {
             SelectSeatForm selectSeatForm = new SelectSeatForm(selectedFlight, user);
             selectSeatForm.setVisible(true);
             this.dispose();
         }
+        //Set error msg if now flight is selected
         else{
             bookFlightError.setText("Please choose a flight");
             bookFlightError.setForeground(Color.red);
@@ -290,7 +313,8 @@ public class ListFlightsForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLbl_To;
     private javax.swing.JLabel jLbl_User;
     private javax.swing.JLabel jLbl_UserType;
-    private javax.swing.JPanel jPnl_FlightList;
     private javax.swing.JRadioButton jRadioButton1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }
