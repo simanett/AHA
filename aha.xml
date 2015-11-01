@@ -33,7 +33,7 @@
         <code>DUB</code>
     </airports>
     <bookings>
-        <approved>false</approved>
+        <approved>true</approved>
         <bookingDate>2015-10-31T15:13:35.485Z</bookingDate>
         <bookingNumber>12521A</bookingNumber>
         <flight>1252</flight>
@@ -42,7 +42,7 @@
         <row>1</row>
     </bookings>
     <bookings>
-        <approved>false</approved>
+        <approved>true</approved>
         <bookingDate>2015-10-31T15:13:47.332Z</bookingDate>
         <bookingNumber>12622B</bookingNumber>
         <flight>1262</flight>
@@ -56,6 +56,15 @@
         <bookingNumber>12521B</bookingNumber>
         <flight>1252</flight>
         <letter>B</letter>
+        <passenger>Tom Hanks</passenger>
+        <row>1</row>
+    </bookings>
+    <bookings>
+        <approved>false</approved>
+        <bookingDate>2015-11-01T23:05:35.828Z</bookingDate>
+        <bookingNumber>12621C</bookingNumber>
+        <flight>1262</flight>
+        <letter>C</letter>
         <passenger>Tom Hanks</passenger>
         <row>1</row>
     </bookings>
@@ -565,6 +574,7 @@
             <row>1</row>
         </seats>
         <seats>
+            <booking>12621C</booking>
             <letter>C</letter>
             <row>1</row>
         </seats>

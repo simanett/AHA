@@ -85,7 +85,7 @@ public class ListFlightsForm extends javax.swing.JFrame {
     }
     
     private void showSelectedFlightId(){
-        DefaultTableModel listFlightModel = (DefaultTableModel) jTable1.getModel();
+        final DefaultTableModel listFlightModel = (DefaultTableModel) jTable1.getModel();
         jTable1.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
