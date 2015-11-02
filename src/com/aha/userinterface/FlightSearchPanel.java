@@ -31,7 +31,7 @@ public class FlightSearchPanel extends javax.swing.JPanel {
     public FlightSearchPanel() {
         
         //initComponents();
-        this.setSize(800, 20);
+        this.setSize(800, 40);
        
         JLabel labelFrom = new JLabel();
         labelFrom.setText("From:");
@@ -143,6 +143,7 @@ public class FlightSearchPanel extends javax.swing.JPanel {
                 numDays = 30;
                 break;
         }
+        comboDay.removeAllItems();
         for (int i = 0; i < numDays; i++) {
             comboDay.addItem(i+1);
         }
