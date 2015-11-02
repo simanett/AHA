@@ -280,7 +280,7 @@ public class ListFlightsForm extends javax.swing.JFrame {
             selectSeatForm.setVisible(true);
             this.dispose();
         }
-        //Set error msg if now flight is selected
+        //Set error msg if no flight is selected
         else{
             bookFlightError.setText("Please choose a flight");
             bookFlightError.setForeground(Color.red);
