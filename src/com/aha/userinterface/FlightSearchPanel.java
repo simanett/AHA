@@ -100,29 +100,6 @@ public class FlightSearchPanel extends javax.swing.JPanel {
                 }
             }
         });
-        
-        
-        /*
-        comboMonth.addActionListener (new ActionListener () {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (e.getSource() == ) {
-                    
-                }
-            }
-        });*/
-        /*
-        comboMonth.addActionListener(new );
-        comboMonth.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                bookFlightError.setText("");
-                String selectedflightNumber = String.valueOf(listFlightModel.getValueAt(jTable1.getSelectedRow(), 0));
-                selectedFlight = flightRepo.getFlightByFlightNumber(selectedflightNumber);
-                bookedFlightLabel.setText(String.valueOf(selectedFlight.getFlightNumber()));
-                selectedFlight = flightRepo.getFlightByFlightNumber(selectedflightNumber);
-            }
-        });*/
 
     }
 
