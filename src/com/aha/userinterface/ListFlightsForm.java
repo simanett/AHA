@@ -36,6 +36,9 @@ public class ListFlightsForm extends javax.swing.JFrame {
      */
     
     public ListFlightsForm(User user, List<Flight> flights) {
+        FlightSearchPanel flightSearchPanel = new FlightSearchPanel();
+        add(flightSearchPanel);
+        
         this.user = user;
         this.allFlights = flights;
         initComponents();
@@ -164,7 +167,6 @@ public class ListFlightsForm extends javax.swing.JFrame {
         });
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(800, 600));
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel1.setText("Welcome");
