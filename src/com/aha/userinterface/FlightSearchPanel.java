@@ -15,6 +15,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -114,6 +115,16 @@ public class FlightSearchPanel extends javax.swing.JPanel {
     }
 
     public void listDays(int year, int month, int numDays, JComboBox comboDay){
+        Calendar mycal = new GregorianCalendar(year, month-1, 1);
+        numDays = mycal.getActualMaximum(Calendar.DAY_OF_MONTH);
+        comboDay.removeAllItems();
+        for (int i = 0; i < numDays; i++) {
+            comboDay.addItem(i+1);
+        }
+    }
+    
+    /*
+    public void listDays(int year, int month, int numDays, JComboBox comboDay){
         switch (month){
             case 2:
                 if (((year % 4 == 0) && 
@@ -134,7 +145,7 @@ public class FlightSearchPanel extends javax.swing.JPanel {
         for (int i = 0; i < numDays; i++) {
             comboDay.addItem(i+1);
         }
-    }
+    }*/
     
     
     /**
