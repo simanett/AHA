@@ -18,14 +18,15 @@ import javax.swing.JOptionPane;
  */
 public class LoginForm extends javax.swing.JFrame {
 
-    private UserRepository userRepository = new UserRepository();
-    private FlightRepository flightRepository = new FlightRepository();
+    private final UserRepository userRepository = new UserRepository();
+    private final FlightRepository flightRepository = new FlightRepository();
 
     /**
      * Creates new form LoginForm
      */
     public LoginForm() {
         initComponents();
+        rootPane.setDefaultButton(loginButton);
     }
 
     /**
@@ -44,6 +45,7 @@ public class LoginForm extends javax.swing.JFrame {
         loginButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Login");
 
         userNameBox.setSize(new java.awt.Dimension(84, 128));
 
@@ -115,6 +117,7 @@ public class LoginForm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_loginButtonActionPerformed
 
+    
     /**
      * @param args the command line arguments
      */

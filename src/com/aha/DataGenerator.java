@@ -32,7 +32,8 @@ public class DataGenerator {
 
         Airport budapest = repo.getAirportByCode("BUD");
         Airport dublin = repo.getAirportByCode("DUB");
-
+        Airport nantes = repo.getAirportByCode("NTE");
+        
         if (budapest == null) {
             budapest = new Airport();
             budapest.setCity("Budapest");
@@ -45,6 +46,13 @@ public class DataGenerator {
             dublin.setCity("Dublin");
             dublin.setCode("DUB");
             repo.addAirport(dublin);
+        }
+        
+        if (nantes == null) {
+            nantes = new Airport();
+            nantes.setCity("Nantes");
+            nantes.setCode("NTE");
+            repo.addAirport(nantes);
         }
     }
 
@@ -64,6 +72,21 @@ public class DataGenerator {
             }
             boeing.setRows(rows);
             repo.addAirplane(boeing);
+        }
+        
+        Airplane boeing2 = repo.getAirplaneByModel("Boeing2");
+        if (boeing2 == null) {
+            boeing2 = new Airplane();
+            boeing2.setModel("Boeing2");
+
+            List<String> rows = new ArrayList<>();
+
+            // 20-row airplane
+            for (int i = 0; i < 15; i++) {
+                rows.add("ABCDEF");
+            }
+            boeing2.setRows(rows);
+            repo.addAirplane(boeing2);
         }
     }
 
@@ -96,6 +119,31 @@ public class DataGenerator {
             dubBud1262.setPrice(86500);
             repoFlight.addFlight(dubBud1262);
         }
+        
+        Flight nteBud1260 = repoFlight.getFlightByFlightNumber("1260");
+
+        if (nteBud1260 == null) {
+            Airport budapest = repoAirport.getAirportByCode("BUD");
+            Airport nantes = repoAirport.getAirportByCode("NTE");
+            Airplane boeing2 = repoAirplane.getAirplaneByModel("Boeing2");
+
+            nteBud1260 = FlightFactory.createFlight(budapest, nantes, boeing2, new Date(), 180, "1260");
+            nteBud1260.setPrice(45600);
+            repoFlight.addFlight(nteBud1260);
+        }
+        
+        Flight budNte1270 = repoFlight.getFlightByFlightNumber("1270");
+
+        if (budNte1270 == null) {
+            Airport budapest = repoAirport.getAirportByCode("BUD");
+            Airport nantes = repoAirport.getAirportByCode("NTE");
+            Airplane boeing2 = repoAirplane.getAirplaneByModel("Boeing2");
+
+            budNte1270 = FlightFactory.createFlight(budapest, nantes, boeing2, new Date(), 180, "1270");
+            budNte1270.setPrice(55500);
+            repoFlight.addFlight(budNte1270);
+        }
+        
 
     }
 
@@ -107,6 +155,9 @@ public class DataGenerator {
         Administrator helga = (Administrator) userRepo.getUserById(102);
         Passenger lucy = (Passenger) userRepo.getUserById(103);
         Passenger tom = (Passenger) userRepo.getUserById(104);
+        Passenger luke = (Passenger) userRepo.getUserById(105);
+        Passenger mimi = (Passenger) userRepo.getUserById(106);
+        Passenger bud = (Passenger) userRepo.getUserById(107);
 
         if (anett == null) {
             anett = new Operator();
@@ -139,7 +190,32 @@ public class DataGenerator {
             tom.setEmail("tom.hanks@notaha.com");
             userRepo.addUser(tom);
         }
+        
+        if (luke == null) {
+            luke = new Passenger();
+            luke.setId(105);
+            luke.setName("Luke Skywalker");
+            luke.setEmail("luke.skywalker@notaha.com");
+            userRepo.addUser(luke);
+        }
+        
+        if (mimi == null) {
+            mimi = new Passenger();
+            mimi.setId(106);
+            mimi.setName("Mimi Rogers");
+            mimi.setEmail("mimi.rogers@notaha.com");
+            userRepo.addUser(mimi);
+        }
+        
+        if (bud == null) {
+            bud = new Passenger();
+            bud.setId(107);
+            bud.setName("Bud Spencer");
+            bud.setEmail("bud.spencer@notaha.com");
+            userRepo.addUser(bud);
+        }
     }
+    
 
     public void generate() {
         generateAirplanes();

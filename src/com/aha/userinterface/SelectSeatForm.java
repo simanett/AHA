@@ -44,12 +44,14 @@ public class SelectSeatForm extends javax.swing.JFrame {
         this.flight = flight;
         this.user = user;
         initComponents();
-        flightNumber.setText(String.valueOf(flight.getFlightNumber()));
+        flightNumberLabel.setText(String.valueOf(flight.getFlightNumber()));
         jLabel3.setText(flight.getAirportFrom().getCity());
         jLabel4.setText(flight.getAirportTo().getCity());
         String date = new SimpleDateFormat("yyyy-MM-dd").format(flight.getDeparture());
         jLabel5.setText(date);
         drawSeatRadioButtons();
+        
+        this.pack();
     }
 
     private void drawSeatRadioButtons() {
@@ -62,6 +64,7 @@ public class SelectSeatForm extends javax.swing.JFrame {
         // Set title
         for (char letter = 'A'; letter <= 'F'; letter++) {
             JLabel label = new JLabel(String.valueOf(letter));
+            label.setHorizontalAlignment(JLabel.CENTER);
             seatsPanel.add(label);
         }
 
@@ -100,28 +103,24 @@ public class SelectSeatForm extends javax.swing.JFrame {
     private void initComponents() {
 
         seatButtonGroup = new javax.swing.ButtonGroup();
-        selectSeatLabel = new javax.swing.JLabel();
-        flightNumber = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
         okButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        fromLabel = new javax.swing.JLabel();
-        toLabel = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        seatsPanel = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        flightNumberLabel = new javax.swing.JLabel();
         javax.swing.JLabel dateLabel = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        seatsPanel = new javax.swing.JPanel();
+        fromLabel = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        toLabel = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        selectSeatLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        selectSeatLabel.setText("jLabel1");
-        selectSeatLabel.setName(""); // NOI18N
-
-        flightNumber.setText("jLabel1");
-
-        jLabel1.setText("Flight number:");
+        setTitle("Select seat");
 
         okButton.setText("OK");
         okButton.addActionListener(new java.awt.event.ActionListener() {
@@ -137,19 +136,8 @@ public class SelectSeatForm extends javax.swing.JFrame {
             }
         });
 
-        jLabel2.setText("Flight:");
-
-        jLabel3.setText("jLabel3");
-
-        fromLabel.setText("From: ");
-
-        toLabel.setText("To: ");
-
-        jLabel4.setText("jLabel4");
-
-        dateLabel.setText("Date: ");
-
-        jLabel5.setText("jLabel5");
+        jLabel2.setFont(new java.awt.Font("Lucida Grande", 1, 18)); // NOI18N
+        jLabel2.setText("Flight details:");
 
         javax.swing.GroupLayout seatsPanelLayout = new javax.swing.GroupLayout(seatsPanel);
         seatsPanel.setLayout(seatsPanelLayout);
@@ -162,6 +150,39 @@ public class SelectSeatForm extends javax.swing.JFrame {
             .addGap(0, 374, Short.MAX_VALUE)
         );
 
+        jPanel1.setLayout(new java.awt.GridLayout(5, 2, 0, 10));
+
+        jLabel1.setText("Flight number:");
+        jPanel1.add(jLabel1);
+
+        flightNumberLabel.setText("jLabel1");
+        jPanel1.add(flightNumberLabel);
+
+        dateLabel.setText("Date: ");
+        jPanel1.add(dateLabel);
+
+        jLabel5.setText("jLabel5");
+        jPanel1.add(jLabel5);
+
+        fromLabel.setText("From: ");
+        jPanel1.add(fromLabel);
+
+        jLabel3.setText("jLabel3");
+        jPanel1.add(jLabel3);
+
+        toLabel.setText("To: ");
+        jPanel1.add(toLabel);
+
+        jLabel4.setText("jLabel4");
+        jPanel1.add(jLabel4);
+
+        jLabel6.setText("Selected Seat: ");
+        jPanel1.add(jLabel6);
+
+        selectSeatLabel.setText("jLabel1");
+        selectSeatLabel.setName(""); // NOI18N
+        jPanel1.add(selectSeatLabel);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -169,64 +190,27 @@ public class SelectSeatForm extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(seatsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(39, 39, 39)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(okButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 95, Short.MAX_VALUE)
-                        .addComponent(cancelButton)
-                        .addGap(46, 46, 46))
-                    .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(cancelButton)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                    .addComponent(dateLabel)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel5))
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                    .addComponent(fromLabel)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel3))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGap(124, 124, 124)
-                                    .addComponent(selectSeatLabel))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(toLabel)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel4)))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel1)
-                                    .addGap(35, 35, 35)
-                                    .addComponent(flightNumber))
-                                .addComponent(jLabel2)))
-                        .addGap(85, 85, 85))))
+                            .addComponent(jLabel2)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 351, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 56, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(25, 25, 25)
+                .addContainerGap()
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(flightNumber)
-                    .addComponent(jLabel1))
-                .addGap(19, 19, 19)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(dateLabel))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
-                    .addComponent(fromLabel, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(toLabel)
-                    .addComponent(jLabel4))
-                .addGap(34, 34, 34)
-                .addComponent(selectSeatLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 120, Short.MAX_VALUE)
+                .addGap(44, 44, 44)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 84, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(okButton)
                     .addComponent(cancelButton))
@@ -264,13 +248,15 @@ public class SelectSeatForm extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelButton;
-    private javax.swing.JLabel flightNumber;
+    private javax.swing.JLabel flightNumberLabel;
     private javax.swing.JLabel fromLabel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JButton okButton;
     private javax.swing.ButtonGroup seatButtonGroup;
     private javax.swing.JPanel seatsPanel;
