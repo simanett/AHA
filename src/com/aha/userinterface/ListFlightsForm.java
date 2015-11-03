@@ -9,10 +9,13 @@ import com.aha.businesslogic.model.Flight;
 import com.aha.businesslogic.model.User;
 import com.aha.data.FlightRepository;
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -28,75 +31,112 @@ public class ListFlightsForm extends javax.swing.JFrame {
     private final List<Flight> allFlights;
     private Flight selectedFlight;
     SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-    
+
     /**
      * Creates new form ListFlights
+     *
      * @param user
      * @param flights
      */
-    
     public ListFlightsForm(User user, List<Flight> flights) {
         FlightSearchPanel flightSearchPanel = new FlightSearchPanel();
+        flightSearchPanel.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                FlightSearchEvent event = (FlightSearchEvent) e;
+
+                listFlights(event.getAirportCodeFrom(), event.getAirportCodeTo(), event.getDeparture());
+            }
+        });
         add(flightSearchPanel);
-        
+
         this.user = user;
         this.allFlights = flights;
         initComponents();
         jLbl_User.setText(user.getName());
         jLbl_UserType.setText("[" + user.getClass().getSimpleName() + "]");
-        listFlights();
+        listFlights("", "", null);
         showSelectedFlightId();
         //Set jTable rows sortable
         jTable1.setAutoCreateRowSorter(true);
-        
+
     }
-    
-    private String flightDepartureToString(Flight flight){
+
+    private String flightDepartureToString(Flight flight) {
         String departure = DATE_FORMAT.format(flight.getDeparture());
         return departure;
     }
-    
-    private String flightArrivalToString(Flight flight){
+
+    private String flightArrivalToString(Flight flight) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(flight.getDeparture());
         cal.add(Calendar.MINUTE, flight.getFlightDuration());
         String arrival = DATE_FORMAT.format(cal.getTime());
         return arrival;
     }
-    
-    private void listFlights(){
+
+    private boolean flightMatchesFilter(Flight flight, String airportCodeFrom, String airportCodeTo, Date departure) {
+        if (!airportCodeFrom.isEmpty() && !flight.getAirportFrom().getCode().equals(airportCodeFrom)) {
+            // "From" Airport code is set in filter and flight doesn't match, return false
+            return false;
+        }
+
+        if (!airportCodeTo.isEmpty() && !flight.getAirportTo().getCode().equals(airportCodeTo)) {
+            // "To" Airport code is set in filter and flight doesn't match, return false
+            return false;
+        }
+
+        if (departure != null) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+            String formattedFilterDeparture = dateFormat.format(departure);
+            String formattedFlightDeparture = dateFormat.format(flight.getDeparture());
+
+            if (!formattedFilterDeparture.equals(formattedFlightDeparture)) {
+                // Date component of 
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private void listFlights(String airportCodeFrom, String airportCodeTo, Date departure) {
         DefaultTableModel listFlightModel = (DefaultTableModel) jTable1.getModel();
         listFlightModel.setRowCount(0);
 
-        for(Flight flight : flightRepo.getFlights()){
-            listFlightModel.addRow(new Object[]{
-                //Flight number
-                flight.getFlightNumber(),
-                //From
-                flight.getAirportFrom().getCity(),
-                //Departure
-                flightDepartureToString(flight),
-                //To
-                flight.getAirportTo().getCity(),
-                //Arrival
-                flightArrivalToString(flight),
-                //Price
-                flight.getPrice(),
-                //Book flight
-            });
+        for (Flight flight : flightRepo.getFlights()) {
+            if (flightMatchesFilter(flight, airportCodeFrom, airportCodeTo, departure)) {
+                listFlightModel.addRow(new Object[]{
+                    //Flight number
+                    flight.getFlightNumber(),
+                    //From
+                    flight.getAirportFrom().getCity(),
+                    //Departure
+                    flightDepartureToString(flight),
+                    //To
+                    flight.getAirportTo().getCity(),
+                    //Arrival
+                    flightArrivalToString(flight),
+                    //Price
+                    flight.getPrice(), //Book flight
+                });
+            }
         }
     }
-    
-    private void showSelectedFlightId(){
+
+    private void showSelectedFlightId() {
         final DefaultTableModel listFlightModel = (DefaultTableModel) jTable1.getModel();
+
         jTable1.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 bookFlightError.setText("");
-                String selectedflightNumber = String.valueOf(listFlightModel.getValueAt(jTable1.getSelectedRow(), 0));
-                selectedFlight = flightRepo.getFlightByFlightNumber(selectedflightNumber);
-                bookedFlightLabel.setText(String.valueOf(selectedFlight.getFlightNumber()));
-                selectedFlight = flightRepo.getFlightByFlightNumber(selectedflightNumber);
+                if (jTable1.getSelectedRow() >= 0) {
+                    String selectedflightNumber = String.valueOf(listFlightModel.getValueAt(jTable1.getSelectedRow(), 0));
+                    selectedFlight = flightRepo.getFlightByFlightNumber(selectedflightNumber);
+                    bookedFlightLabel.setText(String.valueOf(selectedFlight.getFlightNumber()));
+                    selectedFlight = flightRepo.getFlightByFlightNumber(selectedflightNumber);
+                }
             }
         });
     }
@@ -277,13 +317,12 @@ public class ListFlightsForm extends javax.swing.JFrame {
         // TODO add your handling code here:
         DefaultTableModel listFlightModel = (DefaultTableModel) jTable1.getModel();
 
-        if (selectedFlight!=null) {
+        if (selectedFlight != null) {
             SelectSeatForm selectSeatForm = new SelectSeatForm(selectedFlight, user);
             selectSeatForm.setVisible(true);
             this.dispose();
-        }
-        //Set error msg if no flight is selected
-        else{
+        } //Set error msg if no flight is selected
+        else {
             bookFlightError.setText("Please choose a flight");
             bookFlightError.setForeground(Color.red);
         }
@@ -292,7 +331,6 @@ public class ListFlightsForm extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bookFlightButton;

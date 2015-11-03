@@ -6,87 +6,88 @@
 package com.aha.userinterface;
 
 import com.aha.data.AirportRepository;
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.EventListener;
+import java.util.GregorianCalendar;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.event.EventListenerList;
 
 /**
  *
  * @author HB
  */
 public class FlightSearchPanel extends javax.swing.JPanel {
-    
+
+    private EventListenerList actionListenerList = new EventListenerList();
     private AirportRepository airportRepository = new AirportRepository();
+
     /**
      * Creates new form FligtSearchPanel
      */
-    
     public FlightSearchPanel() {
-        
+
         //initComponents();
         this.setSize(800, 40);
-       
+
         JLabel labelFrom = new JLabel();
         labelFrom.setText("From:");
         add(labelFrom);
-       
-        JComboBox comboFrom = new JComboBox();
+
+        final JComboBox comboFrom = new JComboBox();
         comboFrom.addItem("");
         for (int i = 0; i < airportRepository.getAirports().size(); i++) {
             comboFrom.addItem(String.valueOf(airportRepository.getAirports().get(i).getCode()));
         }
         add(comboFrom);
-       
+
         JLabel labelTo = new JLabel();
         labelTo.setText("To:");
         add(labelTo);
-       
-        JComboBox comboTo = new JComboBox();
+
+        final JComboBox comboTo = new JComboBox();
         comboTo.addItem("");
         for (int i = 0; i < airportRepository.getAirports().size(); i++) {
             comboTo.addItem(String.valueOf(airportRepository.getAirports().get(i).getCode()));
         }
         add(comboTo);
-       
+
         //Setting date
         Date date = new Date();
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         int month = cal.get(Calendar.MONTH);
-        
+
         JLabel labelDepDate = new JLabel();
         labelDepDate.setText("Departure date");
         add(labelDepDate);
-        
+
         //Combo box for year
-        JComboBox comboYear = new JComboBox();
+        final JComboBox comboYear = new JComboBox();
         int year = cal.get(Calendar.YEAR);
         for (int i = 0; i < 3; i++) {
             comboYear.addItem(year + i);
         }
         add(comboYear);
-        
+
         //Combo box for months
         String[] monthsString = {"January", "February", "March", "April", "May",
             "June", "July", "August", "September", "October", "November", "December"};
-        JComboBox comboMonth = new JComboBox();
-            for (int i = 0; i < monthsString.length; i++) {
+        final JComboBox comboMonth = new JComboBox();
+        for (int i = 0; i < monthsString.length; i++) {
             comboMonth.addItem(monthsString[i]);
         }
         comboMonth.setSelectedIndex(month);
         add(comboMonth);
-        
+
         //Combo box for days
-        JComboBox comboDay = new JComboBox();
+        final JComboBox comboDay = new JComboBox();
         year = (Integer) comboYear.getSelectedItem();
         month = comboMonth.getSelectedIndex() + 1;
         int numDays = 0;
@@ -94,7 +95,7 @@ public class FlightSearchPanel extends javax.swing.JPanel {
         int day = cal.get(Calendar.DAY_OF_MONTH);
         comboDay.setSelectedIndex(day);
         add(comboDay);
-        
+
         comboMonth.addItemListener(new ItemListener() {
             // Listening if a new item of the combo box has been selected.
             @Override
@@ -110,33 +111,69 @@ public class FlightSearchPanel extends javax.swing.JPanel {
 
         JButton buttonFilter = new JButton();
         buttonFilter.setText("Filter flights");
+        buttonFilter.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String airportCodeFrom = String.valueOf(comboFrom.getSelectedItem());
+                String airportCodeTo = String.valueOf(comboTo.getSelectedItem());
+                Date departure = new GregorianCalendar((int) comboYear.getSelectedItem(),
+                        comboMonth.getSelectedIndex(),
+                        (int) comboDay.getSelectedItem()).getTime();
+                fireActionPerformed(new FlightSearchEvent(this, ActionEvent.ACTION_PERFORMED,
+                        null, airportCodeFrom, airportCodeTo, departure));
+            }
+        });
         add(buttonFilter);
     }
 
-    public void listDays(int year, int month, int numDays, JComboBox comboDay){
-        switch (month){
+    public void listDays(int year, int month, int numDays, JComboBox comboDay) {
+        switch (month) {
             case 2:
-                if (((year % 4 == 0) && 
-                     !(year % 100 == 0))
-                     || (year % 400 == 0))
+                if (((year % 4 == 0)
+                        && !(year % 100 == 0))
+                        || (year % 400 == 0)) {
                     numDays = 29;
-                else
+                } else {
                     numDays = 28;
+                }
                 break;
-            case 1: case 3: case 5: case 7: case 8: case 10: case 12:
+            case 1:
+            case 3:
+            case 5:
+            case 7:
+            case 8:
+            case 10:
+            case 12:
                 numDays = 31;
                 break;
-            case 4: case 6: case 9: case 11:
+            case 4:
+            case 6:
+            case 9:
+            case 11:
                 numDays = 30;
                 break;
         }
         comboDay.removeAllItems();
         for (int i = 0; i < numDays; i++) {
-            comboDay.addItem(i+1);
+            comboDay.addItem(i + 1);
         }
     }
-    
-    
+
+    public void addActionListener(ActionListener actionListener) {
+        actionListenerList.add(ActionListener.class, actionListener);
+    }
+
+    public void removeActionListener(ActionListener actionListener) {
+        actionListenerList.remove(ActionListener.class, actionListener);
+    }
+
+    protected void fireActionPerformed(FlightSearchEvent actionEvent) {
+        EventListener[] listenerList = actionListenerList.getListeners(ActionListener.class);
+        for (EventListener listener : listenerList) {
+            ((ActionListener) listener).actionPerformed(actionEvent);
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -169,7 +206,7 @@ public class FlightSearchPanel extends javax.swing.JPanel {
                 .addContainerGap(47, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox jComboBox1;
     // End of variables declaration//GEN-END:variables
