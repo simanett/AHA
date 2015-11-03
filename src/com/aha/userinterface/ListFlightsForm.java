@@ -27,7 +27,7 @@ public class ListFlightsForm extends javax.swing.JFrame {
     private final User user;
     private final List<Flight> allFlights;
     private Flight selectedFlight;
-    SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy h:mm a");
+    SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
     
     /**
      * Creates new form ListFlights
