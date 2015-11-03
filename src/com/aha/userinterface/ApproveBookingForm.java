@@ -7,6 +7,7 @@ package com.aha.userinterface;
 
 import com.aha.businesslogic.model.Booking;
 import com.aha.data.BookingRepository;
+import java.text.SimpleDateFormat;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -30,6 +31,8 @@ public class ApproveBookingForm extends javax.swing.JFrame {
      * tables
      */
     private void refreshTables() {
+        SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        
         DefaultTableModel pendingModel = (DefaultTableModel) jTable1.getModel();
         pendingModel.setRowCount(0);
 
@@ -37,11 +40,11 @@ public class ApproveBookingForm extends javax.swing.JFrame {
             pendingModel.addRow(new Object[]{
                 pBooking.getBookingNumber(),
                 pBooking.getPassenger().getName(),
-                pBooking.getBookingDate(),
+                dateformat.format(pBooking.getBookingDate()),
                 pBooking.getFlight().getFlightNumber(),
                 pBooking.getFlight().getAirportFrom().getCode(),
                 pBooking.getFlight().getAirportTo().getCode(),
-                pBooking.getFlight().getDeparture(),
+                dateformat.format(pBooking.getFlight().getDeparture()),
                 pBooking.isApproved()
             });
         }
@@ -56,7 +59,7 @@ public class ApproveBookingForm extends javax.swing.JFrame {
                 aBooking.getFlight().getFlightNumber(),
                 aBooking.getFlight().getAirportFrom().getCode(),
                 aBooking.getFlight().getAirportTo().getCode(),
-                aBooking.getFlight().getDeparture()
+                dateformat.format(aBooking.getFlight().getDeparture())
             });
         }
     }
@@ -78,6 +81,7 @@ public class ApproveBookingForm extends javax.swing.JFrame {
         refreshButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Approve bookings");
 
         jTable1.setAutoCreateRowSorter(true);
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -104,6 +108,8 @@ public class ApproveBookingForm extends javax.swing.JFrame {
             }
         });
         jTable1.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
+        jTable1.setName(""); // NOI18N
+        jTable1.setRequestFocusEnabled(false);
         jTable1.setShowGrid(false);
         jScrollPane1.setViewportView(jTable1);
 
@@ -152,30 +158,30 @@ public class ApproveBookingForm extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(refreshButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(approveButton))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 770, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 751, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(7, 7, 7)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(approveButton)
                     .addComponent(refreshButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
