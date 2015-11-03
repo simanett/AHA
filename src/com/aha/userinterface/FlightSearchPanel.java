@@ -127,32 +127,8 @@ public class FlightSearchPanel extends javax.swing.JPanel {
     }
 
     public void listDays(int year, int month, int numDays, JComboBox comboDay) {
-        switch (month) {
-            case 2:
-                if (((year % 4 == 0)
-                        && !(year % 100 == 0))
-                        || (year % 400 == 0)) {
-                    numDays = 29;
-                } else {
-                    numDays = 28;
-                }
-                break;
-            case 1:
-            case 3:
-            case 5:
-            case 7:
-            case 8:
-            case 10:
-            case 12:
-                numDays = 31;
-                break;
-            case 4:
-            case 6:
-            case 9:
-            case 11:
-                numDays = 30;
-                break;
-        }
+        Calendar mycal = new GregorianCalendar(year, month - 1, 1);
+        numDays = mycal.getActualMaximum(Calendar.DAY_OF_MONTH);
         comboDay.removeAllItems();
         for (int i = 0; i < numDays; i++) {
             comboDay.addItem(i + 1);
