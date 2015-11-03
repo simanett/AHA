@@ -30,7 +30,7 @@ public class FileSystemManager {
     private FileSystemManager() {
         applicationState = new ApplicationState();
         //Added for testing: to print xml to console
-        printState();
+        //printState();
     }
 
     /**
@@ -84,7 +84,7 @@ public class FileSystemManager {
 
             // Save output to XML, also write it to System.out
             jaxbMarshaller.marshal(applicationState, file);
-            jaxbMarshaller.marshal(applicationState, System.out);
+            //jaxbMarshaller.marshal(applicationState, System.out);
 
         } catch (JAXBException ex) {
             System.out.println("Could not save application state.");

@@ -17,8 +17,10 @@ import com.aha.data.AirportRepository;
 import com.aha.data.FlightRepository;
 import com.aha.data.UserRepository;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 /**
  *
@@ -33,7 +35,7 @@ public class DataGenerator {
         Airport budapest = repo.getAirportByCode("BUD");
         Airport dublin = repo.getAirportByCode("DUB");
         Airport nantes = repo.getAirportByCode("NTE");
-        
+
         if (budapest == null) {
             budapest = new Airport();
             budapest.setCity("Budapest");
@@ -47,7 +49,7 @@ public class DataGenerator {
             dublin.setCode("DUB");
             repo.addAirport(dublin);
         }
-        
+
         if (nantes == null) {
             nantes = new Airport();
             nantes.setCity("Nantes");
@@ -73,7 +75,7 @@ public class DataGenerator {
             boeing.setRows(rows);
             repo.addAirplane(boeing);
         }
-        
+
         Airplane boeing2 = repo.getAirplaneByModel("Boeing2");
         if (boeing2 == null) {
             boeing2 = new Airplane();
@@ -96,6 +98,36 @@ public class DataGenerator {
         AirportRepository repoAirport = new AirportRepository();
         AirplaneRepository repoAirplane = new AirplaneRepository();
 
+        for (int i = 1000; i < 1400; i++) {
+            Flight flight = repoFlight.getFlightByFlightNumber(String.valueOf(i));
+            if (flight == null) {
+                Random random = new Random();
+
+                List<Airport> airports = repoAirport.getAirports();
+                int fromIndex = random.nextInt(airports.size());
+                int toIndex = random.nextInt(airports.size());
+
+                while (toIndex == fromIndex) {
+                    toIndex = random.nextInt(airports.size());
+                }
+
+                Airport from = airports.get(fromIndex);
+                Airport to = airports.get(toIndex);
+
+                List<Airplane> airplanes = repoAirplane.getAirplanes();
+                int airplaneIndex = random.nextInt(airplanes.size());
+
+                Airplane plane = airplanes.get(airplaneIndex);
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(new Date());
+                calendar.add(Calendar.DATE, random.nextInt(80));
+                
+                flight = FlightFactory.createFlight(from, to, plane, calendar.getTime(), 180, String.valueOf(i));
+                flight.setPrice(50000 + random.nextInt(300) * 100);
+                repoFlight.addFlight(flight);
+            }
+
+        }
         Flight dubBud1252 = repoFlight.getFlightByFlightNumber("1252");
 
         if (dubBud1252 == null) {
@@ -119,7 +151,7 @@ public class DataGenerator {
             dubBud1262.setPrice(86500);
             repoFlight.addFlight(dubBud1262);
         }
-        
+
         Flight nteBud1260 = repoFlight.getFlightByFlightNumber("1260");
 
         if (nteBud1260 == null) {
@@ -131,7 +163,7 @@ public class DataGenerator {
             nteBud1260.setPrice(45600);
             repoFlight.addFlight(nteBud1260);
         }
-        
+
         Flight budNte1270 = repoFlight.getFlightByFlightNumber("1270");
 
         if (budNte1270 == null) {
@@ -143,7 +175,6 @@ public class DataGenerator {
             budNte1270.setPrice(55500);
             repoFlight.addFlight(budNte1270);
         }
-        
 
     }
 
@@ -182,7 +213,7 @@ public class DataGenerator {
             lucy.setEmail("lucy.liu@notaha.com");
             userRepo.addUser(lucy);
         }
-        
+
         if (tom == null) {
             tom = new Passenger();
             tom.setId(104);
@@ -190,7 +221,7 @@ public class DataGenerator {
             tom.setEmail("tom.hanks@notaha.com");
             userRepo.addUser(tom);
         }
-        
+
         if (luke == null) {
             luke = new Passenger();
             luke.setId(105);
@@ -198,7 +229,7 @@ public class DataGenerator {
             luke.setEmail("luke.skywalker@notaha.com");
             userRepo.addUser(luke);
         }
-        
+
         if (mimi == null) {
             mimi = new Passenger();
             mimi.setId(106);
@@ -206,7 +237,7 @@ public class DataGenerator {
             mimi.setEmail("mimi.rogers@notaha.com");
             userRepo.addUser(mimi);
         }
-        
+
         if (bud == null) {
             bud = new Passenger();
             bud.setId(107);
@@ -215,7 +246,6 @@ public class DataGenerator {
             userRepo.addUser(bud);
         }
     }
-    
 
     public void generate() {
         generateAirplanes();
