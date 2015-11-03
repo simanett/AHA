@@ -5,6 +5,7 @@
  */
 package com.aha.userinterface;
 
+import com.aha.data.AirportRepository;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,7 +24,8 @@ import javax.swing.JLabel;
  * @author HB
  */
 public class FlightSearchPanel extends javax.swing.JPanel {
-
+    
+    private AirportRepository airportRepository = new AirportRepository();
     /**
      * Creates new form FligtSearchPanel
      */
@@ -38,8 +40,10 @@ public class FlightSearchPanel extends javax.swing.JPanel {
         add(labelFrom);
        
         JComboBox comboFrom = new JComboBox();
-        comboFrom.addItem("DUB");
-        comboFrom.addItem("BUD");
+        comboFrom.addItem("");
+        for (int i = 0; i < airportRepository.getAirports().size(); i++) {
+            comboFrom.addItem(String.valueOf(airportRepository.getAirports().get(i).getCode()));
+        }
         add(comboFrom);
        
         JLabel labelTo = new JLabel();
@@ -47,8 +51,10 @@ public class FlightSearchPanel extends javax.swing.JPanel {
         add(labelTo);
        
         JComboBox comboTo = new JComboBox();
-        comboTo.addItem("DUB");
-        comboTo.addItem("BUD");
+        comboTo.addItem("");
+        for (int i = 0; i < airportRepository.getAirports().size(); i++) {
+            comboTo.addItem(String.valueOf(airportRepository.getAirports().get(i).getCode()));
+        }
         add(comboTo);
        
         //Setting date
@@ -91,6 +97,7 @@ public class FlightSearchPanel extends javax.swing.JPanel {
         
         comboMonth.addItemListener(new ItemListener() {
             // Listening if a new item of the combo box has been selected.
+            @Override
             public void itemStateChanged(ItemEvent event) {
                 if (event.getStateChange() == ItemEvent.SELECTED) {
                     int year = (Integer) comboYear.getSelectedItem();
@@ -101,6 +108,9 @@ public class FlightSearchPanel extends javax.swing.JPanel {
             }
         });
 
+        JButton buttonFilter = new JButton();
+        buttonFilter.setText("Filter flights");
+        add(buttonFilter);
     }
 
     public void listDays(int year, int month, int numDays, JComboBox comboDay){
@@ -125,6 +135,8 @@ public class FlightSearchPanel extends javax.swing.JPanel {
             comboDay.addItem(i+1);
         }
     }
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
