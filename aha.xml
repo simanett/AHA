@@ -55,10 +55,19 @@
         <city>Nantes</city>
         <code>NTE</code>
     </airports>
+    <bookings>
+        <approved>true</approved>
+        <bookingDate>2015-11-03T19:22:42.351Z</bookingDate>
+        <bookingNumber>12603C</bookingNumber>
+        <flight>1260</flight>
+        <letter>C</letter>
+        <passenger>Tom Hanks</passenger>
+        <row>3</row>
+    </bookings>
     <flights>
         <airportFrom>BUD</airportFrom>
         <airportTo>DUB</airportTo>
-        <departure>2015-11-03T18:45:17.931Z</departure>
+        <departure>2015-11-03T19:13:48.643Z</departure>
         <flightDuration>180</flightDuration>
         <flightNumber>1252</flightNumber>
         <price>75600</price>
@@ -546,7 +555,7 @@
     <flights>
         <airportFrom>DUB</airportFrom>
         <airportTo>BUD</airportTo>
-        <departure>2015-11-03T18:45:18.039Z</departure>
+        <departure>2015-11-03T19:13:48.872Z</departure>
         <flightDuration>200</flightDuration>
         <flightNumber>1262</flightNumber>
         <price>86500</price>
@@ -1033,7 +1042,8 @@
     </flights>
     <flights>
         <airportFrom>BUD</airportFrom>
-        <departure>2015-11-03T18:45:18.143Z</departure>
+        <airportTo>NTE</airportTo>
+        <departure>2015-11-03T19:13:54.018Z</departure>
         <flightDuration>180</flightDuration>
         <flightNumber>1260</flightNumber>
         <price>45600</price>
@@ -1094,6 +1104,7 @@
             <row>3</row>
         </seats>
         <seats>
+            <booking>12603C</booking>
             <letter>C</letter>
             <row>3</row>
         </seats>
@@ -1400,7 +1411,8 @@
     </flights>
     <flights>
         <airportFrom>BUD</airportFrom>
-        <departure>2015-11-03T18:45:18.343Z</departure>
+        <airportTo>NTE</airportTo>
+        <departure>2015-11-03T19:13:54.166Z</departure>
         <flightDuration>180</flightDuration>
         <flightNumber>1270</flightNumber>
         <price>55500</price>

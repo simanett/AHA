@@ -47,6 +47,7 @@ public class DataGenerator {
             dublin.setCode("DUB");
             repo.addAirport(dublin);
         }
+        
         if (nantes == null) {
             nantes = new Airport();
             nantes.setCity("Nantes");
