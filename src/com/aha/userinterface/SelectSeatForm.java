@@ -19,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 
 /**
@@ -230,19 +231,26 @@ public class SelectSeatForm extends javax.swing.JFrame {
 
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
 
-        Booking booking = new Booking();
-        booking.setBookingNumber(flight.getFlightNumber() + selectedSeat.getRow() + selectedSeat.getLetter());
+        
+        if (selectedSeat != null) {
+            Booking booking = new Booking();
+            booking.setBookingNumber(flight.getFlightNumber() + selectedSeat.getRow() + selectedSeat.getLetter());
 
-        booking.setRow(selectedSeat.getRow());
-        booking.setLetter(selectedSeat.getLetter());
-        booking.setFlight(flight);
-        booking.setBookingDate(new Date());
-        selectedSeat.setBooking(booking);
+            booking.setRow(selectedSeat.getRow());
+            booking.setLetter(selectedSeat.getLetter());
+            booking.setFlight(flight);
+            booking.setBookingDate(new Date());
+            selectedSeat.setBooking(booking);
 
-        booking.setPassenger((Passenger) userRepository.getUserById(user.getId()));
+            booking.setPassenger((Passenger) userRepository.getUserById(user.getId()));
 
-        repository.addBooking(booking);
-        this.dispose();
+            repository.addBooking(booking);
+            this.dispose();
+        }
+        else {
+            JOptionPane.showMessageDialog(null, "Please select a seat.");
+        }
+
     }//GEN-LAST:event_okButtonActionPerformed
 
 
