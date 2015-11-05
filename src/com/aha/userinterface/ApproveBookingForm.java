@@ -31,7 +31,7 @@ public class ApproveBookingForm extends javax.swing.JFrame {
      * tables
      */
     private void refreshTables() {
-        SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");
         
         DefaultTableModel pendingModel = (DefaultTableModel) jTable1.getModel();
         pendingModel.setRowCount(0);
