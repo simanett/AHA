@@ -107,7 +107,8 @@ public class LoginForm extends javax.swing.JFrame {
         } else if (user instanceof Passenger) {
             Passenger passenger = (Passenger) user;
 
-            ListFlightsForm listFlightsForm = new ListFlightsForm(passenger, flightRepository.getFlights());
+            //ListFlightsForm listFlightsForm = new ListFlightsForm(passenger, flightRepository.getFlights());
+            ListFlightsForm listFlightsForm = new ListFlightsForm(passenger);
             listFlightsForm.setVisible(true);
         } else if (user instanceof Operator) {
             Operator operator = (Operator) user;

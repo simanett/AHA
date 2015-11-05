@@ -16,8 +16,7 @@ import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
-import javax.swing.JTable;
+//import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -28,7 +27,7 @@ public class ListFlightsForm extends javax.swing.JFrame {
 
     FlightRepository flightRepo = new FlightRepository();
     private final User user;
-    private final List<Flight> allFlights;
+    //private final List<Flight> allFlights;
     private Flight selectedFlight;
     SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -38,7 +37,8 @@ public class ListFlightsForm extends javax.swing.JFrame {
      * @param user
      * @param flights
      */
-    public ListFlightsForm(User user, List<Flight> flights) {
+    //public ListFlightsForm(User user, List<Flight> flights) {
+    public ListFlightsForm(User user) {
         FlightSearchPanel flightSearchPanel = new FlightSearchPanel();
         flightSearchPanel.addActionListener(new ActionListener() {
             @Override
@@ -51,7 +51,7 @@ public class ListFlightsForm extends javax.swing.JFrame {
         add(flightSearchPanel);
 
         this.user = user;
-        this.allFlights = flights;
+        //this.allFlights = flights;
         initComponents();
         jLbl_User.setText(user.getName());
         jLbl_UserType.setText("[" + user.getClass().getSimpleName() + "]");
