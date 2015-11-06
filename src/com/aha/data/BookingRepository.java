@@ -96,6 +96,6 @@ public class BookingRepository {
      * @return List of Booking objects
      */
     private List<Booking> bookings() {
-        return FileSystemManager.getInstance().getState().getBooking();
+        return FileSystemManager.getInstance().getState().getBookings();
     }
 }

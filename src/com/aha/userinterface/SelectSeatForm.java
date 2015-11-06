@@ -120,7 +120,7 @@ public class SelectSeatForm extends javax.swing.JFrame {
         selectSeatLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Select seat");
+        setTitle("AHA Bernot Helga, Simonics Anett");
 
         okButton.setText("OK");
         okButton.addActionListener(new java.awt.event.ActionListener() {
@@ -179,7 +179,7 @@ public class SelectSeatForm extends javax.swing.JFrame {
         jLabel6.setText("Selected Seat: ");
         jPanel1.add(jLabel6);
 
-        selectSeatLabel.setText("jLabel1");
+        selectSeatLabel.setText("No seat selected");
         selectSeatLabel.setName(""); // NOI18N
         jPanel1.add(selectSeatLabel);
 
