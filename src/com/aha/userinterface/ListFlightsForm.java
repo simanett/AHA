@@ -8,6 +8,7 @@ package com.aha.userinterface;
 import com.aha.businesslogic.model.Flight;
 import com.aha.businesslogic.model.User;
 import com.aha.data.FlightRepository;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,8 +17,7 @@ import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
-import javax.swing.JTable;
+//import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -28,7 +28,7 @@ public class ListFlightsForm extends javax.swing.JFrame {
 
     FlightRepository flightRepo = new FlightRepository();
     private final User user;
-    private final List<Flight> allFlights;
+    //private final List<Flight> allFlights;
     private Flight selectedFlight;
     SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -38,8 +38,10 @@ public class ListFlightsForm extends javax.swing.JFrame {
      * @param user
      * @param flights
      */
-    public ListFlightsForm(User user, List<Flight> flights) {
+
+    public ListFlightsForm(User user) {
         FlightSearchPanel flightSearchPanel = new FlightSearchPanel();
+        flightSearchPanel.setLocation(-105, 40);
         flightSearchPanel.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -51,7 +53,7 @@ public class ListFlightsForm extends javax.swing.JFrame {
         add(flightSearchPanel);
 
         this.user = user;
-        this.allFlights = flights;
+        //this.allFlights = flights;
         initComponents();
         jLbl_User.setText(user.getName());
         jLbl_UserType.setText("[" + user.getClass().getSimpleName() + "]");
@@ -265,7 +267,7 @@ public class ListFlightsForm extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel8)
-                        .addGap(18, 18, 18)
+                        .addGap(21, 21, 21)
                         .addComponent(bookedFlightLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel1)
@@ -277,14 +279,12 @@ public class ListFlightsForm extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(bookFlightError)
-                        .addGap(143, 143, 143))
+                        .addGap(50, 50, 50)
+                        .addComponent(bookFlightButton)
+                        .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 780, Short.MAX_VALUE)
                         .addContainerGap())))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(bookFlightButton)
-                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -296,12 +296,16 @@ public class ListFlightsForm extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(jLabel8)
                     .addComponent(bookedFlightLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 261, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(bookFlightError)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(bookFlightButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(bookFlightError)
+                        .addGap(29, 29, 29))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(bookFlightButton)
+                        .addContainerGap())))
         );
 
         pack();
