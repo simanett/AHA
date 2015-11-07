@@ -41,7 +41,7 @@ public class ListFlightsForm extends javax.swing.JFrame {
 
     public ListFlightsForm(User user) {
         FlightSearchPanel flightSearchPanel = new FlightSearchPanel();
-        flightSearchPanel.setLocation(-105, 40);
+        flightSearchPanel.setLocation(0, 40);
         flightSearchPanel.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
