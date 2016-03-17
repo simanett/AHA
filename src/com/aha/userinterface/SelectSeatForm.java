@@ -48,7 +48,7 @@ public class SelectSeatForm extends javax.swing.JFrame {
         flightNumberLabel.setText(String.valueOf(flight.getFlightNumber()));
         jLabel3.setText(flight.getAirportFrom().getCity());
         jLabel4.setText(flight.getAirportTo().getCity());
-        String date = new SimpleDateFormat("yyyy-MM-dd").format(flight.getDeparture());
+        String date = new SimpleDateFormat("dd/MM/yyyy kk:mm").format(flight.getDeparture());
         jLabel5.setText(date);
         drawSeatRadioButtons();
         
@@ -159,7 +159,7 @@ public class SelectSeatForm extends javax.swing.JFrame {
         flightNumberLabel.setText("jLabel1");
         jPanel1.add(flightNumberLabel);
 
-        dateLabel.setText("Date: ");
+        dateLabel.setText("Departure: ");
         jPanel1.add(dateLabel);
 
         jLabel5.setText("jLabel5");

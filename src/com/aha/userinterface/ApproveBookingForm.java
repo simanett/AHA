@@ -31,7 +31,7 @@ public class ApproveBookingForm extends javax.swing.JFrame {
      * tables
      */
     private void refreshTables() {
-        SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat dateformat = new SimpleDateFormat("dd/MM/yyyy kk:mm");
         
         DefaultTableModel pendingModel = (DefaultTableModel) jTable1.getModel();
         pendingModel.setRowCount(0);
@@ -110,7 +110,6 @@ public class ApproveBookingForm extends javax.swing.JFrame {
         jTable1.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
         jTable1.setName(""); // NOI18N
         jTable1.setRequestFocusEnabled(false);
-        jTable1.setShowGrid(false);
         jScrollPane1.setViewportView(jTable1);
 
         jTable2.setAutoCreateRowSorter(true);
@@ -119,7 +118,7 @@ public class ApproveBookingForm extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Booking Number", "Passenger", "Flight Number", "From ", "To", "Departures"
+                "Booking Number", "Passenger", "Flight Number", "From ", "To", "Departure"
             }
         ) {
             Class[] types = new Class [] {

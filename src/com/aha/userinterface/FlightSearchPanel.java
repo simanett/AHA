@@ -35,7 +35,7 @@ public class FlightSearchPanel extends javax.swing.JPanel {
 
         //initComponents();
         this.setSize(800, 40);
-
+        
         JLabel labelFrom = new JLabel();
         labelFrom.setText("From:");
         add(labelFrom);

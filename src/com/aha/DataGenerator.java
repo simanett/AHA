@@ -57,8 +57,9 @@ public class DataGenerator {
             portrepo.addAirport(nantes);
         }
     }
-
+    
     public void generateAirplanes() {
+        //Adding airplains
         AirplaneRepository repo = new AirplaneRepository();
 
         Airplane boeing = repo.getAirplaneByModel("Boeing");
@@ -83,7 +84,7 @@ public class DataGenerator {
 
             List<String> rows = new ArrayList<>();
 
-            // 20-row airplane
+            // 15-row airplane
             for (int i = 0; i < 15; i++) {
                 rows.add("ABCDEF");
             }
@@ -251,7 +252,6 @@ public class DataGenerator {
         generateAirplanes();
         generateAirports();
         generateUsers();
-
         generateFlights();
     }
 
