@@ -18,6 +18,18 @@ public class Airport {
     
     private String code;
     private String city;
+   
+
+    
+    
+    
+    @Override
+    public String toString() {
+        return  "\t" + city + "\t" + code;
+    }
+
+    
+    
 
     @XmlID
     @XmlElement

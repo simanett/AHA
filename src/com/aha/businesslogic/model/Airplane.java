@@ -21,6 +21,22 @@ public class Airplane {
     //Airplane model is a unique property.
     private String model;
     private List<String> rows;
+    
+    private int id;
+
+    
+    public int getId() {
+        return id;
+    }
+
+    @Override
+    public String toString() {
+        return id + "\t" + maxDistance + "\t" + model;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     @XmlElement
     public void setMaxDistance(int maxDistance) {

@@ -30,31 +30,31 @@ public class DataGenerator {
 
     public void generateAirports() {
         //Adding airports
-        AirportRepository repo = new AirportRepository();
+        AirportRepository portrepo = new AirportRepository();
 
-        Airport budapest = repo.getAirportByCode("BUD");
-        Airport dublin = repo.getAirportByCode("DUB");
-        Airport nantes = repo.getAirportByCode("NTE");
+        Airport budapest = portrepo.getAirportByCode("BUD");
+        Airport dublin = portrepo.getAirportByCode("DUB");
+        Airport nantes = portrepo.getAirportByCode("NTE");
 
         if (budapest == null) {
             budapest = new Airport();
             budapest.setCity("Budapest");
             budapest.setCode("BUD");
-            repo.addAirport(budapest);
+            portrepo.addAirport(budapest);
         }
 
         if (dublin == null) {
             dublin = new Airport();
             dublin.setCity("Dublin");
             dublin.setCode("DUB");
-            repo.addAirport(dublin);
+            portrepo.addAirport(dublin);
         }
 
         if (nantes == null) {
             nantes = new Airport();
             nantes.setCity("Nantes");
             nantes.setCode("NTE");
-            repo.addAirport(nantes);
+            portrepo.addAirport(nantes);
         }
     }
 
