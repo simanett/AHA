@@ -7,8 +7,10 @@ package com.aha;
 
 import com.aha.businesslogic.model.Airplane;
 import com.aha.businesslogic.model.Airport;
+import com.aha.businesslogic.model.User;
 import com.aha.data.AirplaneRepository;
 import com.aha.data.AirportRepository;
+import com.aha.data.UserRepository;
 import com.aha.userinterface.LoginForm;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -69,7 +71,22 @@ public class AHA {
             for (Airport airport : airports) {
                 System.out.println(airport);
             }
-
+            
+            
+            UserRepository userrepo = new UserRepository();
+            
+            User geza = userrepo.getUserById(2);
+            System.out.println(geza);
+            
+            User lama = userrepo.getUserByName("Yellow Pages");
+              System.out.println(lama);
+              
+               List<User> users = userrepo.getUsers();
+            System.out.println("Userek:");
+            for (User user : users) {
+                System.out.println(user);
+            }
+            
             // Show login form
             LoginForm loginForm = new LoginForm();
             loginForm.setVisible(true);

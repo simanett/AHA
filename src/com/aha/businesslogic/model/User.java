@@ -18,6 +18,8 @@ public abstract class User {
     private int id;
     private String name;
     private String email;
+    
+    
 
     public int getId() {
         return id;
@@ -44,4 +46,8 @@ public abstract class User {
         this.email = email;
     }
 
+    @Override
+    public String toString() {
+        return id + "\t" + name + "\t" + email;
+    }
 }
