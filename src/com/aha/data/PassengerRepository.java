@@ -139,4 +139,10 @@ public class PassengerRepository {
         }
         return passengers;
         }
+    
+    public void addPassenger(Passenger passenger){
+        Statement stmt = null;
+        String query = "insert into AHA.PASSENGERS (name, email) "
+                + "values ('" + passenger.getName() + "', '"+ passenger.getEmail()+"'";
+    }
 }
