@@ -7,7 +7,6 @@ package com.aha.data;
 
 import com.aha.AHA;
 import com.aha.businesslogic.model.Passenger;
-import com.aha.businesslogic.model.User;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -23,23 +22,22 @@ import java.util.logging.Logger;
  *
  * @author HB
  */
-public class PassengerRepository {
 
+public class PassengerRepository {
     /**
      * Return Passenger object of given id.
      *
      * @param id int that identifies the Passenger object.
      * @return the Passenger object if exists, null otherwise.
      */
-    public Passenger getPassengerById(int id) {
+    public Passenger getPassengerById(int id) throws SQLException{
         Passenger passenger = null;
         PreparedStatement stmt = null;
         String query = "select ID, NAME, EMAIL"
                 + "from AHA.PASSENGERS where ID=?";
-        try {
+        try{
             stmt = AHA.connection.prepareStatement(query);
             stmt.setInt(1, id);
-
             ResultSet rs = stmt.executeQuery();
             boolean idExists = rs.next();
             if (idExists) {
@@ -55,54 +53,43 @@ public class PassengerRepository {
             e.printStackTrace();
         } finally {
             if (stmt != null) {
-                try {
-                    stmt.close();
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
-                }
+                stmt.close();
             }
         }
         return passenger;
     }
-
+   
     /**
      * Return Passenger object of given name.
      *
      * @param passengername String that identifies the Passenger object.
      * @return the Passenger object if exists, null otherwise.
      */
-    public Passenger getPassengerByName(String passengername) {
+   
+    public Passenger getPassengerByName(String passengername) throws SQLException {
         Passenger passenger = null;
         PreparedStatement stmt = null;
         String query = "select ID, NAME, EMAIL"
                 + "from AHA.PASSENGERS where NAME=?";
-
         try {
             stmt = AHA.connection.prepareStatement(query);
             stmt.setString(1, passengername);
             ResultSet rs = stmt.executeQuery();
-
             boolean passengerExists = rs.next();
             if (passengerExists) {
                 passenger = new Passenger();
                 int id = rs.getInt("ID");
                 String passengerName = rs.getNString("NAME");
                 String email = rs.getString("EMAIL");
-
                 passenger.setId(id);
                 passenger.setName(passengerName);
                 passenger.setEmail(email);
-
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             if (stmt != null) {
-                try {
-                    stmt.close();
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
-                }
+                stmt.close();
             }
         }
         return passenger;
@@ -113,30 +100,53 @@ public class PassengerRepository {
      *
      * @return all Passengers in the database.
      */
-    public List<User> getPassengers() {
+   
+    public List<Passenger> getPassengers() throws SQLException {
 
-        List<User> passengers = new ArrayList<>();
+        List<Passenger> passengers = new ArrayList<>();
         Statement stmt = null;
-
         String query = "select ID, NAME, EMAIL "
                 + "from AHA.PASSENGERS ";
-
         try {
             stmt = AHA.connection.createStatement();
             ResultSet rs = stmt.executeQuery(query);
-
             while (rs.next()) {
                 int id = rs.getInt("ID");
                 String name = rs.getString("NAME");
                 String email = rs.getString("EMAIL");
                 Passenger passenger = new Passenger();
-
                 passenger.setId(id);
                 passenger.setName(name);
                 passenger.setEmail(email);
-
                 passengers.add(passenger);
             }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (stmt != null) {
+                stmt.close();
+            }
+        }
+        return passengers;
+    }
+   
+    /**
+     * Add Passenger object to database.
+     *
+     * @return void.
+     */
+   
+    public void addPassenger(Passenger passenger){
+        PreparedStatement stmt = null;
+        String query = "insert into AHA.PASSENGERS (name, email) "
+                + "values ?, ?";
+        try{
+            stmt = AHA.connection.prepareStatement(query);
+            stmt.setString(1, passenger.getName());
+            stmt.setString(2, passenger.getEmail());
+
+            int modifiedRows = stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -144,16 +154,9 @@ public class PassengerRepository {
                 try {
                     stmt.close();
                 } catch (SQLException ex) {
-                    ex.printStackTrace();
+                    Logger.getLogger(PassengerRepository.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-        }
-        return passengers;
-    }
-
-    public void addPassenger(Passenger passenger) {
-        Statement stmt = null;
-        String query = "insert into AHA.PASSENGERS (name, email) "
-                + "values ('" + passenger.getName() + "', '" + passenger.getEmail() + "'";
+        }       
     }
 }
