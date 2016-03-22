@@ -27,6 +27,15 @@ public class Flight {
     private Airport airportTo;
     private Airport airportFrom;
     private int price;
+    private int id;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public int getPrice() {
         return price;
@@ -98,4 +107,10 @@ public class Flight {
         this.airportFrom = airportFrom;
     }
 
+    @Override
+    public String toString() {
+        return "Flight{" + "flightNumber=" + flightNumber + ", departure=" + departure + ", flightDuration=" + flightDuration + ", airplane=" + airplane + ", airportTo=" + airportTo + ", airportFrom=" + airportFrom + ", id=" + id + '}';
+    }
+
+    
 }
