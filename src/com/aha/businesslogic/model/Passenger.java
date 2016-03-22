@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  *
- * @author bernothelga
+ * @author HB
  */
 public class Passenger extends User {
     
