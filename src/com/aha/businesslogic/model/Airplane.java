@@ -20,19 +20,27 @@ public class Airplane {
     private int maxDistance;
     //Airplane model is a unique property.
     private String model;
-    private List<String> rows;
-    
     private int id;
+    private List<Seat> seats;
 
-    
+    public List<Seat> getSeats() {
+        return seats;
+    }
+
+    public void setSeats(List<Seat> seats) {
+        this.seats = seats;
+    }
+
     public int getId() {
         return id;
     }
 
     @Override
     public String toString() {
-        return id + "\t" + maxDistance + "\t" + model;
+        return "Airplane{" + "maxDistance=" + maxDistance + ", model=" + model + ", id=" + id + ", seats=" + seats + '}';
     }
+
+    
 
     public void setId(int id) {
         this.id = id;
@@ -49,21 +57,6 @@ public class Airplane {
         this.model = model;
     }
 
-    /*
-    
-    ABCDEF
-    ABCDEF
-    ABCDEF
-    ..
-    ..
-    ..
-    ACDF
-    
-     */
-    public void setRows(List<String> rows) {
-        this.rows = rows;
-    }
-
     public int getMaxDistance() {
         return maxDistance;
     }
@@ -72,8 +65,7 @@ public class Airplane {
         return model;
     }
 
-    public List<String> getRows() {
-        return rows;
-    }
+   
+    
 
 }

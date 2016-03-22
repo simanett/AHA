@@ -87,7 +87,7 @@ public class SelectSeatForm extends javax.swing.JFrame {
             seatButton.addActionListener(seatButtonListener);
 
             // Only allow booking there is no existing booking on seat
-            seatButton.setEnabled(seat.getBooking() == null);
+            //seatButton.setEnabled(seat.getBooking() == null);
             seatButtonGroup.add(seatButton);
             seatsPanel.add(seatButton);
         }
@@ -240,7 +240,7 @@ public class SelectSeatForm extends javax.swing.JFrame {
             booking.setLetter(selectedSeat.getLetter());
             booking.setFlight(flight);
             booking.setBookingDate(new Date());
-            selectedSeat.setBooking(booking);
+            //selectedSeat.setBooking(booking);
 
             booking.setPassenger((Passenger) userRepository.getUserById(user.getId()));
 

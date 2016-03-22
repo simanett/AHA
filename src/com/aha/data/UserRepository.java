@@ -8,7 +8,6 @@ package com.aha.data;
 import com.aha.AHA;
 import com.aha.businesslogic.model.Administrator;
 import com.aha.businesslogic.model.CrewMember;
-import com.aha.businesslogic.model.Employee;
 import com.aha.businesslogic.model.Operator;
 import com.aha.businesslogic.model.User;
 import java.sql.PreparedStatement;
@@ -32,7 +31,7 @@ public class UserRepository {
      * @param id String that identifies the User object
      * @return The User object if exists, null otherwise
      */
-    public User getUserById(int id) throws SQLException {
+    public User getUserById(int id) {
         User user = null;
         PreparedStatement stmt = null;
         String query = "select ID, NAME, EMAIL, ROLE "
@@ -75,25 +74,23 @@ public class UserRepository {
             e.printStackTrace();
         } finally {
             if (stmt != null) {
-                stmt.close();
+                try {
+                    stmt.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
             }
         }
         return user;
     }
 
-//        for (User user : users()) {
-//            if (user.getId() == id) {
-//                return user;
-//            }
-//        }
-//        return null;
     /**
      * Return the User object with the given name
      *
      * @param name String that identifies the User object
      * @return The User object if exists, null otherwise
      */
-    public User getUserByName(String name) throws SQLException {
+    public User getUserByName(String name) {
 
         User names = null;
         PreparedStatement stmt = null;
@@ -136,27 +133,23 @@ public class UserRepository {
             e.printStackTrace();
         } finally {
             if (stmt != null) {
-                stmt.close();
+                try {
+                    stmt.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
             }
         }
         return names;
 
     }
 
-//{
-//        for (User user : users()) {
-//            if (user.getName().equals(name)) {
-//                return user;
-//            }
-//        }
-//        return null;
-//    }
     /**
      * Return all User objects
      *
      * @return All Users in the application state
      */
-    public List<User> getUsers() throws SQLException {
+    public List<User> getUsers() {
 
         List<User> users = new ArrayList<>();
         Statement stmt = null;
@@ -198,20 +191,20 @@ public class UserRepository {
 
             }
 
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             if (stmt != null) {
-                stmt.close();
+                try {
+                    stmt.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
             }
         }
         return users;
-        
-        }
 
-//        return users();
-    
+    }
 
     /**
      * Add a new User object to the application state and save it to the XML

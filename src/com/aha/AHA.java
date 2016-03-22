@@ -40,71 +40,64 @@ public class AHA {
         String dbUserName = args[1];
         String dbPassWord = args[2];
 
-        try {
-            //        DataGenerator generator = new DataGenerator();
-//        generator.generate();
+        connection = connect(dbUrl, dbUserName, dbPassWord);
 
-            connection = connect(dbUrl, dbUserName, dbPassWord);
+        AirplaneRepository repo = new AirplaneRepository();
 
-            AirplaneRepository repo = new AirplaneRepository();
+        Airplane boeing = repo.getAirplaneByModel("Boeing747");
+        System.out.println(boeing);
 
-            Airplane boeing = repo.getAirplaneByModel("Boeing747");
-            System.out.println(boeing);
+        Airplane kamu = repo.getAirplaneByModel("Kamu");
+        System.out.println(kamu);
 
-            Airplane kamu = repo.getAirplaneByModel("Kamu");
-            System.out.println(kamu);
-
-            List<Airplane> planes = repo.getAirplanes();
-            System.out.println("Repulok");
-            for (Airplane plane : planes) {
-                System.out.println(plane);
-            }
-
-            AirportRepository portrepo = new AirportRepository();
-
-            Airport alma = portrepo.getAirportByCode("DUB");
-            System.out.println(alma);
-
-            Airport korte = portrepo.getAirportByCode("Kakimaki");
-            System.out.println(korte);
-
-            List<Airport> airports = portrepo.getAirports();
-            System.out.println("Repterek:");
-            for (Airport airport : airports) {
-                System.out.println(airport);
-            }
-
-            UserRepository userrepo = new UserRepository();
-
-            User geza = userrepo.getUserById(2);
-            System.out.println(geza);
-
-            User lama = userrepo.getUserByName("Yellow Pages");
-            System.out.println(lama);
-
-            List<User> users = userrepo.getUsers();
-            System.out.println("Userek:");
-            for (User user : users) {
-                System.out.println(user);
-            }
-            
-            FlightRepository flightrepo = new FlightRepository();
-            
-            Flight jarat = flightrepo.getFlightByFlightNumber("AHA1234");
-            System.out.println(jarat);
-            
-            List<Flight> flights = flightrepo.getFlights();
-            System.out.println("Jaratok: ");
-            for (Flight flight:flights){
-                System.out.println(flight);
-                }
-                    
-            // Show login form
-            LoginForm loginForm = new LoginForm();
-            loginForm.setVisible(true);
-        } catch (SQLException ex) {
-            System.out.println(ex);
+        List<Airplane> planes = repo.getAirplanes();
+        System.out.println("Repulok");
+        for (Airplane plane : planes) {
+            System.out.println(plane);
         }
+
+        AirportRepository portrepo = new AirportRepository();
+
+        Airport alma = portrepo.getAirportByCode("DUB");
+        System.out.println(alma);
+
+        Airport korte = portrepo.getAirportByCode("Kakimaki");
+        System.out.println(korte);
+
+        List<Airport> airports = portrepo.getAirports();
+        System.out.println("Repterek:");
+        for (Airport airport : airports) {
+            System.out.println(airport);
+        }
+
+        UserRepository userrepo = new UserRepository();
+
+        User geza = userrepo.getUserById(2);
+        System.out.println(geza);
+
+        User lama = userrepo.getUserByName("Yellow Pages");
+        System.out.println(lama);
+
+        List<User> users = userrepo.getUsers();
+        System.out.println("Userek:");
+        for (User user : users) {
+            System.out.println(user);
+        }
+
+        FlightRepository flightrepo = new FlightRepository();
+
+        Flight jarat = flightrepo.getFlightByFlightNumber("AHA1234");
+        System.out.println(jarat);
+
+        List<Flight> flights = flightrepo.getFlights();
+        System.out.println("Jaratok: ");
+        for (Flight flight : flights) {
+            System.out.println(flight);
+        }
+
+        // Show login form
+        LoginForm loginForm = new LoginForm();
+        loginForm.setVisible(true);
 
     }
 

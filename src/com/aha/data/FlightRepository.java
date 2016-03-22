@@ -17,6 +17,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Repository class to handle flight data
@@ -31,7 +33,7 @@ public class FlightRepository {
      * @param flightNumber String that identifies the Flight object
      * @return The Flight object if exists, null otherwise
      */
-    public Flight getFlightByFlightNumber(String flightNumber) throws SQLException {
+    public Flight getFlightByFlightNumber(String flightNumber) {
 
         Flight flight = null;
         PreparedStatement stmt = null;
@@ -104,7 +106,11 @@ public class FlightRepository {
             e.printStackTrace();
         } finally {
             if (stmt != null) {
-                stmt.close();
+                try {
+                    stmt.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
             }
         }
         return flight;
@@ -122,10 +128,10 @@ public class FlightRepository {
      *
      * @return All Flights in the application state
      */
-    public List<Flight> getFlights() throws SQLException {
+    public List<Flight> getFlights() {
         List<Flight> flights = new ArrayList<>();
         Statement stmt = null;
-        
+
         String query = "SELECT FLIGHTS.ID AS FLIGHT_ID, \n"
                 + "    FLIGHTS.FLIGHTNUMBER, \n"
                 + "    FLIGHTS.DEPARTURE,\n"
@@ -141,14 +147,13 @@ public class FlightRepository {
                 + "JOIN AHA.AIRPLANES ON FLIGHTS.AIRPLANEID = AIRPLANES.ID\n"
                 + "JOIN AHA.AIRPORTS AIRPORT_FROM ON FLIGHTS.FROMID = AIRPORT_FROM.CODE \n"
                 + "JOIN AHA.AIRPORTS AIRPORT_TO ON FLIGHTS.TOID = AIRPORT_TO.CODE ";
-    
-          try {
+
+        try {
             stmt = AHA.connection.createStatement();
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()) {
-                
-                
-                 int id = rs.getInt("FLIGHT_ID");
+
+                int id = rs.getInt("FLIGHT_ID");
                 String flightn = rs.getString("FLIGHTNUMBER");
                 Date departure = rs.getDate("DEPARTURE");
                 int flightDuration = rs.getInt("FLIGHTDURATION");
@@ -175,7 +180,7 @@ public class FlightRepository {
                 toAirport.setCode(toCode);
                 toAirport.setCity(toCity);
 
-                Flight flight  = new Flight();
+                Flight flight = new Flight();
                 flight.setId(id);
                 flight.setFlightNumber(flightn);
                 flight.setDeparture(departure);
@@ -183,30 +188,29 @@ public class FlightRepository {
                 flight.setAirplane(airplane);
                 flight.setAirportFrom(fromAirport);
                 flight.setAirportTo(toAirport);
-                
+
                 flights.add(flight);
-                
-                
-            }}
-          catch (SQLException e) {
+
+            }
+        } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             if (stmt != null) {
-                stmt.close();
-            }}
-    return flights;
+                try {
+                    stmt.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+        return flights;
     }
-    
-    
-    
-    
-    
-        /**
-         * Add a new Flight object to the application state and save it to the
-         * XML
-         *
-         * @param flight The Flight object to add
-         */
+
+    /**
+     * Add a new Flight object to the application state and save it to the XML
+     *
+     * @param flight The Flight object to add
+     */
     public void addFlight(Flight flight) {
         flights().add(flight);
         FileSystemManager.getInstance().saveState();

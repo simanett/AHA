@@ -19,21 +19,19 @@ public class Seat {
     private int row;
     private String letter;
 
-    private Booking booking;
-
+    @Override
+    public String toString() {
+        return "Seat{" + "row=" + row + ", letter=" + letter + '}';
+    }
+    
     @XmlElement
     public void setRow(int row) {
         this.row = row;
     }
-
+    
     @XmlElement
     public void setLetter(String letter) {
         this.letter = letter;
-    }
-
-    @XmlIDREF
-    public void setBooking(Booking booking) {
-        this.booking = booking;
     }
 
     public int getRow() {
@@ -42,10 +40,6 @@ public class Seat {
 
     public String getLetter() {
         return letter;
-    }
-
-    public Booking getBooking() {
-        return booking;
     }
 
 }

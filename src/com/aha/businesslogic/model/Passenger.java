@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author bernothelga
  */
-public class Passenger extends User{
+public class Passenger extends User {
     
     private List<Booking> booking;
 

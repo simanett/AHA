@@ -36,7 +36,6 @@ public class ListFlightsForm extends javax.swing.JFrame {
      *
      * @param user
      */
-
     public ListFlightsForm(User user) {
         FlightSearchPanel flightSearchPanel = new FlightSearchPanel();
         flightSearchPanel.setLocation(0, 40);
@@ -114,12 +113,11 @@ public class ListFlightsForm extends javax.swing.JFrame {
                     //Arrival
                     flightArrivalToString(flight),
                     //Price
-                    flight.getPrice(),
-                    //Book flight
+                    flight.getBasicPrice(), //Book flight
                 });
             }
         }
-        
+
     }
 
     private void showSelectedFlightId() {

@@ -26,8 +26,16 @@ public class Flight {
     private Airplane airplane;
     private Airport airportTo;
     private Airport airportFrom;
-    private int price;
     private int id;
+    private int basicPrice;
+
+    public int getBasicPrice() {
+        return basicPrice;
+    }
+
+    public void setBasicPrice(int basicPrice) {
+        this.basicPrice = basicPrice;
+    }
 
     public int getId() {
         return id;
@@ -35,14 +43,6 @@ public class Flight {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
     }
 
     public String getFlightNumber() {

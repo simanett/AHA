@@ -8,12 +8,15 @@ package com.aha.data;
 import com.aha.AHA;
 import com.aha.businesslogic.model.Airplane;
 import com.aha.businesslogic.model.Airport;
+import com.aha.businesslogic.model.Seat;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Repository class to handle airplane data
@@ -29,38 +32,64 @@ public class AirplaneRepository {
      * "Boeing"
      * @return The Airplane object if exists, null otherwise
      */
-    public Airplane getAirplaneByModel(String airplaneModel) throws SQLException {
+    public Airplane getAirplaneByModel(String airplaneModel) {
         Airplane airplane = null;
         PreparedStatement stmt = null;
-        String query = "select ID, MAXDISTANCE, MODEL "
-                + "from AHA.Airplanes where MODEL = ?";
-        
-        //   ';DROP TABLE AIRPLANES; --
-        
+        String query = "SELECT AIRPLANES.ID AS AIRPLANE_ID,\n"
+                + "       AIRPLANES.MAXDISTANCE,\n"
+                + "       AIRPLANES.MODEL,\n"
+                + "       SEATS.ID AS SEAT_ID,\n"
+                + "       SEATS.AIRPLANEID,\n"
+                + "       SEATS.ROWNUMBER,\n"
+                + "       SEATS.COLUMNLETTER\n"
+                + "FROM AHA.AIRPLANES\n"
+                + "JOIN AHA.SEATS ON SEATS.AIRPLANEID = AIRPLANES.ID "
+                + "where MODEL = ?";
+
         try {
             stmt = AHA.connection.prepareStatement(query);
             stmt.setString(1, airplaneModel);
-            
+
             ResultSet rs = stmt.executeQuery();
+            List<Seat> seats = new ArrayList<Seat>();
+            while (rs.next()) {
 
-            boolean airplaneExists = rs.next();
-
-            if (airplaneExists) {
-                int id = rs.getInt("ID");
+                int id = rs.getInt("AIRPLANE_ID");
                 int maxDistance = rs.getInt("MAXDISTANCE");
                 String model = rs.getString("MODEL");
 
-                airplane = new Airplane();
-                airplane.setMaxDistance(maxDistance);
-                airplane.setModel(model);
-                airplane.setId(id);
+                Seat seat = new Seat();
+
+                int seatId = rs.getInt("SEAT_ID");
+                int seatRow = rs.getInt("ROWNUMBER");
+                String seatColumn = rs.getString("COLUMNLETTER");
+
+                seat.setLetter(seatColumn);
+                seat.setRow(seatRow);
+
+                seats.add(seat);
+
+                if (airplane == null) {
+                    airplane = new Airplane();
+                    airplane.setMaxDistance(maxDistance);
+                    airplane.setModel(model);
+                    airplane.setId(id);
+                }
+            }
+
+            if (airplane != null) {
+                airplane.setSeats(seats);
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             if (stmt != null) {
-                stmt.close();
+                try {
+                    stmt.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
             }
         }
 
@@ -73,7 +102,7 @@ public class AirplaneRepository {
      *
      * @return All Airplanes in the application state
      */
-    public List<Airplane> getAirplanes() throws SQLException {
+    public List<Airplane> getAirplanes() {
         List<Airplane> airplanes = new ArrayList<>();
 
         Statement stmt = null;
@@ -98,7 +127,11 @@ public class AirplaneRepository {
             e.printStackTrace();
         } finally {
             if (stmt != null) {
-                stmt.close();
+                try {
+                    stmt.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
             }
         }
 

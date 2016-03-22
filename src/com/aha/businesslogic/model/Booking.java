@@ -24,6 +24,15 @@ public class Booking {
     private Flight flight;
     private int row;
     private String letter;
+    private int price;
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
 
     public Flight getFlight() {
         return flight;
