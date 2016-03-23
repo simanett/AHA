@@ -30,10 +30,10 @@ public class FlightRepository {
     /**
      * Return the Flight object with the given flight number
      *
-     * @param flightNumber String that identifies the Flight object
+     * @param flightNumber int that identifies the Flight object
      * @return The Flight object if exists, null otherwise
      */
-    public Flight getFlightByFlightNumber(String flightNumber) {
+    public Flight getFlightByFlightNumber(int flightNumber) {
 
         Flight flight = null;
         PreparedStatement stmt = null;
@@ -58,7 +58,7 @@ public class FlightRepository {
         try {
 
             stmt = AHA.connection.prepareStatement(query);
-            stmt.setString(1, flightNumber);
+            stmt.setInt(1, flightNumber);
             ResultSet rs = stmt.executeQuery();
 
             boolean flightNumberExist = rs.next();
