@@ -139,14 +139,16 @@ public class PassengerRepository {
    
     public void addPassenger(Passenger passenger){
         PreparedStatement stmt = null;
-        String query = "insert into AHA.PASSENGERS (name, email) "
-                + "values ?, ?";
+        String query = "insert into AHA.PASSENGERS (id, name, email) "
+                + "values (?, ?, ?)";
         try{
             stmt = AHA.connection.prepareStatement(query);
-            stmt.setString(1, passenger.getName());
-            stmt.setString(2, passenger.getEmail());
-
+            stmt.setInt(1, this.getMaxPassengerId() + 1);
+            stmt.setString(2, passenger.getName());
+            stmt.setString(3, passenger.getEmail());
             int modifiedRows = stmt.executeUpdate();
+            System.out.println("Modified rows:");
+            System.out.println(modifiedRows);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -158,5 +160,37 @@ public class PassengerRepository {
                 }
             }
         }       
+    }
+    
+    /**
+     * Get max id number from passenger table.
+     *
+     * @return the highest id value from passengers table.
+     */
+    
+    public int getMaxPassengerId(){
+        int maxPassengerId = 0;
+        Statement stmt = null;
+        String query = "select MAX(ID) "
+                + "from AHA.PASSENGERS ";
+        try {
+            stmt = AHA.connection.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                maxPassengerId = rs.getInt(1);
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(PassengerRepository.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        return maxPassengerId;
     }
 }
