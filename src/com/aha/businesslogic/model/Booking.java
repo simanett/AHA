@@ -17,7 +17,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class Booking {
 
-    private String bookingNumber;
+    private String bookingReference;
     private Passenger passenger;
     private boolean approved;
     private Date bookingDate;
@@ -76,12 +76,12 @@ public class Booking {
     }
 
     @XmlID
-    public void setBookingNumber(String bookingNumber) {
-        this.bookingNumber = bookingNumber;
+    public void setBookingReference(String bookingReference) {
+        this.bookingReference = bookingReference;
     }
 
-    public String getBookingNumber() {
-        return bookingNumber;
+    public String getBookingReference() {
+        return bookingReference;
     }
 
     public Passenger getPassenger() {
