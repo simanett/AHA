@@ -8,10 +8,12 @@ package com.aha;
 import com.aha.businesslogic.model.Airplane;
 import com.aha.businesslogic.model.Airport;
 import com.aha.businesslogic.model.Flight;
+import com.aha.businesslogic.model.Passenger;
 import com.aha.businesslogic.model.User;
 import com.aha.data.AirplaneRepository;
 import com.aha.data.AirportRepository;
 import com.aha.data.FlightRepository;
+import com.aha.data.PassengerRepository;
 import com.aha.data.UserRepository;
 import com.aha.userinterface.LoginForm;
 import java.sql.Connection;
@@ -41,7 +43,18 @@ public class AHA {
         String dbPassWord = args[2];
 
         connection = connect(dbUrl, dbUserName, dbPassWord);
-
+        
+        /* passenger repository test*/
+        PassengerRepository passengerRepo = new PassengerRepository();
+        int maxPassId = passengerRepo.getMaxPassengerId();
+        System.out.println("Max passenger id is:");
+        System.out.println(maxPassId);
+        Passenger passenger = new Passenger();
+        passenger.setEmail("pass@aha.com");
+        passenger.setName("BrandNew Passenger");
+        passengerRepo.addPassenger(passenger);
+        /* END - passenger repository test */
+        
         AirplaneRepository repo = new AirplaneRepository();
 
         Airplane boeing = repo.getAirplaneByModel("Boeing747");
@@ -86,7 +99,7 @@ public class AHA {
 
         FlightRepository flightrepo = new FlightRepository();
 
-        Flight jarat = flightrepo.getFlightByFlightNumber("AHA1234");
+        Flight jarat = flightrepo.getFlightByFlightNumber(1234);
         System.out.println(jarat);
 
         List<Flight> flights = flightrepo.getFlights();
