@@ -107,7 +107,7 @@ public class UserRepository {
             boolean userExist = rs.next();
             if (userExist) {
                 int id = rs.getInt("ID");
-                String username = rs.getNString("NAME");
+                String username = rs.getString("NAME");
                 String email = rs.getString("Email");
                 String role = rs.getString("ROLE");
 
