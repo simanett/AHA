@@ -6,6 +6,7 @@
 package com.aha.data;
 
 import com.aha.businesslogic.model.Booking;
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,16 +21,30 @@ public class BookingRepository {
     /**
      * Return the Booking object with the given booking number
      *
-     * @param bookingNumber String that identifies the Booking object
+     * @param bookingReference String that identifies the Booking object
      * @return The Booking object if exists, null otherwise
      */
-    public Booking getBookingByBookingNumber(String bookingNumber) {
-        for (Booking booking : bookings()) {
-            if (booking.getBookingNumber().equals(bookingNumber)) {
-                return booking;
-            }
-        }
-        return null;
+    public Booking getBookingByBookingReference(String bookingReference) {
+        Booking booking = null;
+        PreparedStatement stmt = null;
+        String query = "SELECT BOOKINGS.BOOKINGREFERENCE, \n"
+                + "    BOOKINGS.SEATID, \n"
+                + "    BOOKINGS.FLIGHTID,\n"
+                + "    BOOKINGS.PASSANGERID,\n"
+                + "    AIRPLANES.MAXDISTANCE,\n"
+                + "    AIRPLANES.ID AS AIRPLANE_ID,\n"
+                + "    AIRPLANES.MODEL,\n"
+                + "    AIRPORT_FROM.CODE AS FROM_CODE,\n"
+                + "    AIRPORT_FROM.CITY AS FROM_CITY,\n"
+                + "    AIRPORT_TO.CODE AS TO_CODE,\n"
+                + "    AIRPORT_TO.CITY  AS TO_CITY  \n"
+                + "FROM AHA.FLIGHTS\n"
+                + "JOIN AHA.AIRPLANES ON FLIGHTS.AIRPLANEID = AIRPLANES.ID\n"
+                + "JOIN AHA.AIRPORTS AIRPORT_FROM ON FLIGHTS.FROMID = AIRPORT_FROM.CODE \n"
+                + "JOIN AHA.AIRPORTS AIRPORT_TO ON FLIGHTS.TOID = AIRPORT_TO.CODE "
+                + "WHERE FLIGHTNUMBER = ?";
+
+        return booking;
     }
 
     /**
