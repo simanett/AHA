@@ -6,15 +6,11 @@
 package com.aha.businesslogic.model;
 
 import java.util.Date;
-import javax.xml.bind.annotation.XmlID;
-import javax.xml.bind.annotation.XmlIDREF;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author simonicsanett
  */
-@XmlRootElement
 public class Booking {
 
     private String bookingReference;
@@ -38,7 +34,6 @@ public class Booking {
         return flight;
     }
 
-    @XmlIDREF
     public void setFlight(Flight flight) {
         this.flight = flight;
     }
@@ -75,7 +70,6 @@ public class Booking {
         this.approved = approved;
     }
 
-    @XmlID
     public void setBookingReference(String bookingReference) {
         this.bookingReference = bookingReference;
     }
@@ -88,8 +82,13 @@ public class Booking {
         return passenger;
     }
 
-    @XmlIDREF
     public void setPassenger(Passenger passenger) {
         this.passenger = passenger;
     }
+
+    @Override
+    public String toString() {
+        return "Booking{" + "bookingReference=" + bookingReference + ", passenger=" + passenger + ", approved=" + approved + ", bookingDate=" + bookingDate + ", flight=" + flight + ", row=" + row + ", letter=" + letter + ", price=" + price + '}';
+    }
+
 }

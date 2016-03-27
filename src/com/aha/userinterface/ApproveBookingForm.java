@@ -32,13 +32,13 @@ public class ApproveBookingForm extends javax.swing.JFrame {
      */
     private void refreshTables() {
         SimpleDateFormat dateformat = new SimpleDateFormat("dd/MM/yyyy kk:mm");
-        
+
         DefaultTableModel pendingModel = (DefaultTableModel) jTable1.getModel();
         pendingModel.setRowCount(0);
 
         for (Booking pBooking : repository.getPendingBookings()) {
             pendingModel.addRow(new Object[]{
-                pBooking.getBookingNumber(),
+                pBooking.getBookingReference(),
                 pBooking.getPassenger().getName(),
                 dateformat.format(pBooking.getBookingDate()),
                 pBooking.getFlight().getFlightNumber(),
@@ -54,7 +54,7 @@ public class ApproveBookingForm extends javax.swing.JFrame {
 
         for (Booking aBooking : repository.getApprovedBookings()) {
             approvedModel.addRow(new Object[]{
-                aBooking.getBookingNumber(),
+                aBooking.getBookingReference(),
                 aBooking.getPassenger().getName(),
                 aBooking.getFlight().getFlightNumber(),
                 aBooking.getFlight().getAirportFrom().getCode(),
@@ -193,13 +193,13 @@ public class ApproveBookingForm extends javax.swing.JFrame {
             boolean approved = (boolean) pendingModel.getValueAt(i, 7);
             if (approved == true) {
                 // "Approve" checkbox checked, set booking state to approved
-                String bookingnumber = (String) pendingModel.getValueAt(i, 0);
-                Booking pendingBooking = repository.getBookingByBookingNumber(bookingnumber);
+                String bookingReference = (String) pendingModel.getValueAt(i, 0);
+                Booking pendingBooking = repository.getBookingByBookingReference(bookingReference);
                 pendingBooking.setApproved(true);
             }
 
         }
-        repository.save();
+        //repository.save();
         refreshTables();
 
     }//GEN-LAST:event_approveButtonActionPerformed
@@ -216,7 +216,7 @@ public class ApproveBookingForm extends javax.swing.JFrame {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {

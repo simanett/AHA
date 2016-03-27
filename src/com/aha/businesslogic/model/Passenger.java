@@ -5,26 +5,13 @@
  */
 package com.aha.businesslogic.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  *
  * @author HB
  */
 public class Passenger extends User {
-    
-    private List<Booking> booking;
 
     public Passenger() {
-        this.booking = new ArrayList<>();
-    }
 
-    public List<Booking> getBooking() {
-        return booking;
-    }
-
-    public void setBooking(List<Booking> booking) {
-        this.booking = booking;
     }
 }

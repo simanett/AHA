@@ -11,6 +11,4 @@ package com.aha.businesslogic.model;
  */
 public class Operator extends Employee {
 
-   
-
 }

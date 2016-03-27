@@ -6,15 +6,11 @@
 package com.aha.businesslogic.model;
 
 import java.util.List;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlID;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author simonicsanett
  */
-@XmlRootElement
 public class Airplane {
 
     private int maxDistance;
@@ -35,24 +31,14 @@ public class Airplane {
         return id;
     }
 
-    @Override
-    public String toString() {
-        return "Airplane{" + "maxDistance=" + maxDistance + ", model=" + model + ", id=" + id + ", seats=" + seats + '}';
-    }
-
-    
-
     public void setId(int id) {
         this.id = id;
     }
 
-    @XmlElement
     public void setMaxDistance(int maxDistance) {
         this.maxDistance = maxDistance;
     }
 
-    @XmlID
-    @XmlElement
     public void setModel(String model) {
         this.model = model;
     }
@@ -65,7 +51,8 @@ public class Airplane {
         return model;
     }
 
-   
-    
-
+    @Override
+    public String toString() {
+        return "Airplane{" + "maxDistance=" + maxDistance + ", model=" + model + ", id=" + id + ", seats=" + seats + '}';
+    }
 }

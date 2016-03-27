@@ -8,7 +8,6 @@ package com.aha.userinterface;
 import com.aha.businesslogic.model.Flight;
 import com.aha.businesslogic.model.User;
 import com.aha.data.FlightRepository;
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,7 +16,6 @@ import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-//import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -127,7 +125,8 @@ public class ListFlightsForm extends javax.swing.JFrame {
             public void mouseClicked(MouseEvent e) {
                 bookFlightError.setText("");
                 if (jTable1.getSelectedRow() >= 0) {
-                    String selectedflightNumber = String.valueOf(listFlightModel.getValueAt(jTable1.getSelectedRow(), 0));
+                    //String selectedflightNumber = String.valueOf(listFlightModel.getValueAt(jTable1.getSelectedRow(), 0));
+                    int selectedflightNumber = (int) listFlightModel.getValueAt(jTable1.getSelectedRow(), 0);
                     selectedFlight = flightRepo.getFlightByFlightNumber(selectedflightNumber);
                     bookedFlightLabel.setText(String.valueOf(selectedFlight.getFlightNumber()));
                 }
@@ -310,7 +309,6 @@ public class ListFlightsForm extends javax.swing.JFrame {
     private void bookFlightButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bookFlightButtonActionPerformed
         // TODO add your handling code here:
         DefaultTableModel listFlightModel = (DefaultTableModel) jTable1.getModel();
-
         if (selectedFlight != null) {
             SelectSeatForm selectSeatForm = new SelectSeatForm(selectedFlight, user);
             selectSeatForm.setVisible(true);
@@ -325,7 +323,6 @@ public class ListFlightsForm extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bookFlightButton;
     private javax.swing.JLabel bookFlightError;

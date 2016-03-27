@@ -5,21 +5,15 @@
  */
 package com.aha.businesslogic.model;
 
-import javax.xml.bind.annotation.XmlID;
-import javax.xml.bind.annotation.XmlSeeAlso;
-
 /**
  *
  * @author simonicsanett
  */
-@XmlSeeAlso({Employee.class, Passenger.class})
 public abstract class User {
 
     private int id;
     private String name;
     private String email;
-    
-    
 
     public int getId() {
         return id;
@@ -33,7 +27,6 @@ public abstract class User {
         return name;
     }
 
-    @XmlID
     public void setName(String name) {
         this.name = name;
     }

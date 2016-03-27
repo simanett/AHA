@@ -70,7 +70,7 @@ public class AirportRepository {
         }
 
         return airport;
-//        
+//
 
         //  for (Airport airport : airports()) {
         // if (airport.getCode().equals(code)) {
@@ -119,24 +119,5 @@ public class AirportRepository {
         }
 
         return airports;
-    }
-
-    /**
-     * Add a new Airport object to the application state and save it to the XML
-     *
-     * @param airport The Airport object to add
-     */
-    public void addAirport(Airport airport) {
-        airports().add(airport);
-        FileSystemManager.getInstance().saveState();
-    }
-
-    /**
-     * Helper method to get all Airport objects from application state
-     *
-     * @return List of Airport objects
-     */
-    private List<Airport> airports() {
-        return FileSystemManager.getInstance().getState().getAirports();
     }
 }

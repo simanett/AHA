@@ -9,16 +9,14 @@ import com.aha.AHA;
 import com.aha.businesslogic.model.Airplane;
 import com.aha.businesslogic.model.Airport;
 import com.aha.businesslogic.model.Flight;
+import com.aha.businesslogic.model.Seat;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLDataException;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Repository class to handle flight data
@@ -45,6 +43,8 @@ public class FlightRepository {
                 + "    AIRPLANES.MAXDISTANCE,\n"
                 + "    AIRPLANES.ID AS AIRPLANE_ID,\n"
                 + "    AIRPLANES.MODEL,\n"
+                + "    SEATS.ROWNUMBER,\n"
+                + "    SEATS.COLUMNLETTER,\n"
                 + "    AIRPORT_FROM.CODE AS FROM_CODE,\n"
                 + "    AIRPORT_FROM.CITY AS FROM_CITY,\n"
                 + "    AIRPORT_TO.CODE AS TO_CODE,\n"
@@ -53,6 +53,7 @@ public class FlightRepository {
                 + "JOIN AHA.AIRPLANES ON FLIGHTS.AIRPLANEID = AIRPLANES.ID\n"
                 + "JOIN AHA.AIRPORTS AIRPORT_FROM ON FLIGHTS.FROMID = AIRPORT_FROM.CODE \n"
                 + "JOIN AHA.AIRPORTS AIRPORT_TO ON FLIGHTS.TOID = AIRPORT_TO.CODE "
+                + "JOIN SEATS ON AIRPLANES.ID = SEATS.AIRPLANEID "
                 + "WHERE FLIGHTNUMBER = ?";
 
         try {
@@ -65,7 +66,7 @@ public class FlightRepository {
             if (flightNumberExist) {
 
                 int id = rs.getInt("FLIGHT_ID");
-                String flightn = rs.getString("FLIGHTNUMBER");
+                int flightn = rs.getInt("FLIGHTNUMBER");
                 Date departure = rs.getDate("DEPARTURE");
                 int flightDuration = rs.getInt("FLIGHTDURATION");
 
@@ -83,6 +84,44 @@ public class FlightRepository {
                 airplane.setModel(airplaneModel);
                 airplane.setMaxDistance(airplaneMaxdistance);
 
+                List<Seat> seats = new ArrayList<>();
+
+                PreparedStatement stmtSeats = null;
+                String querySeats = "SELECT SEATS.ID AS SEAT_ID,\n"
+                        + "SEATS.ROWNUMBER,\n"
+                        + "SEATS.COLUMNLETTER\n"
+                        + "FROM AHA.SEATS\n"
+                        + "WHERE AIRPLANEID = ?";
+                try {
+                    stmtSeats = AHA.connection.prepareStatement(querySeats);
+                    stmtSeats.setInt(1, airplaneId);
+                    ResultSet rsSeats = stmtSeats.executeQuery();
+                    /*?? Do we need to check if airplaneId is NULL?*/
+                    while (rsSeats.next()) {
+                        int seatId = rsSeats.getInt("SEAT_ID");
+                        int seatRowNum = rsSeats.getInt("ROWNUMBER");
+                        String seatColumnLetter = rsSeats.getString("COLUMNLETTER");
+                        Seat seat = new Seat();
+                        seat.setId(id);
+                        seat.setLetter(seatColumnLetter);
+                        seat.setRow(seatRowNum);
+                        seats.add(seat);
+                    }
+
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                } finally {
+                    if (stmt != null) {
+                        try {
+                            stmt.close();
+                        } catch (SQLException ex) {
+                            ex.printStackTrace();
+                        }
+                    }
+                }
+
+                airplane.setSeats(seats);
+
                 Airport fromAirport = new Airport();
                 fromAirport.setCode(fromCode);
                 fromAirport.setCity(fromCity);
@@ -99,7 +138,6 @@ public class FlightRepository {
                 flight.setAirplane(airplane);
                 flight.setAirportFrom(fromAirport);
                 flight.setAirportTo(toAirport);
-
             }
 
         } catch (SQLException e) {
@@ -116,11 +154,11 @@ public class FlightRepository {
         return flight;
 
         /* for (Flight flight : this.flights()) {
-        if (flight.getFlightNumber().equals(flightNumber)) {
-        return flight;
-        }
-        }
-        return null;*/
+         if (flight.getFlightNumber().equals(flightNumber)) {
+         return flight;
+         }
+         }
+         return null;*/
     }
 
     /**
@@ -154,7 +192,7 @@ public class FlightRepository {
             while (rs.next()) {
 
                 int id = rs.getInt("FLIGHT_ID");
-                String flightn = rs.getString("FLIGHTNUMBER");
+                int flightn = rs.getInt("FLIGHTNUMBER");
                 Date departure = rs.getDate("DEPARTURE");
                 int flightDuration = rs.getInt("FLIGHTDURATION");
 
@@ -190,7 +228,6 @@ public class FlightRepository {
                 flight.setAirportTo(toAirport);
 
                 flights.add(flight);
-
             }
         } catch (SQLException e) {
             e.printStackTrace();

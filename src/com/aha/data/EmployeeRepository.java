@@ -8,8 +8,8 @@ package com.aha.data;
 import com.aha.AHA;
 import com.aha.businesslogic.model.Administrator;
 import com.aha.businesslogic.model.CrewMember;
+import com.aha.businesslogic.model.Employee;
 import com.aha.businesslogic.model.Operator;
-import com.aha.businesslogic.model.User;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,23 +19,23 @@ import java.util.List;
 
 /**
  *
- * Repository class to handle user data
+ * Repository class to handle employee data
  *
- * @author simonicsanett
+ * @author HB
  */
-public class UserRepository {
+public class EmployeeRepository {
 
     /**
-     * Return the User object with the given id
+     * Return the Employee object with the given id
      *
-     * @param id String that identifies the User object
-     * @return The User object if exists, null otherwise
+     * @param id String that identifies the Employee object
+     * @return The Employee object if exists, null otherwise
      */
-    public User getUserById(int id) {
-        User user = null;
+    public Employee getEmployeeById(int id) {
+        Employee employee = null;
         PreparedStatement stmt = null;
         String query = "select ID, NAME, EMAIL, ROLE "
-                + "from AHA.Users where ID=? ";
+                + "from AHA.Employees where ID=? ";
 
         try {
 
@@ -47,27 +47,27 @@ public class UserRepository {
 
             if (idExist) {
 
-                int userid = rs.getInt("ID");
+                int employeeId = rs.getInt("ID");
                 String name = rs.getString("NAME");
                 String email = rs.getString("EMAIL");
                 String role = rs.getString("ROLE");
 
                 switch (role) {
                     case "o":
-                        user = new Operator();
+                        employee = new Operator();
                         break;
 
                     case "a":
-                        user = new Administrator();
+                        employee = new Administrator();
                         break;
 
                     case "c":
-                        user = new CrewMember();
+                        employee = new CrewMember();
                         break;
                 }
-                user.setId(userid);
-                user.setName(name);
-                user.setEmail(email);
+                employee.setId(employeeId);
+                employee.setName(name);
+                employee.setEmail(email);
 
             }
         } catch (SQLException e) {
@@ -81,32 +81,33 @@ public class UserRepository {
                 }
             }
         }
-        return user;
+        return employee;
     }
 
     /**
-     * Return the User object with the given name
+     * Return the Employee object with the given name
      *
-     * @param name String that identifies the User object
-     * @return The User object if exists, null otherwise
+     * @param name String that identifies the Employee object
+     * @return The Employee object if exists, null otherwise
      */
-    public User getUserByName(String name) {
+    public Employee getEmployeeByName(String name) {
 
-        User names = null;
+        Employee names = null;
         PreparedStatement stmt = null;
 
         String query = "select id, name, email, role "
-                + "from AHA.Users where name=?";
+                + "from AHA.Employees where name=?";
 
         try {
+
             stmt = AHA.connection.prepareStatement(query);
             stmt.setString(1, name);
             ResultSet rs = stmt.executeQuery();
 
-            boolean userExist = rs.next();
-            if (userExist) {
+            boolean employeeExists = rs.next();
+            if (employeeExists) {
                 int id = rs.getInt("ID");
-                String username = rs.getString("NAME");
+                String employeeName = rs.getString("NAME");
                 String email = rs.getString("Email");
                 String role = rs.getString("ROLE");
 
@@ -124,7 +125,7 @@ public class UserRepository {
                         break;
                 }
                 names.setId(id);
-                names.setName(username);
+                names.setName(employeeName);
                 names.setEmail(email);
 
             }
@@ -144,17 +145,17 @@ public class UserRepository {
     }
 
     /**
-     * Return all User objects
+     * Return all Employee objects
      *
-     * @return All Users in the application state
+     * @return all Employees in the database
      */
-    public List<User> getUsers() {
+    public List<Employee> getEmployees() {
 
-        List<User> users = new ArrayList<>();
+        List<Employee> employees = new ArrayList<>();
         Statement stmt = null;
 
-        String query = "select id, name, email, role "
-                + "from AHA.Users ";
+        String query = "SELECT ID, NAME, EMAIL, ROLE "
+                + "FROM AHA.EMPLOYEES ";
 
         try {
 
@@ -166,30 +167,28 @@ public class UserRepository {
                 String name = rs.getString("NAME");
                 String email = rs.getString("EMAIL");
                 String role = rs.getString("ROLE");
-                User user = null;
+                Employee employee = null;
 
                 switch (role) {
                     case "o":
-                        user = new Operator();
+                        employee = new Operator();
                         break;
 
                     case "a":
-                        user = new Administrator();
+                        employee = new Administrator();
                         break;
 
                     case "c":
-                        user = new CrewMember();
+                        employee = new CrewMember();
                         break;
                 }
+                employee.setId(id);
+                employee.setName(name);
+                employee.setEmail(email);
 
-                user.setId(id);
-                user.setName(name);
-                user.setEmail(email);
-
-                users.add(user);
+                employees.add(employee);
 
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -201,26 +200,6 @@ public class UserRepository {
                 }
             }
         }
-        return users;
-
-    }
-
-    /**
-     * Add a new User object to the application state and save it to the XML
-     *
-     * @param user The User object to add
-     */
-    public void addUser(User user) {
-        users().add(user);
-        FileSystemManager.getInstance().saveState();
-    }
-
-    /**
-     * Helper method to get all User objects from application state
-     *
-     * @return List of User objects
-     */
-    private List<User> users() {
-        return FileSystemManager.getInstance().getState().getUsers();
+        return employees;
     }
 }

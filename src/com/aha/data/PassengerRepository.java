@@ -22,20 +22,21 @@ import java.util.logging.Logger;
  *
  * @author HB
  */
-
 public class PassengerRepository {
+
     /**
      * Return Passenger object of given id.
      *
      * @param id int that identifies the Passenger object.
      * @return the Passenger object if exists, null otherwise.
      */
-    public Passenger getPassengerById(int id) throws SQLException{
+    public Passenger getPassengerById(int id) throws SQLException {
         Passenger passenger = null;
         PreparedStatement stmt = null;
-        String query = "select ID, NAME, EMAIL"
+
+        String query = "select ID, NAME, EMAIL "
                 + "from AHA.PASSENGERS where ID=?";
-        try{
+        try {
             stmt = AHA.connection.prepareStatement(query);
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
@@ -58,28 +59,72 @@ public class PassengerRepository {
         }
         return passenger;
     }
-   
+
     /**
      * Return Passenger object of given name.
      *
-     * @param passengername String that identifies the Passenger object.
+     * @param passengerName String that identifies the Passenger object.
      * @return the Passenger object if exists, null otherwise.
      */
-   
-    public Passenger getPassengerByName(String passengername) throws SQLException {
+    public Passenger getPassengerByName(String passengerName) {
         Passenger passenger = null;
         PreparedStatement stmt = null;
-        String query = "select ID, NAME, EMAIL"
+
+        String query = "select ID, NAME, EMAIL "
                 + "from AHA.PASSENGERS where NAME=?";
+
         try {
             stmt = AHA.connection.prepareStatement(query);
-            stmt.setString(1, passengername);
+            stmt.setString(1, passengerName);
             ResultSet rs = stmt.executeQuery();
+
             boolean passengerExists = rs.next();
             if (passengerExists) {
                 passenger = new Passenger();
                 int id = rs.getInt("ID");
-                String passengerName = rs.getNString("NAME");
+                String name = rs.getString("NAME");
+                String email = rs.getString("EMAIL");
+                passenger.setId(id);
+                passenger.setName(name);
+                passenger.setEmail(email);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(PassengerRepository.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        return passenger;
+    }
+
+    /**
+     * Return Passenger object of given email.
+     *
+     * @param passengerEmail String that identifies the Passenger object.
+     * @return the Passenger object if exists, null otherwise.
+     */
+    public Passenger getPassengerByEmail(String passengerEmail) {
+        Passenger passenger = null;
+        PreparedStatement stmt = null;
+
+        String query = "select ID, NAME, EMAIL "
+                + "from AHA.PASSENGERS where EMAIL=?";
+
+        try {
+            stmt = AHA.connection.prepareStatement(query);
+            stmt.setString(1, passengerEmail);
+            ResultSet rs = stmt.executeQuery();
+
+            boolean passengerExists = rs.next();
+            if (passengerExists) {
+                passenger = new Passenger();
+                int id = rs.getInt("ID");
+                String passengerName = rs.getString("NAME");
                 String email = rs.getString("EMAIL");
                 passenger.setId(id);
                 passenger.setName(passengerName);
@@ -89,7 +134,11 @@ public class PassengerRepository {
             e.printStackTrace();
         } finally {
             if (stmt != null) {
-                stmt.close();
+                try {
+                    stmt.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(PassengerRepository.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
         return passenger;
@@ -100,7 +149,6 @@ public class PassengerRepository {
      *
      * @return all Passengers in the database.
      */
-   
     public List<Passenger> getPassengers() throws SQLException {
 
         List<Passenger> passengers = new ArrayList<>();
@@ -120,8 +168,7 @@ public class PassengerRepository {
                 passenger.setEmail(email);
                 passengers.add(passenger);
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             if (stmt != null) {
@@ -130,18 +177,17 @@ public class PassengerRepository {
         }
         return passengers;
     }
-   
+
     /**
      * Add Passenger object to database.
      *
      * @return void.
      */
-   
-    public void addPassenger(Passenger passenger){
+    public void addPassenger(Passenger passenger) {
         PreparedStatement stmt = null;
         String query = "insert into AHA.PASSENGERS (id, name, email) "
                 + "values (?, ?, ?)";
-        try{
+        try {
             stmt = AHA.connection.prepareStatement(query);
             stmt.setInt(1, this.getMaxPassengerId() + 1);
             stmt.setString(2, passenger.getName());
@@ -159,16 +205,15 @@ public class PassengerRepository {
                     Logger.getLogger(PassengerRepository.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-        }       
+        }
     }
-    
+
     /**
      * Get max id number from passenger table.
      *
      * @return the highest id value from passengers table.
      */
-    
-    public int getMaxPassengerId(){
+    public int getMaxPassengerId() {
         int maxPassengerId = 0;
         Statement stmt = null;
         String query = "select MAX(ID) "
@@ -179,8 +224,7 @@ public class PassengerRepository {
             while (rs.next()) {
                 maxPassengerId = rs.getInt(1);
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             if (stmt != null) {

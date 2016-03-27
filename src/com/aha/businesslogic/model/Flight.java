@@ -7,19 +7,14 @@ package com.aha.businesslogic.model;
 
 import java.util.Date;
 import java.util.List;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlID;
-import javax.xml.bind.annotation.XmlIDREF;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author simonicsanett
  */
-@XmlRootElement
 public class Flight {
-    
-    private String flightNumber;
+
+    private int flightNumber;
     private Date departure;
     private int flightDuration;
     private List<Seat> seats;
@@ -45,20 +40,18 @@ public class Flight {
         this.id = id;
     }
 
-    public String getFlightNumber() {
+    public int getFlightNumber() {
         return flightNumber;
     }
 
-    @XmlID
-    public void setFlightNumber(String flightNumber) {
+    public void setFlightNumber(int flightNumber) {
         this.flightNumber = flightNumber;
     }
 
     public Date getDeparture() {
         return departure;
     }
-    
-    @XmlElement
+
     public void setDeparture(Date departure) {
         this.departure = departure;
     }
@@ -67,7 +60,6 @@ public class Flight {
         return flightDuration;
     }
 
-    @XmlElement
     public void setFlightDuration(int flightDuration) {
         this.flightDuration = flightDuration;
     }
@@ -84,7 +76,6 @@ public class Flight {
         return airplane;
     }
 
-    @XmlIDREF
     public void setAirplane(Airplane airplane) {
         this.airplane = airplane;
     }
@@ -93,7 +84,6 @@ public class Flight {
         return airportTo;
     }
 
-    @XmlIDREF
     public void setAirportTo(Airport airportTo) {
         this.airportTo = airportTo;
     }
@@ -102,7 +92,6 @@ public class Flight {
         return airportFrom;
     }
 
-    @XmlIDREF
     public void setAirportFrom(Airport airportFrom) {
         this.airportFrom = airportFrom;
     }
@@ -112,5 +101,4 @@ public class Flight {
         return "Flight{" + "flightNumber=" + flightNumber + ", departure=" + departure + ", flightDuration=" + flightDuration + ", airplane=" + airplane + ", airportTo=" + airportTo + ", airportFrom=" + airportFrom + ", id=" + id + '}';
     }
 
-    
 }

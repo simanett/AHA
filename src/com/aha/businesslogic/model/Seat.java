@@ -5,31 +5,28 @@
  */
 package com.aha.businesslogic.model;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlIDREF;
-import javax.xml.bind.annotation.XmlRootElement;
-
 /**
  *
  * @author simonicsanett
  */
-@XmlRootElement
 public class Seat {
 
+    private int id;
     private int row;
     private String letter;
 
-    @Override
-    public String toString() {
-        return "Seat{" + "row=" + row + ", letter=" + letter + '}';
+    public int getId() {
+        return id;
     }
-    
-    @XmlElement
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public void setRow(int row) {
         this.row = row;
     }
-    
-    @XmlElement
+
     public void setLetter(String letter) {
         this.letter = letter;
     }
@@ -42,4 +39,8 @@ public class Seat {
         return letter;
     }
 
+    @Override
+    public String toString() {
+        return "Seat{" + "row=" + row + ", letter=" + letter + '}';
+    }
 }

@@ -7,7 +7,6 @@ package com.aha.data;
 
 import com.aha.AHA;
 import com.aha.businesslogic.model.Airplane;
-import com.aha.businesslogic.model.Airport;
 import com.aha.businesslogic.model.Seat;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,8 +14,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Repository class to handle airplane data
@@ -100,7 +97,7 @@ public class AirplaneRepository {
     /**
      * Return all Airplane objects
      *
-     * @return All Airplanes in the application state
+     * @return All Airplanes in the database
      */
     public List<Airplane> getAirplanes() {
         List<Airplane> airplanes = new ArrayList<>();
@@ -136,25 +133,6 @@ public class AirplaneRepository {
         }
 
         return airplanes;
-    }
-
-    /**
-     * Add a new Airplane object to the application state and save it to the XML
-     *
-     * @param airplane The Airplane object to add
-     */
-    public void addAirplane(Airplane airplane) {
-        airplanes().add(airplane);
-        FileSystemManager.getInstance().saveState();
-    }
-
-    /**
-     * Helper method to get all Airplane objects from application state
-     *
-     * @return List of Airplane objects
-     */
-    private List<Airplane> airplanes() {
-        return FileSystemManager.getInstance().getState().getAirplanes();
     }
 
 }

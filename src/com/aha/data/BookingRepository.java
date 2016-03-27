@@ -14,6 +14,7 @@ import com.aha.businesslogic.model.Passenger;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -36,31 +37,29 @@ public class BookingRepository {
         Booking booking = null;
         PreparedStatement stmt = null;
         String query = "SELECT BOOKINGS.BOOKINGREFERENCE, \n"
-                    + " BOOKINGS.SEATID, \n"
-                    //+ " BOOKINGS.FLIGHTID, \n"
-                    + " BOOKINGS.PASSANGERID, \n"
-                    + " FLIGHTS.ID AS FLIGHT_ID, \n"
-                    + " FLIGHTS.FLIGHTNUMBER, \n"
-                    + " FLIGHTS.DEPARTURE, \n"
-                    + " FLIGHTS.FLIGHTDURATION, \n"
-                    + " FLIGHTS.AIRPLANEID, \n"
-                    //+ " PASSENGERS.ID AS PASSENGER_ID, \n"
-                    + " PASSENGERS.NAME AS PASSENGER_NAME, \n"
-                    + " PASSENGERS.EMAIL AS PASSENGER_EMAIL, \n"
-                    + " AIRPLANES.ID AS AIRPLANE_ID, \n"
-                    + " AIRPLANES.MAXDISTANCE, \n"
-                    + " AIRPLANES.MODEL, \n"
-                    + " AIRPORT_FROM.CODE AS FROM_CODE, \n"
-                    + " AIRPORT_FROM.CITY AS FROM_CITY, \n"
-                    + " AIRPORT_TO.CODE AS TO_CODE, \n"
-                    + " AIRPORT_TO.CITY AS TO_CITY \n"
-                    + " FROM BOOKINGS \n"
-                    + " JOIN FLIGHTS ON BOOKINGS.FLIGHTID = FLIGHTS.ID \n"
-                    + " JOIN PASSENGERS ON BOOKINGS.PASSANGERID = PASSENGERS.ID "
-                    + " JOIN AHA.AIRPLANES ON FLIGHTS.AIRPLANEID = AIRPLANES.ID "
-                    + " JOIN AHA.AIRPORTS AIRPORT_FROM ON FLIGHTS.FROMID = AIRPORT_FROM.CODE "
-                    + " JOIN AHA.AIRPORTS AIRPORT_TO ON FLIGHTS.TOID = AIRPORT_TO.CODE "
-                    + " WHERE BOOKINGREFERENCE = ?";
+                + " BOOKINGS.SEATID, \n"
+                + " BOOKINGS.PASSENGERID, \n"
+                + " FLIGHTS.ID AS FLIGHT_ID, \n"
+                + " FLIGHTS.FLIGHTNUMBER, \n"
+                + " FLIGHTS.DEPARTURE, \n"
+                + " FLIGHTS.FLIGHTDURATION, \n"
+                + " FLIGHTS.AIRPLANEID, \n"
+                + " PASSENGERS.NAME AS PASSENGER_NAME, \n"
+                + " PASSENGERS.EMAIL AS PASSENGER_EMAIL, \n"
+                + " AIRPLANES.ID AS AIRPLANE_ID, \n"
+                + " AIRPLANES.MAXDISTANCE, \n"
+                + " AIRPLANES.MODEL, \n"
+                + " AIRPORT_FROM.CODE AS FROM_CODE, \n"
+                + " AIRPORT_FROM.CITY AS FROM_CITY, \n"
+                + " AIRPORT_TO.CODE AS TO_CODE, \n"
+                + " AIRPORT_TO.CITY AS TO_CITY \n"
+                + " FROM BOOKINGS \n"
+                + " JOIN FLIGHTS ON BOOKINGS.FLIGHTID = FLIGHTS.ID \n"
+                + " JOIN PASSENGERS ON BOOKINGS.PASSENGERID = PASSENGERS.ID "
+                + " JOIN AHA.AIRPLANES ON FLIGHTS.AIRPLANEID = AIRPLANES.ID "
+                + " JOIN AHA.AIRPORTS AIRPORT_FROM ON FLIGHTS.FROMID = AIRPORT_FROM.CODE "
+                + " JOIN AHA.AIRPORTS AIRPORT_TO ON FLIGHTS.TOID = AIRPORT_TO.CODE "
+                + " WHERE BOOKINGREFERENCE = ?";
         try {
             stmt = AHA.connection.prepareStatement(query);
             stmt.setString(1, bookingReference);
@@ -72,8 +71,8 @@ public class BookingRepository {
                 String bookingRef = rs.getString("BOOKINGREFERENCE");
                 int seatId = rs.getInt("SEATID");
                 int flightId = rs.getInt("FLIGHT_ID");
-                int passengerId = rs.getInt("PASSANGERID");
-                String flightNumber = rs.getString("FLIGHTNUMBER");
+                int passengerId = rs.getInt("PASSENGERID");
+                int flightNumber = rs.getInt("FLIGHTNUMBER");
                 Date departure = rs.getDate("DEPARTURE");
                 int flightDuration = rs.getInt("FLIGHTDURATION");
                 int airplaneId = rs.getInt("AIRPLANEID");
@@ -86,13 +85,12 @@ public class BookingRepository {
                 String toCode = rs.getString("TO_CODE");
                 String toCity = rs.getString("TO_CITY");
                 Date bookingDate = new Date();
-                
+
                 Passenger passenger = new Passenger();
                 passenger.setId(passengerId);
                 passenger.setEmail(passengerEmail);
                 passenger.setName(passengerName);
-                //passenger.setBooking();
-                               
+
                 Airport fromAirport = new Airport();
                 fromAirport.setCode(fromCode);
                 fromAirport.setCity(fromCity);
@@ -105,7 +103,7 @@ public class BookingRepository {
                 airplane.setId(airplaneId);
                 airplane.setMaxDistance(maxdistance);
                 airplane.setModel(model);
-                
+
                 Flight flight = new Flight();
                 flight.setId(flightId);
                 flight.setFlightNumber(flightNumber);
@@ -114,6 +112,13 @@ public class BookingRepository {
                 flight.setAirplane(airplane);
                 flight.setAirportFrom(fromAirport);
                 flight.setAirportTo(toAirport);
+
+                booking = new Booking();
+                booking.setBookingReference(bookingRef);
+                booking.setPassenger(passenger);
+                booking.setBookingDate(bookingDate);
+                booking.setBookingDate(bookingDate);
+                booking.setFlight(flight);
             }
 
         } catch (SQLException e) {
@@ -133,10 +138,107 @@ public class BookingRepository {
     /**
      * Return all Booking objects
      *
-     * @return All Bookings in the application state
+     * @return All Bookings in the database
      */
     public List<Booking> getBookings() {
-        return bookings();
+        List<Booking> bookings = new ArrayList<>();
+        Statement stmt = null;
+
+        String query = "SELECT BOOKINGS.BOOKINGREFERENCE, \n"
+                + " BOOKINGS.SEATID, \n"
+                + " BOOKINGS.PASSENGERID, \n"
+                + " FLIGHTS.ID AS FLIGHT_ID, \n"
+                + " FLIGHTS.FLIGHTNUMBER, \n"
+                + " FLIGHTS.DEPARTURE, \n"
+                + " FLIGHTS.FLIGHTDURATION, \n"
+                + " FLIGHTS.AIRPLANEID, \n"
+                + " PASSENGERS.NAME AS PASSENGER_NAME, \n"
+                + " PASSENGERS.EMAIL AS PASSENGER_EMAIL, \n"
+                + " AIRPLANES.ID AS AIRPLANE_ID, \n"
+                + " AIRPLANES.MAXDISTANCE, \n"
+                + " AIRPLANES.MODEL, \n"
+                + " AIRPORT_FROM.CODE AS FROM_CODE, \n"
+                + " AIRPORT_FROM.CITY AS FROM_CITY, \n"
+                + " AIRPORT_TO.CODE AS TO_CODE, \n"
+                + " AIRPORT_TO.CITY AS TO_CITY \n"
+                + " FROM BOOKINGS \n"
+                + " JOIN FLIGHTS ON BOOKINGS.FLIGHTID = FLIGHTS.ID \n"
+                + " JOIN PASSENGERS ON BOOKINGS.PASSENGERID = PASSENGERS.ID "
+                + " JOIN AHA.AIRPLANES ON FLIGHTS.AIRPLANEID = AIRPLANES.ID "
+                + " JOIN AHA.AIRPORTS AIRPORT_FROM ON FLIGHTS.FROMID = AIRPORT_FROM.CODE "
+                + " JOIN AHA.AIRPORTS AIRPORT_TO ON FLIGHTS.TOID = AIRPORT_TO.CODE ";
+        try {
+            stmt = AHA.connection.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+
+                String bookingRef = rs.getString("BOOKINGREFERENCE");
+                int seatId = rs.getInt("SEATID");
+                int flightId = rs.getInt("FLIGHT_ID");
+                int passengerId = rs.getInt("PASSENGERID");
+                int flightNumber = rs.getInt("FLIGHTNUMBER");
+                Date departure = rs.getDate("DEPARTURE");
+                int flightDuration = rs.getInt("FLIGHTDURATION");
+                int airplaneId = rs.getInt("AIRPLANEID");
+                int maxdistance = rs.getInt("MAXDISTANCE");
+                String model = rs.getString("MODEL");
+                String passengerName = rs.getString("PASSENGER_NAME");
+                String passengerEmail = rs.getString("PASSENGER_EMAIL");
+                String fromCode = rs.getString("FROM_CODE");
+                String fromCity = rs.getString("FROM_CITY");
+                String toCode = rs.getString("TO_CODE");
+                String toCity = rs.getString("TO_CITY");
+                Date bookingDate = new Date();
+
+                Passenger passenger = new Passenger();
+                passenger.setId(passengerId);
+                passenger.setEmail(passengerEmail);
+                passenger.setName(passengerName);
+
+                Airport fromAirport = new Airport();
+                fromAirport.setCode(fromCode);
+                fromAirport.setCity(fromCity);
+
+                Airport toAirport = new Airport();
+                toAirport.setCode(toCode);
+                toAirport.setCity(toCity);
+
+                Airplane airplane = new Airplane();
+                airplane.setId(airplaneId);
+                airplane.setMaxDistance(maxdistance);
+                airplane.setModel(model);
+
+                Flight flight = new Flight();
+                flight.setId(flightId);
+                flight.setFlightNumber(flightNumber);
+                flight.setDeparture(departure);
+                flight.setFlightDuration(flightDuration);
+                flight.setAirplane(airplane);
+                flight.setAirportFrom(fromAirport);
+                flight.setAirportTo(toAirport);
+
+                Booking booking = new Booking();
+                booking.setBookingReference(bookingRef);
+                booking.setPassenger(passenger);
+                booking.setBookingDate(bookingDate);
+                booking.setBookingDate(bookingDate);
+                booking.setFlight(flight);
+
+                bookings.add(booking);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+        return bookings;
     }
 
     /**
@@ -147,7 +249,7 @@ public class BookingRepository {
     public List<Booking> getApprovedBookings() {
 
         List<Booking> approvedBookings = new ArrayList<>();
-        for (Booking booking : bookings()) {
+        for (Booking booking : getBookings()) {
             if (booking.isApproved()) {
                 approvedBookings.add(booking);
             }
@@ -163,7 +265,7 @@ public class BookingRepository {
     public List<Booking> getPendingBookings() {
 
         List<Booking> pendingBookings = new ArrayList<>();
-        for (Booking booking : bookings()) {
+        for (Booking booking : getBookings()) {
             if (booking.isApproved() == false) {
                 pendingBookings.add(booking);
             }
@@ -177,24 +279,14 @@ public class BookingRepository {
      * @param booking The Booking object to add
      */
     public void addBooking(Booking booking) {
-        bookings().add(booking);
+        getBookings().add(booking);
         FileSystemManager.getInstance().saveState();
     }
 
     /**
      * Force saving application state to XML
      */
-    public void save() {
-        FileSystemManager.getInstance().saveState();
-    }
-
-    /**
-     * Helper method to get all Booking objects from application state
-     *
-     * @return List of Booking objects
-     */
-    private List<Booking> bookings() {
-        return FileSystemManager.getInstance().getState().getBookings();
-    }
+//    public void save() {
+//        FileSystemManager.getInstance().saveState();
+//    }
 }
-

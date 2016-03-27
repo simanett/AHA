@@ -51,7 +51,6 @@ public class SelectSeatForm extends javax.swing.JFrame {
         String date = new SimpleDateFormat("dd/MM/yyyy kk:mm").format(flight.getDeparture());
         jLabel5.setText(date);
         drawSeatRadioButtons();
-        
         this.pack();
     }
 
@@ -231,10 +230,9 @@ public class SelectSeatForm extends javax.swing.JFrame {
 
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
 
-        
         if (selectedSeat != null) {
             Booking booking = new Booking();
-            booking.setBookingNumber(flight.getFlightNumber() + selectedSeat.getRow() + selectedSeat.getLetter());
+            booking.setBookingReference(flight.getFlightNumber() + selectedSeat.getRow() + selectedSeat.getLetter());
 
             booking.setRow(selectedSeat.getRow());
             booking.setLetter(selectedSeat.getLetter());
@@ -246,13 +244,11 @@ public class SelectSeatForm extends javax.swing.JFrame {
 
             repository.addBooking(booking);
             this.dispose();
-        }
-        else {
+        } else {
             JOptionPane.showMessageDialog(null, "Please select a seat.");
         }
 
     }//GEN-LAST:event_okButtonActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelButton;
