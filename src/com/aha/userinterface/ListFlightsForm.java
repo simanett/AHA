@@ -16,6 +16,7 @@ import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -123,7 +124,7 @@ public class ListFlightsForm extends javax.swing.JFrame {
         jTable1.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                bookFlightError.setText("");
+                //bookFlightError.setText("");
                 if (jTable1.getSelectedRow() >= 0) {
                     //String selectedflightNumber = String.valueOf(listFlightModel.getValueAt(jTable1.getSelectedRow(), 0));
                     int selectedflightNumber = (int) listFlightModel.getValueAt(jTable1.getSelectedRow(), 0);
@@ -315,8 +316,9 @@ public class ListFlightsForm extends javax.swing.JFrame {
             this.dispose();
         } //Set error msg if no flight is selected
         else {
-            bookFlightError.setText("Please choose a flight");
-            bookFlightError.setForeground(Color.red);
+            JOptionPane.showMessageDialog(null, "Please choose a flight.");
+            //bookFlightError.setText("Please choose a flight");
+            //bookFlightError.setForeground(Color.red);
         }
     }//GEN-LAST:event_bookFlightButtonActionPerformed
 

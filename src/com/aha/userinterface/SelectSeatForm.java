@@ -11,13 +11,17 @@ import com.aha.businesslogic.model.Passenger;
 import com.aha.businesslogic.model.Seat;
 import com.aha.businesslogic.model.User;
 import com.aha.data.BookingRepository;
+import com.aha.data.PassengerRepository;
 import com.aha.data.UserRepository;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
@@ -28,12 +32,14 @@ import javax.swing.JRadioButton;
  */
 public class SelectSeatForm extends javax.swing.JFrame {
 
-    UserRepository userRepository = new UserRepository();
+    //UserRepository userRepository = new UserRepository();
+    PassengerRepository passengerRepository = new PassengerRepository();
     BookingRepository repository = new BookingRepository();
 
     private Flight flight;
     private Seat selectedSeat;
     private User user;
+    private Passenger passenger;
 
     /**
      * Form to
@@ -43,7 +49,7 @@ public class SelectSeatForm extends javax.swing.JFrame {
      */
     public SelectSeatForm(Flight flight, User user) {
         this.flight = flight;
-        this.user = user;
+        this.passenger = (Passenger) user;
         initComponents();
         flightNumberLabel.setText(String.valueOf(flight.getFlightNumber()));
         jLabel3.setText(flight.getAirportFrom().getCity());
@@ -231,19 +237,22 @@ public class SelectSeatForm extends javax.swing.JFrame {
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
 
         if (selectedSeat != null) {
-            Booking booking = new Booking();
-            booking.setBookingReference(flight.getFlightNumber() + selectedSeat.getRow() + selectedSeat.getLetter());
-
-            booking.setRow(selectedSeat.getRow());
-            booking.setLetter(selectedSeat.getLetter());
-            booking.setFlight(flight);
-            booking.setBookingDate(new Date());
-            //selectedSeat.setBooking(booking);
-
-            booking.setPassenger((Passenger) userRepository.getUserById(user.getId()));
-
-            repository.addBooking(booking);
-            this.dispose();
+            try {
+                Booking booking = new Booking();
+                booking.setBookingReference(flight.getFlightNumber() + selectedSeat.getRow() + selectedSeat.getLetter());
+                booking.setRow(selectedSeat.getRow());
+                booking.setLetter(selectedSeat.getLetter());
+                booking.setFlight(flight);
+                booking.setBookingDate(new Date());
+                booking.setPassenger(passengerRepository.getPassengerById(passenger.getId()));
+                //booking.setPassenger((Passenger) userRepository.getUserById(user.getId()));
+                
+                //selectedSeat.setBooking(booking);
+                repository.addBooking(booking, flight, selectedSeat);
+                this.dispose();
+            } catch (SQLException ex) {
+                Logger.getLogger(SelectSeatForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } else {
             JOptionPane.showMessageDialog(null, "Please select a seat.");
         }

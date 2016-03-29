@@ -11,6 +11,7 @@ import com.aha.businesslogic.model.Airport;
 import com.aha.businesslogic.model.Booking;
 import com.aha.businesslogic.model.Flight;
 import com.aha.businesslogic.model.Passenger;
+import com.aha.businesslogic.model.Seat;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -545,9 +546,46 @@ public class BookingRepository {
      *
      * @param booking The Booking object to add
      */
-    public void addBooking(Booking booking) {
-        getBookings().add(booking);
-        FileSystemManager.getInstance().saveState();
+    public void addBooking(Booking booking, Flight flight, Seat seat) {
+        PreparedStatement stmt = null;
+        String query = "INSERT INTO BOOKINGS("
+                + "BOOKINGREFERENCE, "
+                + "SEATID, "
+                + "PASSENGERID, "
+                + "APPROVED, "
+                + "FLIGHTID, "
+                + "BOOKINGDATE)\n" 
+                + "VALUES (?, ?, ?, ?, ?, ?);";
+        try {
+            stmt = AHA.connection.prepareStatement(query);
+            stmt.setString(1, booking.getBookingReference());
+            stmt.setInt(2, seat.getId());
+            stmt.setInt(3, booking.getPassenger().getId());
+            stmt.setString(4, String.valueOf(booking.isApproved()));
+            stmt.setInt(5, flight.getId());
+            //stmt.setDate(6, (java.sql.Date) booking.getBookingDate());
+            java.sql.Date sqlDate = new java.sql.Date(booking.getBookingDate().getTime());
+            stmt.setDate(6, sqlDate);
+            ResultSet rs = stmt.executeQuery();
+
+//            boolean bookingReferenceExists = rs.next();
+//            if (bookingReferenceExists) {
+//                booking.setApproved(true);
+//            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+        
+        //getBookings().add(booking);
+        //FileSystemManager.getInstance().saveState();
     }
 
     /**
