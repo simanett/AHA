@@ -194,7 +194,8 @@ public class ApproveBookingForm extends javax.swing.JFrame {
                 // "Approve" checkbox checked, set booking state to approved
                 String bookingReference = (String) pendingModel.getValueAt(i, 0);
                 Booking pendingBooking = repository.getBookingByBookingReference(bookingReference);
-                pendingBooking.setApproved(true);
+                //pendingBooking.setApproved(true);
+                repository.approveBooking(pendingBooking);
             }
 
         }

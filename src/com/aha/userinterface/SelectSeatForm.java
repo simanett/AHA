@@ -11,13 +11,17 @@ import com.aha.businesslogic.model.Passenger;
 import com.aha.businesslogic.model.Seat;
 import com.aha.businesslogic.model.User;
 import com.aha.data.BookingRepository;
+import com.aha.data.PassengerRepository;
 import com.aha.data.UserRepository;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
@@ -28,7 +32,8 @@ import javax.swing.JRadioButton;
  */
 public class SelectSeatForm extends javax.swing.JFrame {
 
-    UserRepository userRepository = new UserRepository();
+    //UserRepository userRepository = new UserRepository();
+    PassengerRepository passengerRepository = new PassengerRepository();
     BookingRepository repository = new BookingRepository();
 
     private Flight flight;

@@ -59,12 +59,28 @@ public class AHA {
             /* Booking repository test */
 //            BookingRepository bookingRepository = new BookingRepository();
 //            String bookingReference = "BUDDUB0025";
+//            Booking b = new Booking();
+//            b = bookingRepository.getBookingByBookingReference("DUBBUD1025");
+//            bookingRepository.approveBooking(b);
+//            System.out.println(b);
 //            System.out.println("Booking test:");
 //            Booking booking = bookingRepository.getBookingByBookingReference(bookingReference);
 //            System.out.println(booking);
 //            List<Booking> bookings = bookingRepository.getBookings();
 //            System.out.println("getBookings:");
 //            for (Booking bookingitem : bookings) {
+//                System.out.println(bookingitem);
+//            }
+//            System.out.println("");
+//            List<Booking> pendingBookings = bookingRepository.getPendingBookings();
+//            System.out.println("pendingBookings:");
+//            for (Booking bookingitem : pendingBookings) {
+//                System.out.println(bookingitem);
+//            }
+//            System.out.println("");
+//            List<Booking> approvedBookings = bookingRepository.getApprovedBookings();
+//            System.out.println("approvedBookings:");
+//            for (Booking bookingitem : approvedBookings) {
 //                System.out.println(bookingitem);
 //            }
             /* END - Booking repository test */
