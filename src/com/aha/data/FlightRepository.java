@@ -138,7 +138,6 @@ public class FlightRepository {
                 flight.setAirplane(airplane);
                 flight.setAirportFrom(fromAirport);
                 flight.setAirportTo(toAirport);
-                flight.setSeats(seats);
             }
 
         } catch (SQLException e) {
