@@ -16,11 +16,18 @@ public class Booking {
     private String bookingReference;
     private Passenger passenger;
     private boolean approved;
-    private Date bookingDate;
     private Flight flight;
-    private int row;
-    private String letter;
+    private Seat seat;
     private int price;
+
+    public Seat getSeat() {
+        return seat;
+    }
+
+    public void setSeat(Seat seat) {
+        this.seat = seat;
+    }
+    
 
     public int getPrice() {
         return price;
@@ -38,30 +45,7 @@ public class Booking {
         this.flight = flight;
     }
 
-    public int getRow() {
-        return row;
-    }
-
-    public void setRow(int row) {
-        this.row = row;
-    }
-
-    public String getLetter() {
-        return letter;
-    }
-
-    public void setLetter(String letter) {
-        this.letter = letter;
-    }
-
-    public Date getBookingDate() {
-        return bookingDate;
-    }
-
-    public void setBookingDate(Date bookingDate) {
-        this.bookingDate = bookingDate;
-    }
-
+    
     public boolean isApproved() {
         return approved;
     }
@@ -88,7 +72,11 @@ public class Booking {
 
     @Override
     public String toString() {
-        return "Booking{" + "bookingReference=" + bookingReference + ", passenger=" + passenger + ", approved=" + approved + ", bookingDate=" + bookingDate + ", flight=" + flight + ", row=" + row + ", letter=" + letter + ", price=" + price + '}';
+        return "Booking{" + "bookingReference=" + bookingReference + ", passenger=" + passenger + ", approved=" + approved + ", flight=" + flight + ", seat=" + seat + ", price=" + price + '}';
     }
+
+  
+
+
 
 }

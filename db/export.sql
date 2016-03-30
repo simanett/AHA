@@ -1,13 +1,6 @@
 --------------------------------------------------------
---  File created - vasárnap-március-20-2016   
+--  File created - szerda-március-30-2016   
 --------------------------------------------------------
-DROP TABLE "AHA"."AIRPLANES";
-DROP TABLE "AHA"."AIRPORTS";
-DROP TABLE "AHA"."BOOKINGS";
-DROP TABLE "AHA"."FLIGHTS";
-DROP TABLE "AHA"."PASSENGERS";
-DROP TABLE "AHA"."SEATS";
-DROP TABLE "AHA"."USERS";
 --------------------------------------------------------
 --  DDL for Table AIRPLANES
 --------------------------------------------------------
@@ -41,7 +34,22 @@ DROP TABLE "AHA"."USERS";
    (	"BOOKINGREFERENCE" VARCHAR2(10 BYTE), 
 	"SEATID" NUMBER, 
 	"FLIGHTID" VARCHAR2(10 BYTE), 
-	"PASSANGERID" NUMBER
+	"PASSENGERID" NUMBER, 
+	"APPROVED" NUMBER(1,0) DEFAULT 0
+   ) SEGMENT CREATION IMMEDIATE 
+  PCTFREE 10 PCTUSED 40 INITRANS 1 MAXTRANS 255 NOCOMPRESS LOGGING
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "USERS" ;
+--------------------------------------------------------
+--  DDL for Table EMPLOYEES
+--------------------------------------------------------
+
+  CREATE TABLE "AHA"."EMPLOYEES" 
+   (	"ID" NUMBER(10,0), 
+	"NAME" VARCHAR2(30 BYTE), 
+	"EMAIL" VARCHAR2(30 BYTE), 
+	"ROLE" CHAR(1 BYTE)
    ) SEGMENT CREATION IMMEDIATE 
   PCTFREE 10 PCTUSED 40 INITRANS 1 MAXTRANS 255 NOCOMPRESS LOGGING
   STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
@@ -53,7 +61,7 @@ DROP TABLE "AHA"."USERS";
 
   CREATE TABLE "AHA"."FLIGHTS" 
    (	"ID" NUMBER, 
-	"FLIGHTNUMBER" NUMBER, 
+	"FLIGHTNUMBER" VARCHAR2(20 BYTE), 
 	"DEPARTURE" DATE, 
 	"FLIGHTDURATION" NUMBER, 
 	"FROMID" CHAR(3 BYTE), 
@@ -72,7 +80,7 @@ DROP TABLE "AHA"."USERS";
 
   CREATE TABLE "AHA"."PASSENGERS" 
    (	"ID" NUMBER, 
-	"NAME" CHAR(40 BYTE), 
+	"NAME" VARCHAR2(40 BYTE), 
 	"EMAIL" VARCHAR2(50 BYTE)
    ) SEGMENT CREATION IMMEDIATE 
   PCTFREE 10 PCTUSED 40 INITRANS 1 MAXTRANS 255 NOCOMPRESS LOGGING
@@ -88,20 +96,6 @@ DROP TABLE "AHA"."USERS";
 	"AIRPLANEID" NUMBER, 
 	"ROWNUMBER" NUMBER, 
 	"COLUMNLETTER" CHAR(1 BYTE)
-   ) SEGMENT CREATION IMMEDIATE 
-  PCTFREE 10 PCTUSED 40 INITRANS 1 MAXTRANS 255 NOCOMPRESS LOGGING
-  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
-  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
-  TABLESPACE "USERS" ;
---------------------------------------------------------
---  DDL for Table USERS
---------------------------------------------------------
-
-  CREATE TABLE "AHA"."USERS" 
-   (	"ID" NUMBER(10,0), 
-	"NAME" VARCHAR2(30 BYTE), 
-	"EMAIL" VARCHAR2(30 BYTE), 
-	"ROLE" CHAR(1 BYTE)
    ) SEGMENT CREATION IMMEDIATE 
   PCTFREE 10 PCTUSED 40 INITRANS 1 MAXTRANS 255 NOCOMPRESS LOGGING
   STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
@@ -126,15 +120,30 @@ Insert into AHA.AIRPORTS (CODE,CITY) values ('CRL','Brüsszel');
 Insert into AHA.AIRPORTS (CODE,CITY) values ('BER','Berlin');
 REM INSERTING into AHA.BOOKINGS
 SET DEFINE OFF;
+Insert into AHA.BOOKINGS (BOOKINGREFERENCE,SEATID,FLIGHTID,PASSENGERID,APPROVED) values ('AHA12341F','1','1','4','0');
+Insert into AHA.BOOKINGS (BOOKINGREFERENCE,SEATID,FLIGHTID,PASSENGERID,APPROVED) values ('AHA12347C','1','1','4','0');
+Insert into AHA.BOOKINGS (BOOKINGREFERENCE,SEATID,FLIGHTID,PASSENGERID,APPROVED) values ('12BA','1','1','4','0');
+Insert into AHA.BOOKINGS (BOOKINGREFERENCE,SEATID,FLIGHTID,PASSENGERID,APPROVED) values ('23CD','2','1','4','0');
+Insert into AHA.BOOKINGS (BOOKINGREFERENCE,SEATID,FLIGHTID,PASSENGERID,APPROVED) values ('AHA123410D','1','1','4','0');
+REM INSERTING into AHA.EMPLOYEES
+SET DEFINE OFF;
+Insert into AHA.EMPLOYEES (ID,NAME,EMAIL,ROLE) values ('1','Johny Cash','johny@cash.com','a');
+Insert into AHA.EMPLOYEES (ID,NAME,EMAIL,ROLE) values ('2','Silver Light','silver@light.com','c');
+Insert into AHA.EMPLOYEES (ID,NAME,EMAIL,ROLE) values ('3','Golden Brownie','golden@brownie.com','o');
+Insert into AHA.EMPLOYEES (ID,NAME,EMAIL,ROLE) values ('4','Yellow Pages','yellow@pages.com','c');
+Insert into AHA.EMPLOYEES (ID,NAME,EMAIL,ROLE) values ('5','Blue Dark','blue@dark.com','a');
 REM INSERTING into AHA.FLIGHTS
 SET DEFINE OFF;
+Insert into AHA.FLIGHTS (ID,FLIGHTNUMBER,DEPARTURE,FLIGHTDURATION,FROMID,TOID,AIRPLANEID) values ('1','AHA1234',to_date('16-ÁPR.  -08','RR-MON-DD'),'180','BUD','NAN','1');
+Insert into AHA.FLIGHTS (ID,FLIGHTNUMBER,DEPARTURE,FLIGHTDURATION,FROMID,TOID,AIRPLANEID) values ('2','AHA2345',to_date('16-MÁJ.  -20','RR-MON-DD'),'240','DUB','NAN','2');
+Insert into AHA.FLIGHTS (ID,FLIGHTNUMBER,DEPARTURE,FLIGHTDURATION,FROMID,TOID,AIRPLANEID) values ('3','AHA1234',to_date('16-JÚN.  -23','RR-MON-DD'),'180','BUD','NAN','1');
 REM INSERTING into AHA.PASSENGERS
 SET DEFINE OFF;
-Insert into AHA.PASSENGERS (ID,NAME,EMAIL) values ('1','Mimi Rogers                             ','mimi@mimi.com');
-Insert into AHA.PASSENGERS (ID,NAME,EMAIL) values ('2','Han Solo                                ','solo@han.com');
-Insert into AHA.PASSENGERS (ID,NAME,EMAIL) values ('3','Chew Bakka                              ','Bakka@chew.com');
-Insert into AHA.PASSENGERS (ID,NAME,EMAIL) values ('4','Willy Wonka                             ','wonka@willy.com');
-Insert into AHA.PASSENGERS (ID,NAME,EMAIL) values ('5','Master Shifu                            ','shifu@master.com');
+Insert into AHA.PASSENGERS (ID,NAME,EMAIL) values ('1','Mimi Rogers','mimi@mimi.com');
+Insert into AHA.PASSENGERS (ID,NAME,EMAIL) values ('2','Han Solo','solo@han.com');
+Insert into AHA.PASSENGERS (ID,NAME,EMAIL) values ('3','Chew Bakka','Bakka@chew.com');
+Insert into AHA.PASSENGERS (ID,NAME,EMAIL) values ('4','Willy Wonka','wonka@willy.hu');
+Insert into AHA.PASSENGERS (ID,NAME,EMAIL) values ('5','Master Shifu','shifu@master.com');
 REM INSERTING into AHA.SEATS
 SET DEFINE OFF;
 Insert into AHA.SEATS (ID,AIRPLANEID,ROWNUMBER,COLUMNLETTER) values ('1','1','1','A');
@@ -297,13 +306,6 @@ Insert into AHA.SEATS (ID,AIRPLANEID,ROWNUMBER,COLUMNLETTER) values ('157','3','
 Insert into AHA.SEATS (ID,AIRPLANEID,ROWNUMBER,COLUMNLETTER) values ('158','3','2','C');
 Insert into AHA.SEATS (ID,AIRPLANEID,ROWNUMBER,COLUMNLETTER) values ('159','3','2','D');
 Insert into AHA.SEATS (ID,AIRPLANEID,ROWNUMBER,COLUMNLETTER) values ('160','3','2','F');
-REM INSERTING into AHA.USERS
-SET DEFINE OFF;
-Insert into AHA.USERS (ID,NAME,EMAIL,ROLE) values ('1','Johny Cash','johny@cash.com','a');
-Insert into AHA.USERS (ID,NAME,EMAIL,ROLE) values ('2','Silver Light','silver@light.com','c');
-Insert into AHA.USERS (ID,NAME,EMAIL,ROLE) values ('3','Golden Brownie','golden@brownie.com','o');
-Insert into AHA.USERS (ID,NAME,EMAIL,ROLE) values ('4','Yellow Pages','yellow@pages.com','c');
-Insert into AHA.USERS (ID,NAME,EMAIL,ROLE) values ('5','Blue Dark','blue@dark.com','a');
 --------------------------------------------------------
 --  DDL for Index AIRPLANE_PK
 --------------------------------------------------------
@@ -399,10 +401,17 @@ Insert into AHA.USERS (ID,NAME,EMAIL,ROLE) values ('5','Blue Dark','blue@dark.co
   STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
   PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
   TABLESPACE "USERS"  ENABLE;
-  ALTER TABLE "AHA"."BOOKINGS" MODIFY ("PASSANGERID" NOT NULL ENABLE);
+  ALTER TABLE "AHA"."BOOKINGS" MODIFY ("PASSENGERID" NOT NULL ENABLE);
   ALTER TABLE "AHA"."BOOKINGS" MODIFY ("FLIGHTID" NOT NULL ENABLE);
   ALTER TABLE "AHA"."BOOKINGS" MODIFY ("SEATID" NOT NULL ENABLE);
   ALTER TABLE "AHA"."BOOKINGS" MODIFY ("BOOKINGREFERENCE" NOT NULL ENABLE);
+--------------------------------------------------------
+--  Constraints for Table EMPLOYEES
+--------------------------------------------------------
+
+  ALTER TABLE "AHA"."EMPLOYEES" MODIFY ("NAME" NOT NULL ENABLE);
+  ALTER TABLE "AHA"."EMPLOYEES" MODIFY ("EMAIL" NOT NULL ENABLE);
+  ALTER TABLE "AHA"."EMPLOYEES" MODIFY ("ID" NOT NULL ENABLE);
 --------------------------------------------------------
 --  Constraints for Table FLIGHTS
 --------------------------------------------------------
@@ -450,13 +459,6 @@ Insert into AHA.USERS (ID,NAME,EMAIL,ROLE) values ('5','Blue Dark','blue@dark.co
   ALTER TABLE "AHA"."SEATS" MODIFY ("AIRPLANEID" NOT NULL ENABLE);
   ALTER TABLE "AHA"."SEATS" MODIFY ("ID" NOT NULL ENABLE);
 --------------------------------------------------------
---  Constraints for Table USERS
---------------------------------------------------------
-
-  ALTER TABLE "AHA"."USERS" MODIFY ("ID" NOT NULL ENABLE);
-  ALTER TABLE "AHA"."USERS" MODIFY ("EMAIL" NOT NULL ENABLE);
-  ALTER TABLE "AHA"."USERS" MODIFY ("NAME" NOT NULL ENABLE);
---------------------------------------------------------
 --  Ref Constraints for Table BOOKINGS
 --------------------------------------------------------
 
@@ -464,7 +466,7 @@ Insert into AHA.USERS (ID,NAME,EMAIL,ROLE) values ('5','Blue Dark','blue@dark.co
 	  REFERENCES "AHA"."SEATS" ("ID") ON DELETE CASCADE ENABLE;
   ALTER TABLE "AHA"."BOOKINGS" ADD CONSTRAINT "BOOKINGS_FK2" FOREIGN KEY ("SEATID")
 	  REFERENCES "AHA"."FLIGHTS" ("ID") ON DELETE CASCADE ENABLE;
-  ALTER TABLE "AHA"."BOOKINGS" ADD CONSTRAINT "BOOKINGS_FK3" FOREIGN KEY ("PASSANGERID")
+  ALTER TABLE "AHA"."BOOKINGS" ADD CONSTRAINT "BOOKINGS_FK3" FOREIGN KEY ("PASSENGERID")
 	  REFERENCES "AHA"."PASSENGERS" ("ID") ON DELETE CASCADE ENABLE;
 --------------------------------------------------------
 --  Ref Constraints for Table FLIGHTS
@@ -472,7 +474,7 @@ Insert into AHA.USERS (ID,NAME,EMAIL,ROLE) values ('5','Blue Dark','blue@dark.co
 
   ALTER TABLE "AHA"."FLIGHTS" ADD CONSTRAINT "FLIGHTS_FK1" FOREIGN KEY ("AIRPLANEID")
 	  REFERENCES "AHA"."AIRPLANES" ("ID") ON DELETE CASCADE ENABLE;
-  ALTER TABLE "aAHA"."FLIGHTS" ADD CONSTRAINT "FLIGHTS_FK2" FOREIGN KEY ("FROMID")
+  ALTER TABLE "AHA"."FLIGHTS" ADD CONSTRAINT "FLIGHTS_FK2" FOREIGN KEY ("FROMID")
 	  REFERENCES "AHA"."AIRPORTS" ("CODE") ENABLE;
   ALTER TABLE "AHA"."FLIGHTS" ADD CONSTRAINT "FLIGHTS_FK3" FOREIGN KEY ("TOID")
 	  REFERENCES "AHA"."AIRPORTS" ("CODE") ENABLE;

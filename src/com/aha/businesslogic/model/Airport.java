@@ -32,7 +32,7 @@ public class Airport {
 
     @Override
     public String toString() {
-        return "\t" + city + "\t" + code;
+        return city + " (" + code + ")";
     }
 
 }

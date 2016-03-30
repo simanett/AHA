@@ -16,7 +16,8 @@ class FlightSearchEvent extends ActionEvent {
 
     private String airportCodeFrom;
     private String airportCodeTo;
-    private Date departure;
+    private Date departureFrom;
+    private Date departureTo;
 
     public String getAirportCodeFrom() {
         return airportCodeFrom;
@@ -26,16 +27,25 @@ class FlightSearchEvent extends ActionEvent {
         return airportCodeTo;
     }
 
-    public Date getDeparture() {
-        return departure;
+    public Date getDepartureFrom() {
+        return departureFrom;
+    }
+
+    public Date getDepartureTo() {
+        return departureTo;
     }
 
     public FlightSearchEvent(Object source, int id, String command, String airportCodeFrom, String airportCodeTo, Date departure) {
+        this(source, id, command, airportCodeFrom, airportCodeTo, departure, departure);
+    }
+
+    public FlightSearchEvent(Object source, int id, String command, String airportCodeFrom, String airportCodeTo, Date departureFrom, Date departureTo) {
         super(source, id, command);
-        
+
         this.airportCodeFrom = airportCodeFrom;
         this.airportCodeTo = airportCodeTo;
-        this.departure = departure;
+        this.departureFrom = departureFrom;
+        this.departureTo = departureTo;
     }
 
 }

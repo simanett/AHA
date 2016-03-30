@@ -116,8 +116,11 @@ public class LoginForm extends javax.swing.JFrame {
             if (passenger == null) {
                 JOptionPane.showMessageDialog(null, "Invalid user name");
             } else {
-                ListFlightsForm listFlightsForm = new ListFlightsForm(user);
-                listFlightsForm.setVisible(true);
+                PassengerForm passengerForm = new PassengerForm();
+                passengerForm.setPassenger(passenger);
+                passengerForm.setVisible(true);
+//                ListFlightsForm listFlightsForm = new ListFlightsForm(user);
+//                listFlightsForm.setVisible(true);
             }
         } else if (employee instanceof Operator) {
             Operator operator = (Operator) employee;

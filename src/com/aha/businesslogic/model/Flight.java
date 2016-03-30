@@ -14,10 +14,9 @@ import java.util.List;
  */
 public class Flight {
 
-    private int flightNumber;
+    private String flightNumber;
     private Date departure;
     private int flightDuration;
-    private List<Seat> seats;
     private Airplane airplane;
     private Airport airportTo;
     private Airport airportFrom;
@@ -40,11 +39,11 @@ public class Flight {
         this.id = id;
     }
 
-    public int getFlightNumber() {
+    public String getFlightNumber() {
         return flightNumber;
     }
 
-    public void setFlightNumber(int flightNumber) {
+    public void setFlightNumber(String flightNumber) {
         this.flightNumber = flightNumber;
     }
 
@@ -64,13 +63,6 @@ public class Flight {
         this.flightDuration = flightDuration;
     }
 
-    public List<Seat> getSeats() {
-        return seats;
-    }
-
-    public void setSeats(List<Seat> seats) {
-        this.seats = seats;
-    }
 
     public Airplane getAirplane() {
         return airplane;

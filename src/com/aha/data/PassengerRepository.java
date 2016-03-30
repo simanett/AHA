@@ -202,10 +202,41 @@ public class PassengerRepository {
                 try {
                     stmt.close();
                 } catch (SQLException ex) {
-                    Logger.getLogger(PassengerRepository.class.getName()).log(Level.SEVERE, null, ex);
+                    ex.printStackTrace();
                 }
             }
         }
+    }
+
+    public boolean updatePassenger(Passenger passenger) {
+        PreparedStatement stmt = null;
+        boolean result = false;
+        String query = "update AHA.PASSENGERS set name = ?, email= ? where id = ? ";
+
+        try {
+            stmt = AHA.connection.prepareStatement(query);
+            stmt.setString(1, passenger.getName());
+            stmt.setString(2, passenger.getEmail());
+            stmt.setInt(3, passenger.getId());
+            int modifiedRows = stmt.executeUpdate();
+            System.out.println("Modified rows:");
+            System.out.println(modifiedRows);
+            
+            if(modifiedRows > 0) {
+                result = true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+        return result;
     }
 
     /**
@@ -230,8 +261,10 @@ public class PassengerRepository {
             if (stmt != null) {
                 try {
                     stmt.close();
+
                 } catch (SQLException ex) {
-                    Logger.getLogger(PassengerRepository.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(PassengerRepository.class
+                            .getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }

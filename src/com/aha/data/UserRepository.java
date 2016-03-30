@@ -204,23 +204,4 @@ public class UserRepository {
         return users;
 
     }
-
-    /**
-     * Add a new User object to the application state and save it to the XML
-     *
-     * @param user The User object to add
-     */
-    public void addUser(User user) {
-        users().add(user);
-        FileSystemManager.getInstance().saveState();
-    }
-
-    /**
-     * Helper method to get all User objects from application state
-     *
-     * @return List of User objects
-     */
-    private List<User> users() {
-        return FileSystemManager.getInstance().getState().getUsers();
-    }
 }

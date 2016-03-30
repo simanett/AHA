@@ -41,6 +41,6 @@ public class Seat {
 
     @Override
     public String toString() {
-        return "Seat{" + "row=" + row + ", letter=" + letter + '}';
+        return row + letter;
     }
 }

@@ -33,7 +33,7 @@ public class SelectSeatForm extends javax.swing.JFrame {
 
     private Flight flight;
     private Seat selectedSeat;
-    private User user;
+    private Passenger passenger;
 
     /**
      * Form to
@@ -41,9 +41,9 @@ public class SelectSeatForm extends javax.swing.JFrame {
      * @param flight
      * @param user
      */
-    public SelectSeatForm(Flight flight, User user) {
+    public SelectSeatForm(Flight flight, Passenger passenger) {
         this.flight = flight;
-        this.user = user;
+        this.passenger = passenger;
         initComponents();
         flightNumberLabel.setText(String.valueOf(flight.getFlightNumber()));
         jLabel3.setText(flight.getAirportFrom().getCity());
@@ -55,7 +55,7 @@ public class SelectSeatForm extends javax.swing.JFrame {
     }
 
     private void drawSeatRadioButtons() {
-        List<Seat> seats = flight.getSeats();
+        List<Seat> seats = flight.getAirplane().getSeats();
         seatsPanel.setLayout(new GridLayout(0, 7, 0, 0));
 
         // Empty label - top left
@@ -234,13 +234,10 @@ public class SelectSeatForm extends javax.swing.JFrame {
             Booking booking = new Booking();
             booking.setBookingReference(flight.getFlightNumber() + selectedSeat.getRow() + selectedSeat.getLetter());
 
-            booking.setRow(selectedSeat.getRow());
-            booking.setLetter(selectedSeat.getLetter());
+            booking.setSeat(selectedSeat);
             booking.setFlight(flight);
-            booking.setBookingDate(new Date());
-            //selectedSeat.setBooking(booking);
 
-            booking.setPassenger((Passenger) userRepository.getUserById(user.getId()));
+            booking.setPassenger(passenger);
 
             repository.addBooking(booking);
             this.dispose();

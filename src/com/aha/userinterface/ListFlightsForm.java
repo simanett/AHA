@@ -6,6 +6,7 @@
 package com.aha.userinterface;
 
 import com.aha.businesslogic.model.Flight;
+import com.aha.businesslogic.model.Passenger;
 import com.aha.businesslogic.model.User;
 import com.aha.data.FlightRepository;
 import java.awt.Color;
@@ -25,7 +26,7 @@ import javax.swing.table.DefaultTableModel;
 public class ListFlightsForm extends javax.swing.JFrame {
 
     FlightRepository flightRepo = new FlightRepository();
-    private final User user;
+    private final Passenger passenger;
     private Flight selectedFlight;
     SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy kk:mm");
 
@@ -34,22 +35,22 @@ public class ListFlightsForm extends javax.swing.JFrame {
      *
      * @param user
      */
-    public ListFlightsForm(User user) {
-        FlightSearchPanel flightSearchPanel = new FlightSearchPanel();
+    public ListFlightsForm(Passenger passenger) {
+        SearchFlightsPanel flightSearchPanel = new SearchFlightsPanel();
         flightSearchPanel.setLocation(0, 40);
         flightSearchPanel.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 FlightSearchEvent event = (FlightSearchEvent) e;
-                listFlights(event.getAirportCodeFrom(), event.getAirportCodeTo(), event.getDeparture());
+                listFlights(event.getAirportCodeFrom(), event.getAirportCodeTo(), event.getDepartureFrom());
             }
         });
         add(flightSearchPanel);
 
-        this.user = user;
+        this.passenger = passenger;
         initComponents();
-        jLbl_User.setText(user.getName());
-        jLbl_UserType.setText("[" + user.getClass().getSimpleName() + "]");
+        jLbl_User.setText(passenger.getName());
+        jLbl_UserType.setText("[" + passenger.getClass().getSimpleName() + "]");
         listFlights("", "", null);
         showSelectedFlightId();
         //Set jTable rows sortable
@@ -287,7 +288,7 @@ public class ListFlightsForm extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(jLabel8)
                     .addComponent(bookedFlightLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -310,7 +311,7 @@ public class ListFlightsForm extends javax.swing.JFrame {
         // TODO add your handling code here:
         DefaultTableModel listFlightModel = (DefaultTableModel) jTable1.getModel();
         if (selectedFlight != null) {
-            SelectSeatForm selectSeatForm = new SelectSeatForm(selectedFlight, user);
+            SelectSeatForm selectSeatForm = new SelectSeatForm(selectedFlight, passenger);
             selectSeatForm.setVisible(true);
             this.dispose();
         } //Set error msg if no flight is selected

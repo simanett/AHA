@@ -40,7 +40,6 @@ public class ApproveBookingForm extends javax.swing.JFrame {
             pendingModel.addRow(new Object[]{
                 pBooking.getBookingReference(),
                 pBooking.getPassenger().getName(),
-                dateformat.format(pBooking.getBookingDate()),
                 pBooking.getFlight().getFlightNumber(),
                 pBooking.getFlight().getAirportFrom().getCode(),
                 pBooking.getFlight().getAirportTo().getCode(),
@@ -89,14 +88,14 @@ public class ApproveBookingForm extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Booking Number", "Passenger", "Booking Date", "Flight Number", "From", "To", "Departure", "Approve"
+                "Booking Number", "Passenger", "Flight Number", "From", "To", "Departure", "Approve"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Boolean.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Boolean.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, true
+                false, false, false, false, false, false, true
             };
 
             public Class getColumnClass(int columnIndex) {
