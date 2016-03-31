@@ -39,6 +39,7 @@ public class SelectSeatForm extends javax.swing.JFrame {
     private Flight flight;
     private Seat selectedSeat;
     private Passenger passenger;
+    private Booking booking;
 
     /**
      * Form to
@@ -47,8 +48,13 @@ public class SelectSeatForm extends javax.swing.JFrame {
      * @param user
      */
     public SelectSeatForm(Flight flight, Passenger passenger) {
+        this(flight, passenger, null);
+    }
+
+    public SelectSeatForm(Flight flight, Passenger passenger, Booking booking) {
         this.flight = flight;
         this.passenger = passenger;
+        this.booking = booking;
         initComponents();
         flightNumberLabel.setText(String.valueOf(flight.getFlightNumber()));
         jLabel3.setText(flight.getAirportFrom().getCity());
@@ -94,6 +100,12 @@ public class SelectSeatForm extends javax.swing.JFrame {
             //seatButton.setEnabled(seat.getBooking() == null);
             seatButtonGroup.add(seatButton);
             seatsPanel.add(seatButton);
+
+            if (booking != null && booking.getSeat().getLetter().equals(seat.getLetter()) && booking.getSeat().getRow() == seat.getRow()) {
+                System.out.println(booking);
+                seatButton.doClick();
+            }
+
         }
 
     }

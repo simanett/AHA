@@ -63,7 +63,7 @@ public class BookingRepository {
                 + " JOIN AHA.AIRPLANES ON FLIGHTS.AIRPLANEID = AIRPLANES.ID "
                 + " JOIN AHA.AIRPORTS AIRPORT_FROM ON FLIGHTS.FROMID = AIRPORT_FROM.CODE "
                 + " JOIN AHA.AIRPORTS AIRPORT_TO ON FLIGHTS.TOID = AIRPORT_TO.CODE "
-                + " JOIN AHA.SEATS ON SEATS.AIRPLANEID = AIRPLANES.ID "
+                + " JOIN AHA.SEATS ON SEATS.ID = BOOKINGS.SEATID "
                 + " WHERE BOOKINGREFERENCE = ?";
         try {
             stmt = AHA.connection.prepareStatement(query);
@@ -691,6 +691,34 @@ public class BookingRepository {
         }
         return result;
 
+    }
+
+    public boolean deleteBookingByBookingreference(String bookingreference) {
+        boolean result = false;
+        PreparedStatement stmt = null;
+        String query = "delete from AHA.BOOKINGS where Bookingreference = ? ";
+
+        try {
+            stmt = AHA.connection.prepareStatement(query);
+            stmt.setString(1, bookingreference);
+            int modifiedRows = stmt.executeUpdate();
+
+            if (modifiedRows > 0) {
+                result = true;
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+        return result;
     }
 
 }

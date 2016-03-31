@@ -18,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -69,18 +70,16 @@ public class PassengerForm extends javax.swing.JFrame {
         bookingModel.setRowCount(0);
         for (Booking booking : bookings) {
             bookingModel.addRow(new Object[]{
-            booking.getBookingReference(),
-            booking.getFlight().getFlightNumber(),
-            booking.getFlight().getAirportFrom(),
-            booking.getFlight().getAirportTo(),
-            DATE_FORMAT.format(booking.getFlight().getDeparture()),
-            flightArrivalToString(booking.getFlight()),
-            booking.getSeat()
-            
+                booking.getBookingReference(),
+                booking.getFlight().getFlightNumber(),
+                booking.getFlight().getAirportFrom(),
+                booking.getFlight().getAirportTo(),
+                DATE_FORMAT.format(booking.getFlight().getDeparture()),
+                flightArrivalToString(booking.getFlight()),
+                booking.getSeat()
+
             });
-            
-            
-            
+
         }
     }
 
@@ -92,7 +91,6 @@ public class PassengerForm extends javax.swing.JFrame {
 
         for (Flight flight : flights) {
             listFlightModel.addRow(new Object[]{
-                
                 flight.getId(),
                 //Flight number
                 flight.getFlightNumber(),
@@ -136,6 +134,8 @@ public class PassengerForm extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         bookingTable = new javax.swing.JTable();
+        DeleteButton = new javax.swing.JButton();
+        seatChangeButton = new javax.swing.JButton();
         personalDetailsPanel = new javax.swing.JPanel();
         nameLabel = new javax.swing.JLabel();
         emailLabel = new javax.swing.JLabel();
@@ -199,7 +199,7 @@ public class PassengerForm extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(searchFlightsPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 844, Short.MAX_VALUE)
+                    .addComponent(searchFlightsPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 832, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(bookflightButton)))
@@ -207,7 +207,7 @@ public class PassengerForm extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 844, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 832, Short.MAX_VALUE)
                     .addContainerGap()))
         );
         jPanel1Layout.setVerticalGroup(
@@ -254,13 +254,33 @@ public class PassengerForm extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(bookingTable);
 
+        DeleteButton.setText("Delete");
+        DeleteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DeleteButtonActionPerformed(evt);
+            }
+        });
+
+        seatChangeButton.setText("Seat change");
+        seatChangeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                seatChangeButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 844, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 832, Short.MAX_VALUE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(DeleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(seatChangeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -268,7 +288,11 @@ public class PassengerForm extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(74, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(DeleteButton)
+                    .addComponent(seatChangeButton))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Manage Bookings", jPanel2);
@@ -303,7 +327,7 @@ public class PassengerForm extends javax.swing.JFrame {
                         .addComponent(emailField, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(129, 129, 129)
                         .addComponent(savePersonalDetailsButton)))
-                .addContainerGap(369, Short.MAX_VALUE))
+                .addContainerGap(357, Short.MAX_VALUE))
         );
         personalDetailsPanelLayout.setVerticalGroup(
             personalDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -326,7 +350,10 @@ public class PassengerForm extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jTabbedPane1)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -368,9 +395,9 @@ public class PassengerForm extends javax.swing.JFrame {
         DefaultTableModel listFlightModel = (DefaultTableModel) jTable1.getModel();
         int row = jTable1.getSelectedRow();
         if (row >= 0) {
-            int flightId = (int)listFlightModel.getValueAt(row, 0);
+            int flightId = (int) listFlightModel.getValueAt(row, 0);
             Flight selectedFlight = flightRepository.getFlightById(flightId);
-            
+
             SelectSeatForm selectSeatForm = new SelectSeatForm(selectedFlight, passenger);
             selectSeatForm.setVisible(true);
             this.dispose();
@@ -380,6 +407,41 @@ public class PassengerForm extends javax.swing.JFrame {
 //            bookFlightError.setForeground(Color.red);
 //        }
     }//GEN-LAST:event_bookflightButtonActionPerformed
+
+    private void DeleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteButtonActionPerformed
+        DefaultTableModel bookedFlightModel = (DefaultTableModel) bookingTable.getModel();
+        int row = bookingTable.getSelectedRow();
+        if (row >= 0) {
+            String bookingNumber = (String) bookedFlightModel.getValueAt(row, 0);
+            boolean result = bookingRepository.deleteBookingByBookingreference(bookingNumber);
+            int dialogResult = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete? Booking: " + bookingNumber,
+                    "Deleting booking", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+
+            if (dialogResult == JOptionPane.OK_OPTION) {
+                updateBookingTable();
+            }
+
+        }
+
+
+    }//GEN-LAST:event_DeleteButtonActionPerformed
+
+    private void seatChangeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seatChangeButtonActionPerformed
+        DefaultTableModel bookedFlightModel = (DefaultTableModel) bookingTable.getModel();
+        int row = bookingTable.getSelectedRow();
+        if (row >= 0) {
+            System.out.println("Row: " + row);
+            String bookingNumber = (String) bookedFlightModel.getValueAt(row, 0);
+
+            Booking booking = bookingRepository.getBookingByBookingReference(bookingNumber);
+            System.out.println("selected booking" + booking);
+            
+            Flight flight = flightRepository.getFlightById(booking.getFlight().getId());
+
+            SelectSeatForm changeSeat = new SelectSeatForm(flight, passenger, booking);
+            changeSeat.setVisible(true);
+    }//GEN-LAST:event_seatChangeButtonActionPerformed
+    }
 
     /**
      * @param args the command line arguments
@@ -417,6 +479,7 @@ public class PassengerForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton DeleteButton;
     private javax.swing.JButton bookflightButton;
     private javax.swing.JTable bookingTable;
     private javax.swing.JTextField emailField;
@@ -432,6 +495,7 @@ public class PassengerForm extends javax.swing.JFrame {
     private javax.swing.JPanel personalDetailsPanel;
     private javax.swing.JButton savePersonalDetailsButton;
     private com.aha.userinterface.SearchFlightsPanel searchFlightsPanel;
+    private javax.swing.JButton seatChangeButton;
     // End of variables declaration//GEN-END:variables
 
 }
