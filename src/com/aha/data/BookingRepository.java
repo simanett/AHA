@@ -652,6 +652,53 @@ public class BookingRepository {
         return pendingBookings;
     }
 
+    public List<Seat> getBookedSeatsOfFlight(Flight flight) {
+        List<Seat> bookedSeats = new ArrayList<>();
+        PreparedStatement stmt = null;
+
+        String query = "SELECT BOOKINGREFERENCE, \n"
+                + " SEATS.ID AS SEAT_ID, \n"
+                + " SEATS.ROWNUMBER, \n"
+                + " SEATS.COLUMNLETTER \n"
+                + " FROM BOOKINGS\n"
+                + " JOIN SEATS on SEATS.ID = BOOKINGS.SEATID \n"
+                + " WHERE BOOKINGS.FLIGHTID = ?";
+        try {
+            stmt = AHA.connection.prepareStatement(query);
+            stmt.setInt(1, flight.getId());
+            
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                
+                int seatId = rs.getInt("SEAT_ID");
+                int rownumber = rs.getInt("ROWNUMBER");
+                String columnLetter = rs.getString("COLUMNLETTER");
+
+                Seat seat = new Seat();
+                seat.setId(seatId);
+                seat.setRow(rownumber);
+                seat.setLetter(columnLetter);
+
+                bookedSeats.add(seat);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+
+        return bookedSeats;
+        
+    }
+    
+    
     /**
      * Add a new Booking object to the application state and save it to the XML
      *
@@ -719,6 +766,32 @@ public class BookingRepository {
             }
         }
         return result;
+    }
+    
+    public void updateSeat(Booking booking) {
+        
+        PreparedStatement stmt = null;
+        String query = "UPDATE BOOKINGS\n"
+                + "SET SEATID= ? \n"
+                + "WHERE BOOKINGREFERENCE=? ";
+        try {
+            stmt = AHA.connection.prepareStatement(query);
+            stmt.setInt(1, booking.getSeat().getId());
+            stmt.setString(2, booking.getBookingReference());
+            int modifiedrows = stmt.executeUpdate();
+
+           
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
     }
 
 }

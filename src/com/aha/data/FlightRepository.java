@@ -225,7 +225,7 @@ public class FlightRepository {
                         int seatRowNum = rsSeats.getInt("ROWNUMBER");
                         String seatColumnLetter = rsSeats.getString("COLUMNLETTER");
                         Seat seat = new Seat();
-                        seat.setId(id);
+                        seat.setId(seatId);
                         seat.setLetter(seatColumnLetter);
                         seat.setRow(seatRowNum);
                         seats.add(seat);

@@ -43,4 +43,20 @@ public class Seat {
     public String toString() {
         return row + letter;
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if(other instanceof Seat) {
+            Seat otherSeat = (Seat)other;
+            return getId() == otherSeat.getId();
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return getId();
+    }
+    
+    
 }

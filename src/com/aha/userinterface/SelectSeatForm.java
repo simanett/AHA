@@ -13,9 +13,12 @@ import com.aha.businesslogic.model.User;
 import com.aha.data.BookingRepository;
 import com.aha.data.PassengerRepository;
 import com.aha.data.UserRepository;
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -35,11 +38,11 @@ public class SelectSeatForm extends javax.swing.JFrame {
     //UserRepository userRepository = new UserRepository();
     PassengerRepository passengerRepository = new PassengerRepository();
     BookingRepository repository = new BookingRepository();
-
+    
     private Flight flight;
     private Seat selectedSeat;
     private Passenger passenger;
-    private Booking booking;
+    private Booking originalBooking;
 
     /**
      * Form to
@@ -50,11 +53,11 @@ public class SelectSeatForm extends javax.swing.JFrame {
     public SelectSeatForm(Flight flight, Passenger passenger) {
         this(flight, passenger, null);
     }
-
+    
     public SelectSeatForm(Flight flight, Passenger passenger, Booking booking) {
         this.flight = flight;
         this.passenger = passenger;
-        this.booking = booking;
+        this.originalBooking = booking;
         initComponents();
         flightNumberLabel.setText(String.valueOf(flight.getFlightNumber()));
         jLabel3.setText(flight.getAirportFrom().getCity());
@@ -64,9 +67,11 @@ public class SelectSeatForm extends javax.swing.JFrame {
         drawSeatRadioButtons();
         this.pack();
     }
-
+    
     private void drawSeatRadioButtons() {
+        List<Seat> bookedSeats = repository.getBookedSeatsOfFlight(flight);
         List<Seat> seats = flight.getAirplane().getSeats();
+        
         seatsPanel.setLayout(new GridLayout(0, 7, 0, 0));
 
         // Empty label - top left
@@ -78,15 +83,15 @@ public class SelectSeatForm extends javax.swing.JFrame {
             label.setHorizontalAlignment(JLabel.CENTER);
             seatsPanel.add(label);
         }
-
+        
         for (final Seat seat : seats) {
             if (seat.getLetter().equals("A")) {
                 JLabel label = new JLabel(String.valueOf(seat.getRow()));
                 seatsPanel.add(label);
             }
-
+            
             JRadioButton seatButton = new JRadioButton();
-
+            
             ActionListener seatButtonListener = new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -97,17 +102,27 @@ public class SelectSeatForm extends javax.swing.JFrame {
             seatButton.addActionListener(seatButtonListener);
 
             // Only allow booking there is no existing booking on seat
-            //seatButton.setEnabled(seat.getBooking() == null);
+            if(bookedSeats.contains(seat)) {
+                seatButton.setEnabled(false);
+            }
+         
             seatButtonGroup.add(seatButton);
             seatsPanel.add(seatButton);
-
-            if (booking != null && booking.getSeat().getLetter().equals(seat.getLetter()) && booking.getSeat().getRow() == seat.getRow()) {
-                System.out.println(booking);
+            
+            if(originalBooking != null && seat.equals(originalBooking.getSeat())) {
+                seatButton.setEnabled(true);
                 seatButton.doClick();
             }
-
+            
         }
-
+        
+    }
+    
+    private String generateBookingReference() {
+        SecureRandom random = new SecureRandom();
+        
+        return new BigInteger(130, random).toString(32);
+        
     }
 
     /**
@@ -246,17 +261,29 @@ public class SelectSeatForm extends javax.swing.JFrame {
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
-
+        
         if (selectedSeat != null) {
-            Booking booking = new Booking();
-            booking.setBookingReference(flight.getFlightNumber() + selectedSeat.getRow() + selectedSeat.getLetter());
-
-            booking.setSeat(selectedSeat);
-            booking.setFlight(flight);
-
-            booking.setPassenger(passenger);
-
-            repository.addBooking(booking);
+            Booking newBooking = new Booking();
+            
+            if (originalBooking != null) {
+                newBooking.setBookingReference(originalBooking.getBookingReference());
+            } else {
+                String reference = flight.getFlightNumber() + generateBookingReference();
+                
+                newBooking.setBookingReference(reference.substring(0, 20));
+                
+            }
+            newBooking.setSeat(selectedSeat);
+            newBooking.setFlight(flight);
+            newBooking.setPassenger(passenger);
+            
+            if (originalBooking != null) {
+                repository.updateSeat(newBooking);
+            } else {
+                repository.addBooking(newBooking);
+                
+            }
+            
             this.dispose();
         } else {
             JOptionPane.showMessageDialog(null, "Please select a seat.");
