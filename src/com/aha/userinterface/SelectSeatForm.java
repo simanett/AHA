@@ -97,6 +97,9 @@ public class SelectSeatForm extends javax.swing.JFrame {
                 public void actionPerformed(ActionEvent e) {
                     selectedSeat = seat;
                     selectSeatLabel.setText(seat.getRow() + seat.getLetter());
+                    
+                    int price = (int)(flight.getBasicPrice() * seat.getMultiplier());
+                    priceLabel.setText(String.valueOf(price) + "Ft");
                 }
             };
             seatButton.addActionListener(seatButtonListener);
@@ -150,6 +153,8 @@ public class SelectSeatForm extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         selectSeatLabel = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        priceLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("AHA Bernot Helga, Simonics Anett");
@@ -182,7 +187,7 @@ public class SelectSeatForm extends javax.swing.JFrame {
             .addGap(0, 374, Short.MAX_VALUE)
         );
 
-        jPanel1.setLayout(new java.awt.GridLayout(5, 2, 0, 10));
+        jPanel1.setLayout(new java.awt.GridLayout(6, 2, 0, 10));
 
         jLabel1.setText("Flight number:");
         jPanel1.add(jLabel1);
@@ -215,6 +220,12 @@ public class SelectSeatForm extends javax.swing.JFrame {
         selectSeatLabel.setName(""); // NOI18N
         jPanel1.add(selectSeatLabel);
 
+        jLabel7.setText("Price:");
+        jPanel1.add(jLabel7);
+
+        priceLabel.setText("No seat selected");
+        jPanel1.add(priceLabel);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -226,29 +237,29 @@ public class SelectSeatForm extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(okButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 120, Short.MAX_VALUE)
                         .addComponent(cancelButton)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap(126, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
-                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 351, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 56, Short.MAX_VALUE))))
+                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 358, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel2)
                 .addGap(44, 44, 44)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 84, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(okButton)
                     .addComponent(cancelButton))
                 .addGap(69, 69, 69))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(38, Short.MAX_VALUE)
                 .addComponent(seatsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -301,8 +312,10 @@ public class SelectSeatForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton okButton;
+    private javax.swing.JLabel priceLabel;
     private javax.swing.ButtonGroup seatButtonGroup;
     private javax.swing.JPanel seatsPanel;
     private javax.swing.JLabel selectSeatLabel;

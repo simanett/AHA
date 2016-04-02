@@ -40,6 +40,7 @@ public class FlightRepository {
                 + "    FLIGHTS.FLIGHTNUMBER, \n"
                 + "    FLIGHTS.DEPARTURE,\n"
                 + "    FLIGHTS.FLIGHTDURATION,\n"
+                + "    FLIGHTS.BASICPRICE,\n"
                 + "    AIRPLANES.MAXDISTANCE,\n"
                 + "    AIRPLANES.ID AS AIRPLANE_ID,\n"
                 + "    AIRPLANES.MODEL,\n"
@@ -69,6 +70,7 @@ public class FlightRepository {
                 String flightn = rs.getString("FLIGHTNUMBER");
                 Date departure = rs.getDate("DEPARTURE");
                 int flightDuration = rs.getInt("FLIGHTDURATION");
+                int basicprice = rs.getInt("BASICPRICE");
 
                 int airplaneId = rs.getInt("AIRPLANE_ID");
                 String airplaneModel = rs.getString("MODEL");
@@ -89,7 +91,8 @@ public class FlightRepository {
                 PreparedStatement stmtSeats = null;
                 String querySeats = "SELECT SEATS.ID AS SEAT_ID,\n"
                         + "SEATS.ROWNUMBER,\n"
-                        + "SEATS.COLUMNLETTER\n"
+                        + "SEATS.COLUMNLETTER, \n"
+                        + "SEATS.MULTIPLIER \n"
                         + "FROM AHA.SEATS\n"
                         + "WHERE AIRPLANEID = ?";
                 try {
@@ -101,10 +104,12 @@ public class FlightRepository {
                         int seatId = rsSeats.getInt("SEAT_ID");
                         int seatRowNum = rsSeats.getInt("ROWNUMBER");
                         String seatColumnLetter = rsSeats.getString("COLUMNLETTER");
+                        double multiplier = rsSeats.getDouble("MULTIPLIER");
                         Seat seat = new Seat();
                         seat.setId(id);
                         seat.setLetter(seatColumnLetter);
                         seat.setRow(seatRowNum);
+                        seat.setMultiplier(multiplier);
                         seats.add(seat);
                     }
 
@@ -138,6 +143,7 @@ public class FlightRepository {
                 flight.setAirplane(airplane);
                 flight.setAirportFrom(fromAirport);
                 flight.setAirportTo(toAirport);
+                flight.setBasicPrice(basicprice);
             }
 
         } catch (SQLException e) {
@@ -163,11 +169,13 @@ public class FlightRepository {
                 + "    FLIGHTS.FLIGHTNUMBER, \n"
                 + "    FLIGHTS.DEPARTURE,\n"
                 + "    FLIGHTS.FLIGHTDURATION,\n"
+                + "    FLIGHTS.BASICPRICE,\n"
                 + "    AIRPLANES.MAXDISTANCE,\n"
                 + "    AIRPLANES.ID AS AIRPLANE_ID,\n"
                 + "    AIRPLANES.MODEL,\n"
                 + "    SEATS.ROWNUMBER,\n"
                 + "    SEATS.COLUMNLETTER,\n"
+                + "    SEATS.MULTIPLIER,\n"
                 + "    AIRPORT_FROM.CODE AS FROM_CODE,\n"
                 + "    AIRPORT_FROM.CITY AS FROM_CITY,\n"
                 + "    AIRPORT_TO.CODE AS TO_CODE,\n"
@@ -192,6 +200,7 @@ public class FlightRepository {
                 String flightn = rs.getString("FLIGHTNUMBER");
                 Date departure = rs.getDate("DEPARTURE");
                 int flightDuration = rs.getInt("FLIGHTDURATION");
+                int basicprice = rs.getInt("BASICPRICE");
 
                 int airplaneId = rs.getInt("AIRPLANE_ID");
                 String airplaneModel = rs.getString("MODEL");
@@ -212,7 +221,8 @@ public class FlightRepository {
                 PreparedStatement stmtSeats = null;
                 String querySeats = "SELECT SEATS.ID AS SEAT_ID,\n"
                         + "SEATS.ROWNUMBER,\n"
-                        + "SEATS.COLUMNLETTER\n"
+                        + "SEATS.COLUMNLETTER, \n"
+                        + "SEATS.MULTIPLIER\n"
                         + "FROM AHA.SEATS\n"
                         + "WHERE AIRPLANEID = ?";
                 try {
@@ -224,10 +234,12 @@ public class FlightRepository {
                         int seatId = rsSeats.getInt("SEAT_ID");
                         int seatRowNum = rsSeats.getInt("ROWNUMBER");
                         String seatColumnLetter = rsSeats.getString("COLUMNLETTER");
+                        double multiplier = rsSeats.getDouble("MULTIPLIER");
                         Seat seat = new Seat();
                         seat.setId(seatId);
                         seat.setLetter(seatColumnLetter);
                         seat.setRow(seatRowNum);
+                        seat.setMultiplier(multiplier);
                         seats.add(seat);
                     }
 
@@ -261,6 +273,7 @@ public class FlightRepository {
                 flight.setAirplane(airplane);
                 flight.setAirportFrom(fromAirport);
                 flight.setAirportTo(toAirport);
+                flight.setBasicPrice(basicprice);
             }
 
         } catch (SQLException e) {
@@ -291,6 +304,7 @@ public class FlightRepository {
                 + "    FLIGHTS.FLIGHTNUMBER, \n"
                 + "    FLIGHTS.DEPARTURE,\n"
                 + "    FLIGHTS.FLIGHTDURATION,\n"
+                + "    FLIGHTS.BASICPRICE,\n"
                 + "    AIRPLANES.MAXDISTANCE,\n"
                 + "    AIRPLANES.ID AS AIRPLANE_ID,\n"
                 + "    AIRPLANES.MODEL,\n"
@@ -312,6 +326,7 @@ public class FlightRepository {
                 String flightn = rs.getString("FLIGHTNUMBER");
                 Date departure = rs.getDate("DEPARTURE");
                 int flightDuration = rs.getInt("FLIGHTDURATION");
+                int basicprice = rs.getInt("BASICPRICE");
 
                 int airplaneId = rs.getInt("AIRPLANE_ID");
                 String airplaneModel = rs.getString("MODEL");
@@ -343,6 +358,7 @@ public class FlightRepository {
                 flight.setAirplane(airplane);
                 flight.setAirportFrom(fromAirport);
                 flight.setAirportTo(toAirport);
+                flight.setBasicPrice(basicprice);
 
                 flights.add(flight);
             }
@@ -373,6 +389,7 @@ public class FlightRepository {
                 + "    FLIGHTS.FLIGHTNUMBER, \n"
                 + "    FLIGHTS.DEPARTURE,\n"
                 + "    FLIGHTS.FLIGHTDURATION,\n"
+                + "    FLIGHTS.BASICPRICE,\n"
                 + "    AIRPLANES.MAXDISTANCE,\n"
                 + "    AIRPLANES.ID AS AIRPLANE_ID,\n"
                 + "    AIRPLANES.MODEL,\n"
@@ -400,6 +417,7 @@ public class FlightRepository {
                 String flightn = rs.getString("FLIGHTNUMBER");
                 Date departure = rs.getDate("DEPARTURE");
                 int flightDuration = rs.getInt("FLIGHTDURATION");
+                int basicprice = rs.getInt("BASICPRICE");
 
                 int airplaneId = rs.getInt("AIRPLANE_ID");
                 String airplaneModel = rs.getString("MODEL");
@@ -431,6 +449,7 @@ public class FlightRepository {
                 flight.setAirplane(airplane);
                 flight.setAirportFrom(fromAirport);
                 flight.setAirportTo(toAirport);
+                flight.setBasicPrice(basicprice);
 
                 flights.add(flight);
             }

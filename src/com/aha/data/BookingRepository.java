@@ -46,8 +46,10 @@ public class BookingRepository {
                 + " FLIGHTS.DEPARTURE, \n"
                 + " FLIGHTS.FLIGHTDURATION, \n"
                 + " FLIGHTS.AIRPLANEID, \n"
+                + " FLIGHTS.BASICPRICE,\n"
                 + " AHA.SEATS.ROWNUMBER, \n"
                 + " AHA.SEATS.COLUMNLETTER, \n"
+                + " AHA.SEATS.MULTIPLIER, \n"
                 + " PASSENGERS.NAME AS PASSENGER_NAME, \n"
                 + " PASSENGERS.EMAIL AS PASSENGER_EMAIL, \n"
                 + " AIRPLANES.ID AS AIRPLANE_ID, \n"
@@ -77,7 +79,9 @@ public class BookingRepository {
                 int seatId = rs.getInt("SEATID");
                 int rownumber = rs.getInt("ROWNUMBER");
                 String columnLetter = rs.getString("COLUMNLETTER");
+                double multiplier = rs.getDouble("MULTIPLIER");
                 int flightId = rs.getInt("FLIGHT_ID");
+                int basicprice = rs.getInt("BASICPRICE");
                 int passengerId = rs.getInt("PASSENGERID");
                 String flightNumber = rs.getString("FLIGHTNUMBER");
                 boolean approved = rs.getBoolean("APPROVED");
@@ -119,11 +123,13 @@ public class BookingRepository {
                 flight.setAirplane(airplane);
                 flight.setAirportFrom(fromAirport);
                 flight.setAirportTo(toAirport);
+                flight.setBasicPrice(basicprice);
 
                 Seat seat = new Seat();
                 seat.setId(seatId);
                 seat.setRow(rownumber);
                 seat.setLetter(columnLetter);
+                seat.setMultiplier(multiplier);
 
                 booking = new Booking();
                 booking.setBookingReference(bookingRef);
@@ -165,8 +171,10 @@ public class BookingRepository {
                 + " FLIGHTS.DEPARTURE, \n"
                 + " FLIGHTS.FLIGHTDURATION, \n"
                 + " FLIGHTS.AIRPLANEID, \n"
+                + " FLIGHTS.BASICPRICE,\n"
                 + " AHA.SEATS.ROWNUMBER, \n"
                 + " AHA.SEATS.COLUMNLETTER, \n"
+                + " AHA.SEATS.MULTIPLIER, \n"
                 + " PASSENGERS.NAME AS PASSENGER_NAME, \n"
                 + " PASSENGERS.EMAIL AS PASSENGER_EMAIL, \n"
                 + " AIRPLANES.ID AS AIRPLANE_ID, \n"
@@ -192,7 +200,9 @@ public class BookingRepository {
                 int seatId = rs.getInt("SEATID");
                 int rownumber = rs.getInt("ROWNUMBER");
                 String columnLetter = rs.getString("COLUMNLETTER");
+                double multiplier = rs.getDouble("MULTIPLIER");
                 int flightId = rs.getInt("FLIGHT_ID");
+                int basicprice = rs.getInt("BASICPRICE");
                 int passengerId = rs.getInt("PASSENGERID");
                 String flightNumber = rs.getString("FLIGHTNUMBER");
                 boolean approved = rs.getBoolean("APPROVED");
@@ -234,11 +244,13 @@ public class BookingRepository {
                 flight.setAirplane(airplane);
                 flight.setAirportFrom(fromAirport);
                 flight.setAirportTo(toAirport);
+                flight.setBasicPrice(basicprice);
 
                 Seat seat = new Seat();
                 seat.setId(seatId);
                 seat.setRow(rownumber);
                 seat.setLetter(columnLetter);
+                seat.setMultiplier(multiplier);
 
                 Booking booking = new Booking();
                 booking.setApproved(approved);
@@ -277,6 +289,7 @@ public class BookingRepository {
                 + " FLIGHTS.DEPARTURE, \n"
                 + " FLIGHTS.FLIGHTDURATION, \n"
                 + " FLIGHTS.AIRPLANEID, \n"
+                + " FLIGHTS.BASICPRICE,\n"
                 + " PASSENGERS.NAME AS PASSENGER_NAME, \n"
                 + " PASSENGERS.EMAIL AS PASSENGER_EMAIL, \n"
                 + " AIRPLANES.ID AS AIRPLANE_ID, \n"
@@ -288,7 +301,8 @@ public class BookingRepository {
                 + " AIRPORT_TO.CITY AS TO_CITY, \n"
                 + " SEATS.ID AS SEAT_ID, "
                 + " SEATS.ROWNUMBER, "
-                + " SEATS.COLUMNLETTER "
+                + " SEATS.COLUMNLETTER, "
+                + " SEATS.MULTIPLIER "
                 + " FROM BOOKINGS \n"
                 + " JOIN FLIGHTS ON BOOKINGS.FLIGHTID = FLIGHTS.ID \n"
                 + " JOIN PASSENGERS ON BOOKINGS.PASSENGERID = PASSENGERS.ID "
@@ -307,6 +321,7 @@ public class BookingRepository {
                 String bookingRef = rs.getString("BOOKINGREFERENCE");
                 int seatId = rs.getInt("SEATID");
                 int flightId = rs.getInt("FLIGHT_ID");
+                int basicprice = rs.getInt("BASICPRICE");
                 int passengerId = rs.getInt("PASSENGERID");
                 String flightNumber = rs.getString("FLIGHTNUMBER");
                 boolean approved = rs.getBoolean("APPROVED");
@@ -324,6 +339,7 @@ public class BookingRepository {
                 int seatsId = rs.getInt("SEAT_ID");
                 int rowNumber = rs.getInt("ROWNUMBER");
                 String columnLetter = rs.getString("COLUMNLETTER");
+                double multiplier = rs.getDouble("MULTIPLIER");
 
                 Passenger passenger = new Passenger();
                 passenger.setId(passengerId);
@@ -351,11 +367,13 @@ public class BookingRepository {
                 flight.setAirplane(airplane);
                 flight.setAirportFrom(fromAirport);
                 flight.setAirportTo(toAirport);
+                flight.setBasicPrice(basicprice);
 
                 Seat seat = new Seat();
                 seat.setId(seatsId);
                 seat.setRow(rowNumber);
                 seat.setLetter(columnLetter);
+                seat.setMultiplier(multiplier);
 
                 Booking booking = new Booking();
                 booking.setBookingReference(bookingRef);
@@ -432,8 +450,10 @@ public class BookingRepository {
                 + " FLIGHTS.DEPARTURE, \n"
                 + " FLIGHTS.FLIGHTDURATION, \n"
                 + " FLIGHTS.AIRPLANEID, \n"
+                + " FLIGHTS.BASICPRICE,\n"
                 + " AHA.SEATS.ROWNUMBER, \n"
                 + " AHA.SEATS.COLUMNLETTER, \n"
+                + " AHA.SEATS.MULTIPLIER, \n"
                 + " PASSENGERS.NAME AS PASSENGER_NAME, \n"
                 + " PASSENGERS.EMAIL AS PASSENGER_EMAIL, \n"
                 + " AIRPLANES.ID AS AIRPLANE_ID, \n"
@@ -459,7 +479,9 @@ public class BookingRepository {
                 int seatId = rs.getInt("SEATID");
                 int rownumber = rs.getInt("ROWNUMBER");
                 String columnLetter = rs.getString("COLUMNLETTER");
+                double multiplier = rs.getDouble("MULTIPLIER");
                 int flightId = rs.getInt("FLIGHTID");
+                int basicprice = rs.getInt("BASICPRICE");
                 int passengerId = rs.getInt("PASSENGERID");
                 boolean approved = rs.getBoolean("APPROVED");
                 String flightNumber = rs.getString("FLIGHTNUMBER");
@@ -501,12 +523,14 @@ public class BookingRepository {
                 flight.setAirplane(airplane);
                 flight.setAirportFrom(fromAirport);
                 flight.setAirportTo(toAirport);
+                flight.setBasicPrice(basicprice);
 
                 Seat seat = new Seat();
 
                 seat.setId(seatId);
                 seat.setRow(rownumber);
                 seat.setLetter(columnLetter);
+                seat.setMultiplier(multiplier);
 
                 Booking booking = new Booking();
                 booking.setApproved(approved);
@@ -551,8 +575,10 @@ public class BookingRepository {
                 + " FLIGHTS.FLIGHTNUMBER, \n"
                 + " FLIGHTS.DEPARTURE, \n"
                 + " FLIGHTS.FLIGHTDURATION, \n"
+                + " FLIGHTS.BASICPRICE,\n"
                 + " AHA.SEATS.ROWNUMBER, \n"
                 + " AHA.SEATS.COLUMNLETTER, \n"
+                + " AHA.SEATS.MULTIPLIER, \n"
                 + " FLIGHTS.AIRPLANEID, \n"
                 + " PASSENGERS.NAME AS PASSENGER_NAME, \n"
                 + " PASSENGERS.EMAIL AS PASSENGER_EMAIL, \n"
@@ -579,7 +605,9 @@ public class BookingRepository {
                 int seatId = rs.getInt("SEATID");
                 int rownumber = rs.getInt("ROWNUMBER");
                 String columnLetter = rs.getString("COLUMNLETTER");
+                double multiplier = rs.getDouble("MULTIPLIER");
                 int flightId = rs.getInt("FLIGHTID");
+                int basicprice = rs.getInt("BASICPRICE");
                 int passengerId = rs.getInt("PASSENGERID");
                 String approved = rs.getString("APPROVED");
                 String flightNumber = rs.getString("FLIGHTNUMBER");
@@ -621,11 +649,13 @@ public class BookingRepository {
                 flight.setAirplane(airplane);
                 flight.setAirportFrom(fromAirport);
                 flight.setAirportTo(toAirport);
+                flight.setBasicPrice(basicprice);
 
                 Seat seat = new Seat();
                 seat.setId(seatId);
                 seat.setRow(rownumber);
                 seat.setLetter(columnLetter);
+                seat.setMultiplier(multiplier);
 
                 Booking booking = new Booking();
                 booking.setApproved(Boolean.valueOf(approved));
@@ -659,7 +689,8 @@ public class BookingRepository {
         String query = "SELECT BOOKINGREFERENCE, \n"
                 + " SEATS.ID AS SEAT_ID, \n"
                 + " SEATS.ROWNUMBER, \n"
-                + " SEATS.COLUMNLETTER \n"
+                + " SEATS.COLUMNLETTER, \n"
+                + " SEATS.MULTIPLIER \n"
                 + " FROM BOOKINGS\n"
                 + " JOIN SEATS on SEATS.ID = BOOKINGS.SEATID \n"
                 + " WHERE BOOKINGS.FLIGHTID = ?";
@@ -673,11 +704,13 @@ public class BookingRepository {
                 int seatId = rs.getInt("SEAT_ID");
                 int rownumber = rs.getInt("ROWNUMBER");
                 String columnLetter = rs.getString("COLUMNLETTER");
+                double multiplier = rs.getDouble("MULTIPLIER");
 
                 Seat seat = new Seat();
                 seat.setId(seatId);
                 seat.setRow(rownumber);
                 seat.setLetter(columnLetter);
+                seat.setMultiplier(multiplier);
 
                 bookedSeats.add(seat);
             }

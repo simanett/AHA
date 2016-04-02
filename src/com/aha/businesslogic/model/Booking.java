@@ -5,8 +5,6 @@
  */
 package com.aha.businesslogic.model;
 
-import java.util.Date;
-
 /**
  *
  * @author simonicsanett
@@ -18,7 +16,6 @@ public class Booking {
     private boolean approved;
     private Flight flight;
     private Seat seat;
-    private int price;
 
     public Seat getSeat() {
         return seat;
@@ -26,15 +23,6 @@ public class Booking {
 
     public void setSeat(Seat seat) {
         this.seat = seat;
-    }
-    
-
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
     }
 
     public Flight getFlight() {
@@ -69,10 +57,17 @@ public class Booking {
     public void setPassenger(Passenger passenger) {
         this.passenger = passenger;
     }
+    
+    public int getPrice () {  
+        if(seat == null || flight == null) {
+            return 0;
+        }
+        return (int) (flight.getBasicPrice()*seat.getMultiplier());
+    }
 
     @Override
     public String toString() {
-        return "Booking{" + "bookingReference=" + bookingReference + ", passenger=" + passenger + ", approved=" + approved + ", flight=" + flight + ", seat=" + seat + ", price=" + price + '}';
+        return "Booking{" + "bookingReference=" + bookingReference + ", passenger=" + passenger + ", approved=" + approved + ", flight=" + flight + ", seat=" + seat + '}';
     }
 
   

@@ -14,6 +14,15 @@ public class Seat {
     private int id;
     private int row;
     private String letter;
+    private double multiplier;
+
+    public double getMultiplier() {
+        return multiplier;
+    }
+
+    public void setMultiplier(double multiplier) {
+        this.multiplier = multiplier;
+    }
 
     public int getId() {
         return id;
