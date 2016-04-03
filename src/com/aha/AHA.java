@@ -60,7 +60,7 @@ public class AHA {
 //            BookingRepository bookingRepository = new BookingRepository();
 //            String bookingReference = "BUDDUB0025";
 //            Booking b = new Booking();
-//            b = bookingRepository.getBookingByBookingReference("DUBBUD1025");
+//            b = bookingRepository.getBookingByBookingReference("12BA");
 //            bookingRepository.approveBooking(b);
 //            System.out.println(b);
 //            System.out.println("Booking test:");

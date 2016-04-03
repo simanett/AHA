@@ -8,6 +8,7 @@ package com.aha.userinterface;
 import com.aha.businesslogic.model.Booking;
 import com.aha.data.BookingRepository;
 import java.text.SimpleDateFormat;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -188,16 +189,20 @@ public class ApproveBookingForm extends javax.swing.JFrame {
 
     private void approveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_approveButtonActionPerformed
         DefaultTableModel pendingModel = (DefaultTableModel) jTable1.getModel();
+        boolean checkedExists = false;
         for (int i = 0; i < pendingModel.getRowCount(); i++) {
-            boolean approved = (boolean) pendingModel.getValueAt(i, 7);
+            boolean approved = (boolean) pendingModel.getValueAt(i, 6);
             if (approved == true) {
+                checkedExists = true;
                 // "Approve" checkbox checked, set booking state to approved
                 String bookingReference = (String) pendingModel.getValueAt(i, 0);
                 Booking pendingBooking = repository.getBookingByBookingReference(bookingReference);
                 //pendingBooking.setApproved(true);
                 repository.approveBooking(pendingBooking);
             }
-
+        }
+        if (!checkedExists) {
+            JOptionPane.showMessageDialog(null, "Please select the bookings to approve.");
         }
         //repository.save();
         refreshTables();
