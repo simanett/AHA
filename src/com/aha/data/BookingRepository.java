@@ -469,7 +469,7 @@ public class BookingRepository {
                 + " JOIN AHA.AIRPLANES ON FLIGHTS.AIRPLANEID = AIRPLANES.ID "
                 + " JOIN AHA.AIRPORTS AIRPORT_FROM ON FLIGHTS.FROMID = AIRPORT_FROM.CODE "
                 + " JOIN AHA.AIRPORTS AIRPORT_TO ON FLIGHTS.TOID = AIRPORT_TO.CODE "
-                + " JOIN AHA.SEATS ON SEATS.AIRPLANEID = AIRPLANES.ID "
+                + " JOIN AHA.SEATS ON SEATS.ID = BOOKINGS.SEATID "
                 + " WHERE APPROVED='1'";
         try {
             stmt = AHA.connection.createStatement();
@@ -595,7 +595,7 @@ public class BookingRepository {
                 + " JOIN AHA.AIRPLANES ON FLIGHTS.AIRPLANEID = AIRPLANES.ID "
                 + " JOIN AHA.AIRPORTS AIRPORT_FROM ON FLIGHTS.FROMID = AIRPORT_FROM.CODE "
                 + " JOIN AHA.AIRPORTS AIRPORT_TO ON FLIGHTS.TOID = AIRPORT_TO.CODE "
-                + " JOIN AHA.SEATS ON SEATS.AIRPLANEID = AIRPLANES.ID "
+                + " JOIN AHA.SEATS ON SEATS.ID = BOOKINGS.SEATID "
                 + " WHERE APPROVED='0'";
         try {
             stmt = AHA.connection.createStatement();
