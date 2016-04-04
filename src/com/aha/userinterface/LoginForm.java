@@ -128,10 +128,11 @@ public class LoginForm extends javax.swing.JFrame {
             ApproveBookingForm approveForm = new ApproveBookingForm();
             approveForm.setVisible(true);
         } else if (employee instanceof CrewMember) {
-            CrewMember crewMember = (CrewMember) employee;
-            user = (User) crewMember;
-            ApproveBookingForm approveForm = new ApproveBookingForm();
-            approveForm.setVisible(true);
+            JOptionPane.showMessageDialog(null, "Welcome, crew member!");
+//            CrewMember crewMember = (CrewMember) employee;
+//            user = (User) crewMember;
+//            ApproveBookingForm approveForm = new ApproveBookingForm();
+//            approveForm.setVisible(true);
         } else if (employee instanceof Administrator) {
             Administrator administrator = (Administrator) employee;
             user = (User) administrator;
