@@ -20,29 +20,32 @@ import org.jdesktop.swingx.calendar.DateUtils;
  * @author HB
  */
 public class SearchFlightsPanel extends javax.swing.JPanel {
-
-    private EventListenerList actionListenerList = new EventListenerList();
     
+    private EventListenerList actionListenerList = new EventListenerList();
+
     /**
      * Creates new form FligtSearchPanel
      */
     public SearchFlightsPanel() {
         initComponents();
+        fromDatePicker.getMonthView().setLowerBound(new Date());
+        toDatePicker.getMonthView().setLowerBound(new Date());
+        
     }
-
+    
     public void setAirports(List<Airport> airports) {        
         fromComboBox.setModel(new DefaultComboBoxModel(airports.toArray()));
         toComboBox.setModel(new DefaultComboBoxModel(airports.toArray()));
     }
-
+    
     public void addActionListener(ActionListener actionListener) {
         actionListenerList.add(ActionListener.class, actionListener);
     }
-
+    
     public void removeActionListener(ActionListener actionListener) {
         actionListenerList.remove(ActionListener.class, actionListener);
     }
-
+    
     private void fireActionPerformed(FlightSearchEvent actionEvent) {
         EventListener[] listenerList = actionListenerList.getListeners(ActionListener.class);
         for (EventListener listener : listenerList) {
@@ -81,6 +84,11 @@ public class SearchFlightsPanel extends javax.swing.JPanel {
         jLabel4.setText("and");
 
         fromDatePicker.setPreferredSize(new java.awt.Dimension(120, 26));
+        fromDatePicker.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fromDatePickerActionPerformed(evt);
+            }
+        });
 
         toDatePicker.setPreferredSize(new java.awt.Dimension(120, 26));
 
@@ -139,14 +147,19 @@ public class SearchFlightsPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
-        Airport airportFrom = (Airport)fromComboBox.getSelectedItem();
-        Airport airportTo = (Airport)toComboBox.getSelectedItem();
-
+        Airport airportFrom = (Airport) fromComboBox.getSelectedItem();
+        Airport airportTo = (Airport) toComboBox.getSelectedItem();
+        
         Date fromDate = fromDatePicker.getDate();
         Date toDate = toDatePicker.getDate();
-
+        
         fireActionPerformed(new FlightSearchEvent(this, ActionEvent.ACTION_PERFORMED,
                 null, airportFrom.getCode(), airportTo.getCode(), DateUtils.startOfDay(fromDate), DateUtils.endOfDay(toDate)));    }//GEN-LAST:event_searchButtonActionPerformed
+
+    private void fromDatePickerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fromDatePickerActionPerformed
+        Date selectedDate = fromDatePicker.getDate();
+        toDatePicker.getMonthView().setLowerBound(selectedDate);
+    }//GEN-LAST:event_fromDatePickerActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> fromComboBox;
