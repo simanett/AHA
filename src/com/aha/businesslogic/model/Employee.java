@@ -9,6 +9,6 @@ package com.aha.businesslogic.model;
  *
  * @author simonicsanett
  */
-public abstract class Employee extends User {
+public class Employee extends User {
 
 }

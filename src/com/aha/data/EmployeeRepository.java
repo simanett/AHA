@@ -5,6 +5,7 @@
  */
 package com.aha.data;
 
+import com.aha.service.EmployeeService;
 import com.aha.AHA;
 import com.aha.businesslogic.model.Administrator;
 import com.aha.businesslogic.model.CrewMember;
@@ -23,7 +24,7 @@ import java.util.List;
  *
  * @author HB
  */
-public class EmployeeRepository {
+public class EmployeeRepository implements EmployeeService {
 
     /**
      * Return the Employee object with the given id
@@ -31,6 +32,7 @@ public class EmployeeRepository {
      * @param id String that identifies the Employee object
      * @return The Employee object if exists, null otherwise
      */
+    @Override
     public Employee getEmployeeById(int id) {
         Employee employee = null;
         PreparedStatement stmt = null;
@@ -90,6 +92,7 @@ public class EmployeeRepository {
      * @param name String that identifies the Employee object
      * @return The Employee object if exists, null otherwise
      */
+    @Override
     public Employee getEmployeeByName(String name) {
 
         Employee names = null;
@@ -149,6 +152,7 @@ public class EmployeeRepository {
      *
      * @return all Employees in the database
      */
+    @Override
     public List<Employee> getEmployees() {
 
         List<Employee> employees = new ArrayList<>();

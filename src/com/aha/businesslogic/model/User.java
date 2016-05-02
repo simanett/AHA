@@ -5,11 +5,13 @@
  */
 package com.aha.businesslogic.model;
 
+import java.io.Serializable;
+
 /**
  *
  * @author simonicsanett
  */
-public abstract class User {
+public abstract class User implements Serializable {
 
     private int id;
     private String name;
