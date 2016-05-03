@@ -5,13 +5,14 @@
  */
 package com.aha.businesslogic.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  *
  * @author simonicsanett
  */
-public class Airplane {
+public class Airplane implements Serializable {
 
     private int maxDistance;
     //Airplane model is a unique property.

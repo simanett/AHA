@@ -5,11 +5,13 @@
  */
 package com.aha.businesslogic.model;
 
+import java.io.Serializable;
+
 /**
  *
  * @author simonicsanett
  */
-public class Seat {
+public class Seat implements Serializable {
 
     private int id;
     private int row;

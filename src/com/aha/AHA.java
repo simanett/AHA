@@ -9,10 +9,12 @@ import com.aha.businesslogic.model.Booking;
 import com.aha.businesslogic.model.Employee;
 import com.aha.businesslogic.model.Flight;
 import com.aha.businesslogic.model.Passenger;
+import com.aha.data.AirplaneRepository;
 import com.aha.data.BookingRepository;
 import com.aha.data.EmployeeRepository;
 import com.aha.data.FlightRepository;
 import com.aha.data.PassengerRepository;
+import com.aha.service.AirplaneService;
 import com.aha.service.EmployeeService;
 import com.aha.userinterface.LoginForm;
 import java.rmi.AccessException;
@@ -53,13 +55,19 @@ public class AHA {
         connection = connect(dbUrl, dbUserName, dbPassWord);
 
         EmployeeRepository employeeRepository = new EmployeeRepository();
+        AirplaneRepository airplaneRepository = new AirplaneRepository();
         try {
             //ezt:
-            EmployeeService stub = (EmployeeService) UnicastRemoteObject.exportObject(employeeRepository, 0);
+            EmployeeService employeeService = (EmployeeService) UnicastRemoteObject.exportObject(employeeRepository, 0);
+            AirplaneService airplaneService = (AirplaneService) UnicastRemoteObject.exportObject(airplaneRepository, 0);
             Registry reg = LocateRegistry.createRegistry(1234);
             System.setProperty("java.rmi.server.hostname", "localhost");
             //ezt:
-            reg.bind("aha", stub);
+            reg.bind("EmployeeService", employeeService);
+            reg.bind("AirplaneService", airplaneService);
+            
+            
+            
             System.out.println("Fut a szerver...");
             Thread.sleep(120000);
         } catch (AlreadyBoundException ex) {

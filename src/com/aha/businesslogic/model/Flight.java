@@ -5,6 +5,7 @@
  */
 package com.aha.businesslogic.model;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
  *
  * @author simonicsanett
  */
-public class Flight {
+public class Flight implements Serializable {
 
     private String flightNumber;
     private Date departure;

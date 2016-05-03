@@ -5,11 +5,13 @@
  */
 package com.aha.businesslogic.model;
 
+import java.io.Serializable;
+
 /**
  *
  * @author simonicsanett
  */
-public class Booking {
+public class Booking implements Serializable {
 
     private String bookingReference;
     private Passenger passenger;

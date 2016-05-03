@@ -5,11 +5,13 @@
  */
 package com.aha.businesslogic.model;
 
+import java.io.Serializable;
+
 /**
  *
  * @author simonicsanett
  */
-public class Airport {
+public class Airport implements Serializable {
 
     private String code;
     private String city;

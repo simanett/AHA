@@ -5,6 +5,7 @@
  */
 package com.aha.data;
 
+import com.aha.service.AirplaneService;
 import com.aha.AHA;
 import com.aha.businesslogic.model.Airplane;
 import com.aha.businesslogic.model.Seat;
@@ -20,7 +21,7 @@ import java.util.List;
  *
  * @author HB
  */
-public class AirplaneRepository {
+public class AirplaneRepository implements AirplaneService {
 
     /**
      * Return the Airplane object with the given model name
@@ -29,6 +30,7 @@ public class AirplaneRepository {
      * "Boeing"
      * @return The Airplane object if exists, null otherwise
      */
+    @Override
     public Airplane getAirplaneByModel(String airplaneModel) {
         Airplane airplane = null;
         PreparedStatement stmt = null;
@@ -99,6 +101,7 @@ public class AirplaneRepository {
      *
      * @return All Airplanes in the database
      */
+    @Override
     public List<Airplane> getAirplanes() {
         List<Airplane> airplanes = new ArrayList<>();
 
