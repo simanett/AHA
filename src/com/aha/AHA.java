@@ -14,11 +14,16 @@ import com.aha.data.BookingRepository;
 import com.aha.data.EmployeeRepository;
 import com.aha.data.FlightRepository;
 import com.aha.data.PassengerRepository;
+import com.aha.data.UserRepository;
 import com.aha.service.AirplaneService;
 import com.aha.service.EmployeeService;
+import com.aha.service.FlightService;
+import com.aha.service.PassengerService;
+import com.aha.service.UserService;
 import com.aha.userinterface.LoginForm;
 import java.rmi.AccessException;
 import java.rmi.AlreadyBoundException;
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -56,18 +61,26 @@ public class AHA {
 
         EmployeeRepository employeeRepository = new EmployeeRepository();
         AirplaneRepository airplaneRepository = new AirplaneRepository();
+        FlightRepository flightRepository = new FlightRepository();
+        PassengerRepository passengerRepository = new PassengerRepository();
+        UserRepository userRepository = new UserRepository();
         try {
             //ezt:
             EmployeeService employeeService = (EmployeeService) UnicastRemoteObject.exportObject(employeeRepository, 0);
             AirplaneService airplaneService = (AirplaneService) UnicastRemoteObject.exportObject(airplaneRepository, 0);
+            FlightService flightService = (FlightService) UnicastRemoteObject.exportObject(flightRepository, 0);
+            PassengerService passengerService = (PassengerService) UnicastRemoteObject.exportObject(passengerRepository, 0);
+            UserService userService = (UserService) UnicastRemoteObject.exportObject(userRepository, 0);
+
             Registry reg = LocateRegistry.createRegistry(1234);
             System.setProperty("java.rmi.server.hostname", "localhost");
             //ezt:
             reg.bind("EmployeeService", employeeService);
             reg.bind("AirplaneService", airplaneService);
-            
-            
-            
+            reg.bind("FlightService", flightService);
+            reg.bind("PassengerService", passengerService);
+            reg.bind("UserService", (Remote) userService);
+
             System.out.println("Fut a szerver...");
             Thread.sleep(120000);
         } catch (AlreadyBoundException ex) {
