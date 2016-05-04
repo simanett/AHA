@@ -5,17 +5,16 @@
  */
 package com.aha;
 
-import com.aha.businesslogic.model.Booking;
-import com.aha.businesslogic.model.Employee;
-import com.aha.businesslogic.model.Flight;
-import com.aha.businesslogic.model.Passenger;
 import com.aha.data.AirplaneRepository;
+import com.aha.data.AirportRepository;
 import com.aha.data.BookingRepository;
 import com.aha.data.EmployeeRepository;
 import com.aha.data.FlightRepository;
 import com.aha.data.PassengerRepository;
 import com.aha.data.UserRepository;
 import com.aha.service.AirplaneService;
+import com.aha.service.AirportService;
+import com.aha.service.BookingService;
 import com.aha.service.EmployeeService;
 import com.aha.service.FlightService;
 import com.aha.service.PassengerService;
@@ -31,7 +30,6 @@ import java.rmi.server.UnicastRemoteObject;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -64,6 +62,9 @@ public class AHA {
         FlightRepository flightRepository = new FlightRepository();
         PassengerRepository passengerRepository = new PassengerRepository();
         UserRepository userRepository = new UserRepository();
+        AirportRepository airportRepository = new AirportRepository();
+        BookingRepository bookingRepository = new BookingRepository();
+        
         try {
             //ezt:
             EmployeeService employeeService = (EmployeeService) UnicastRemoteObject.exportObject(employeeRepository, 0);
@@ -72,6 +73,8 @@ public class AHA {
             PassengerService passengerService = (PassengerService) UnicastRemoteObject.exportObject(passengerRepository, 0);
             UserService userService = (UserService) UnicastRemoteObject.exportObject(userRepository, 0);
 
+            AirportService airportService = (AirportService) UnicastRemoteObject.exportObject(airportRepository, 0);
+            BookingService bookingService = (BookingService) UnicastRemoteObject.exportObject(bookingRepository, 0);
             Registry reg = LocateRegistry.createRegistry(1234);
             System.setProperty("java.rmi.server.hostname", "localhost");
             //ezt:
@@ -81,8 +84,13 @@ public class AHA {
             reg.bind("PassengerService", passengerService);
             reg.bind("UserService", (Remote) userService);
 
+            reg.bind("AirportService", airportService);
+            reg.bind("BookingService", bookingService);
+            
+            
+            
             System.out.println("Fut a szerver...");
-            Thread.sleep(120000);
+            //Thread.sleep(120000);
         } catch (AlreadyBoundException ex) {
             Logger.getLogger(AHA.class.getName()).log(Level.SEVERE, null, ex);
         } catch (AccessException ex) {

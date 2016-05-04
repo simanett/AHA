@@ -6,6 +6,8 @@
 package com.aha;
 
 import com.aha.service.AirplaneService;
+import com.aha.service.AirportService;
+import com.aha.service.BookingService;
 import com.aha.service.EmployeeService;
 import java.rmi.AccessException;
 import java.rmi.NotBoundException;
@@ -27,11 +29,15 @@ public class Client {
             //System.setProperty("java.rmi.server.hostname", "localhost");
             EmployeeService employeeService = (EmployeeService) reg.lookup("EmployeeService");
             AirplaneService airplaneService = (AirplaneService) reg.lookup("AirplaneService");
-
+            AirportService  airportService = (AirportService) reg.lookup("AirportService");
+            BookingService bookingServivce = (BookingService) reg.lookup("BookingService");
+            
             //stub.getEmployees();
             System.out.println(employeeService.getEmployees());
             System.out.println(airplaneService.getAirplanes());
-
+            System.out.println(airportService.getAirports());
+            System.out.println(bookingServivce.getBookings());
+            
         } catch (AccessException ex) {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         } catch (RemoteException ex) {
