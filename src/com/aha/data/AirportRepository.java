@@ -5,6 +5,7 @@
  */
 package com.aha.data;
 
+import com.aha.service.AirportService;
 import com.aha.AHA;
 import com.aha.businesslogic.model.Airplane;
 import com.aha.businesslogic.model.Airport;
@@ -22,7 +23,7 @@ import java.util.logging.Logger;
  *
  * @author simonicsanett
  */
-public class AirportRepository {
+public class AirportRepository implements AirportService {
 
     /**
      * Get an Airport object with the given airport code
@@ -30,6 +31,7 @@ public class AirportRepository {
      * @param code Three letter identifier of the airport, e.g. DUB
      * @return The airport object if exists, null otherwise
      */
+    @Override
     public Airport getAirportByCode(String codeport) {
 
         Airport airport = null;
@@ -85,6 +87,7 @@ public class AirportRepository {
      *
      * @return All Airport in the application state
      */
+    @Override
     public List<Airport> getAirports() {
 
         List<Airport> airports = new ArrayList<>();

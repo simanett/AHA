@@ -5,6 +5,7 @@
  */
 package com.aha.data;
 
+import com.aha.service.BookingService;
 import com.aha.AHA;
 import com.aha.businesslogic.model.Airplane;
 import com.aha.businesslogic.model.Airport;
@@ -26,7 +27,7 @@ import java.util.List;
  *
  * @author simonicsanett
  */
-public class BookingRepository {
+public class BookingRepository implements BookingService {
 
     /**
      * Return the Booking object with the given booking number
@@ -34,6 +35,7 @@ public class BookingRepository {
      * @param bookingReference String that identifies the Booking object
      * @return The Booking object if exists, null otherwise
      */
+    @Override
     public Booking getBookingByBookingReference(String bookingReference) {
         Booking booking = null;
         PreparedStatement stmt = null;
@@ -158,6 +160,7 @@ public class BookingRepository {
      *
      * @return All Bookings in the database
      */
+    @Override
     public List<Booking> getBookings() {
         List<Booking> bookings = new ArrayList<>();
         Statement stmt = null;
@@ -276,6 +279,7 @@ public class BookingRepository {
         return bookings;
     }
 
+    @Override
     public List<Booking> getActiveBookingsByPassenger(Passenger inputpassenger) {
         List<Booking> bookings = new ArrayList<>();
         PreparedStatement stmt = null;
@@ -404,6 +408,7 @@ public class BookingRepository {
      * @param booking The booking to be set approved in database
      * @return void
      */
+    @Override
     public void approveBooking(Booking booking) {
         PreparedStatement stmt = null;
         String query = "UPDATE BOOKINGS\n"
@@ -436,6 +441,7 @@ public class BookingRepository {
      *
      * @return All Bookings that are approved (booking.isApproved() == true)
      */
+    @Override
     public List<Booking> getApprovedBookings() {
 
         List<Booking> approvedBookings = new ArrayList<>();
@@ -562,6 +568,7 @@ public class BookingRepository {
      *
      * @return All Bookings that are pending (booking.isApproved() == false)
      */
+    @Override
     public List<Booking> getPendingBookings() {
 
         List<Booking> pendingBookings = new ArrayList<>();
@@ -682,6 +689,7 @@ public class BookingRepository {
         return pendingBookings;
     }
 
+    @Override
     public List<Seat> getBookedSeatsOfFlight(Flight flight) {
         List<Seat> bookedSeats = new ArrayList<>();
         PreparedStatement stmt = null;
@@ -737,6 +745,7 @@ public class BookingRepository {
      *
      * @param booking The Booking object to add
      */
+    @Override
     public boolean addBooking(Booking booking) {
         boolean result = false;
         PreparedStatement stmt = null;
@@ -773,6 +782,7 @@ public class BookingRepository {
 
     }
 
+    @Override
     public boolean deleteBookingByBookingreference(String bookingreference) {
         boolean result = false;
         PreparedStatement stmt = null;
@@ -801,6 +811,7 @@ public class BookingRepository {
         return result;
     }
     
+    @Override
     public void updateSeat(Booking booking) {
         
         PreparedStatement stmt = null;

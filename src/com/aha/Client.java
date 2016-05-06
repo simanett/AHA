@@ -6,6 +6,8 @@
 package com.aha;
 
 import com.aha.service.AirplaneService;
+import com.aha.service.AirportService;
+import com.aha.service.BookingService;
 import com.aha.service.EmployeeService;
 import com.aha.service.FlightService;
 import com.aha.service.PassengerService;
@@ -35,6 +37,9 @@ public class Client {
             PassengerService passengerService = (PassengerService) reg.lookup("PassengerService");
             UserService userService = (UserService) reg.lookup("UserService");
 
+            AirportService  airportService = (AirportService) reg.lookup("AirportService");
+            BookingService bookingServivce = (BookingService) reg.lookup("BookingService");
+            
             //stub.getEmployees();
             System.out.println(employeeService.getEmployees());
             System.out.println(airplaneService.getAirplanes());
@@ -42,6 +47,9 @@ public class Client {
             System.out.println(passengerService.getPassengers());
             System.out.println(userService.getUsers());
 
+            System.out.println(airportService.getAirports());
+            System.out.println(bookingServivce.getBookings());
+            
         } catch (AccessException ex) {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         } catch (RemoteException ex) {
