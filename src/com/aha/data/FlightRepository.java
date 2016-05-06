@@ -5,6 +5,7 @@
  */
 package com.aha.data;
 
+import com.aha.service.FlightService;
 import com.aha.AHA;
 import com.aha.businesslogic.model.Airplane;
 import com.aha.businesslogic.model.Airport;
@@ -23,7 +24,7 @@ import java.util.List;
  *
  * @author HB
  */
-public class FlightRepository {
+public class FlightRepository implements FlightService {
 
     /**
      * Return the Flight object with the given flight number
@@ -31,6 +32,7 @@ public class FlightRepository {
      * @param flightNumber int that identifies the Flight object
      * @return The Flight object if exists, null otherwise
      */
+    @Override
     public Flight getFlightByFlightNumber(int flightNumber) {
 
         Flight flight = null;
@@ -160,6 +162,7 @@ public class FlightRepository {
         return flight;
     }
     
+    @Override
     public Flight getFlightById(int id) {
 
         Flight flight = null;
@@ -296,6 +299,7 @@ public class FlightRepository {
      *
      * @return All Flights in the application state
      */
+    @Override
     public List<Flight> getFlights() {
         List<Flight> flights = new ArrayList<>();
         Statement stmt = null;
@@ -381,6 +385,7 @@ public class FlightRepository {
      *
      * @return All Flights in the application state
      */
+    @Override
     public List<Flight> getFilteredFlights(String fromAirportCode, String toAirportCode, Date fromDate, Date toDate) {
         List<Flight> flights = new ArrayList<>();
         PreparedStatement stmt = null;

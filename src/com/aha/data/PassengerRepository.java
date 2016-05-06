@@ -5,6 +5,7 @@
  */
 package com.aha.data;
 
+import com.aha.service.PassengerService;
 import com.aha.AHA;
 import com.aha.businesslogic.model.Passenger;
 import java.sql.PreparedStatement;
@@ -22,7 +23,7 @@ import java.util.logging.Logger;
  *
  * @author HB
  */
-public class PassengerRepository {
+public class PassengerRepository implements PassengerService {
 
     /**
      * Return Passenger object of given id.
@@ -30,6 +31,7 @@ public class PassengerRepository {
      * @param id int that identifies the Passenger object.
      * @return the Passenger object if exists, null otherwise.
      */
+    @Override
     public Passenger getPassengerById(int id) throws SQLException {
         Passenger passenger = null;
         PreparedStatement stmt = null;
@@ -66,6 +68,7 @@ public class PassengerRepository {
      * @param passengerName String that identifies the Passenger object.
      * @return the Passenger object if exists, null otherwise.
      */
+    @Override
     public Passenger getPassengerByName(String passengerName) {
         Passenger passenger = null;
         PreparedStatement stmt = null;
@@ -108,6 +111,7 @@ public class PassengerRepository {
      * @param passengerEmail String that identifies the Passenger object.
      * @return the Passenger object if exists, null otherwise.
      */
+    @Override
     public Passenger getPassengerByEmail(String passengerEmail) {
         Passenger passenger = null;
         PreparedStatement stmt = null;
@@ -149,6 +153,7 @@ public class PassengerRepository {
      *
      * @return all Passengers in the database.
      */
+    @Override
     public List<Passenger> getPassengers() throws SQLException {
 
         List<Passenger> passengers = new ArrayList<>();
@@ -183,6 +188,7 @@ public class PassengerRepository {
      *
      * @return void.
      */
+    @Override
     public void addPassenger(Passenger passenger) {
         PreparedStatement stmt = null;
         String query = "insert into AHA.PASSENGERS (id, name, email) "
@@ -208,6 +214,7 @@ public class PassengerRepository {
         }
     }
 
+    @Override
     public boolean updatePassenger(Passenger passenger) {
         PreparedStatement stmt = null;
         boolean result = false;
@@ -244,6 +251,7 @@ public class PassengerRepository {
      *
      * @return the highest id value from passengers table.
      */
+    @Override
     public int getMaxPassengerId() {
         int maxPassengerId = 0;
         Statement stmt = null;

@@ -5,6 +5,7 @@
  */
 package com.aha.data;
 
+import com.aha.service.UserService;
 import com.aha.AHA;
 import com.aha.businesslogic.model.Administrator;
 import com.aha.businesslogic.model.CrewMember;
@@ -23,7 +24,7 @@ import java.util.List;
  *
  * @author simonicsanett
  */
-public class UserRepository {
+public class UserRepository implements UserService {
 
     /**
      * Return the User object with the given id
@@ -31,6 +32,7 @@ public class UserRepository {
      * @param id String that identifies the User object
      * @return The User object if exists, null otherwise
      */
+    @Override
     public User getUserById(int id) {
         User user = null;
         PreparedStatement stmt = null;
@@ -90,6 +92,7 @@ public class UserRepository {
      * @param name String that identifies the User object
      * @return The User object if exists, null otherwise
      */
+    @Override
     public User getUserByName(String name) {
 
         User names = null;
@@ -148,6 +151,7 @@ public class UserRepository {
      *
      * @return All Users in the application state
      */
+    @Override
     public List<User> getUsers() {
 
         List<User> users = new ArrayList<>();
