@@ -37,9 +37,9 @@ public class Client {
             PassengerService passengerService = (PassengerService) reg.lookup("PassengerService");
             UserService userService = (UserService) reg.lookup("UserService");
 
-            AirportService  airportService = (AirportService) reg.lookup("AirportService");
+            AirportService airportService = (AirportService) reg.lookup("AirportService");
             BookingService bookingServivce = (BookingService) reg.lookup("BookingService");
-            
+
             //stub.getEmployees();
             System.out.println(employeeService.getEmployees());
             System.out.println(airplaneService.getAirplanes());
@@ -49,7 +49,7 @@ public class Client {
 
             System.out.println(airportService.getAirports());
             System.out.println(bookingServivce.getBookings());
-            
+//
         } catch (AccessException ex) {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         } catch (RemoteException ex) {

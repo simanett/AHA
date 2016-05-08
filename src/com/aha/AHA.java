@@ -64,7 +64,7 @@ public class AHA {
         UserRepository userRepository = new UserRepository();
         AirportRepository airportRepository = new AirportRepository();
         BookingRepository bookingRepository = new BookingRepository();
-        
+
         try {
             //ezt:
             EmployeeService employeeService = (EmployeeService) UnicastRemoteObject.exportObject(employeeRepository, 0);
@@ -86,9 +86,7 @@ public class AHA {
 
             reg.bind("AirportService", airportService);
             reg.bind("BookingService", bookingService);
-            
-            
-            
+
             System.out.println("Fut a szerver...");
             //Thread.sleep(120000);
         } catch (AlreadyBoundException ex) {
@@ -134,5 +132,6 @@ public class AHA {
         }
 
         return newConnection;
+//
     }
 }
