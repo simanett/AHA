@@ -12,6 +12,7 @@ import com.aha.service.EmployeeService;
 import com.aha.service.FlightService;
 import com.aha.service.PassengerService;
 import com.aha.service.UserService;
+import com.aha.userinterface.LoginForm;
 import java.rmi.AccessException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -49,7 +50,8 @@ public class Client {
 
             System.out.println(airportService.getAirports());
             System.out.println(bookingServivce.getBookings());
-//
+            LoginForm loginForm = new LoginForm();
+            loginForm.setVisible(true);
         } catch (AccessException ex) {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         } catch (RemoteException ex) {
