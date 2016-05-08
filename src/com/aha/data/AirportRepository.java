@@ -19,7 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Repository class to handle airplane data
+ * Repository class to handle airport data
  *
  * @author simonicsanett
  */

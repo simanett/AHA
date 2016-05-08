@@ -23,7 +23,7 @@ import java.util.List;
 
 /**
  *
- * Repository class to handle airplane data
+ * Repository class to handle booking data
  *
  * @author simonicsanett
  */
@@ -705,10 +705,10 @@ public class BookingRepository implements BookingService {
         try {
             stmt = AHA.connection.prepareStatement(query);
             stmt.setInt(1, flight.getId());
-            
+
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                
+
                 int seatId = rs.getInt("SEAT_ID");
                 int rownumber = rs.getInt("ROWNUMBER");
                 String columnLetter = rs.getString("COLUMNLETTER");
@@ -736,10 +736,9 @@ public class BookingRepository implements BookingService {
         }
 
         return bookedSeats;
-        
+
     }
-    
-    
+
     /**
      * Add a new Booking object to the application state and save it to the XML
      *
@@ -810,10 +809,10 @@ public class BookingRepository implements BookingService {
         }
         return result;
     }
-    
+
     @Override
     public void updateSeat(Booking booking) {
-        
+
         PreparedStatement stmt = null;
         String query = "UPDATE BOOKINGS\n"
                 + "SET SEATID= ? \n"
@@ -824,7 +823,6 @@ public class BookingRepository implements BookingService {
             stmt.setString(2, booking.getBookingReference());
             int modifiedrows = stmt.executeUpdate();
 
-           
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {

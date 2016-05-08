@@ -83,7 +83,6 @@ public class AHA {
             reg.bind("FlightService", flightService);
             reg.bind("PassengerService", passengerService);
             reg.bind("UserService", (Remote) userService);
-
             reg.bind("AirportService", airportService);
             reg.bind("BookingService", bookingService);
 
