@@ -5,7 +5,6 @@
  */
 package com.aha.userinterface;
 
-import com.aha.Client;
 import com.aha.businesslogic.model.Administrator;
 import com.aha.businesslogic.model.CrewMember;
 import com.aha.businesslogic.model.Employee;
@@ -16,13 +15,6 @@ import com.aha.data.EmployeeRepository;
 import com.aha.data.FlightRepository;
 import com.aha.data.PassengerRepository;
 import com.aha.data.UserRepository;
-import com.aha.service.EmployeeService;
-import com.aha.service.FlightService;
-import com.aha.service.PassengerService;
-import com.aha.service.UserService;
-import java.rmi.RemoteException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -31,10 +23,10 @@ import javax.swing.JOptionPane;
  */
 public class LoginForm extends javax.swing.JFrame {
 
-    private final UserService userService = Client.userService;
-    private final PassengerService passengerRepository = Client.passengerService;
-    private final FlightService flightService = Client.flightService;
-    private final EmployeeService employeeService = Client.employeeService;
+    private final UserRepository userRepository = new UserRepository();
+    private final PassengerRepository passengerRepository = new PassengerRepository();
+    private final FlightRepository flightRepository = new FlightRepository();
+    private final EmployeeRepository employeeRepository = new EmployeeRepository();
 
     /**
      * Creates new form LoginForm
@@ -115,42 +107,37 @@ public class LoginForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
-        try {
-            String userName = userNameBox.getText();
-            User user = null;
-            Employee employee = employeeService.getEmployeeByName(userName);
-            if (employee == null) {
-
-                Passenger passenger = passengerRepository.getPassengerByName(userName);
-                user = (User) passenger;
-                if (passenger == null) {
-                    JOptionPane.showMessageDialog(null, "Invalid user name");
-                } else {
-                    PassengerForm passengerForm = new PassengerForm();
-                    passengerForm.setPassenger(passenger);
-                    passengerForm.setVisible(true);
+        String userName = userNameBox.getText();
+        User user = null;
+        Employee employee = employeeRepository.getEmployeeByName(userName);
+        if (employee == null) {
+            Passenger passenger = passengerRepository.getPassengerByName(userName);
+            user = (User) passenger;
+            if (passenger == null) {
+                JOptionPane.showMessageDialog(null, "Invalid user name");
+            } else {
+                PassengerForm passengerForm = new PassengerForm();
+                passengerForm.setPassenger(passenger);
+                passengerForm.setVisible(true);
 //                ListFlightsForm listFlightsForm = new ListFlightsForm(user);
 //                listFlightsForm.setVisible(true);
-                }
-            } else if (employee instanceof Operator) {
-                Operator operator = (Operator) employee;
-                user = (User) operator;
-                ApproveBookingForm approveForm = new ApproveBookingForm();
-                approveForm.setVisible(true);
-            } else if (employee instanceof CrewMember) {
-                JOptionPane.showMessageDialog(null, "Welcome, crew member!");
+            }
+        } else if (employee instanceof Operator) {
+            Operator operator = (Operator) employee;
+            user = (User) operator;
+            ApproveBookingForm approveForm = new ApproveBookingForm();
+            approveForm.setVisible(true);
+        } else if (employee instanceof CrewMember) {
+            JOptionPane.showMessageDialog(null, "Welcome, crew member!");
 //            CrewMember crewMember = (CrewMember) employee;
 //            user = (User) crewMember;
 //            ApproveBookingForm approveForm = new ApproveBookingForm();
 //            approveForm.setVisible(true);
-            } else if (employee instanceof Administrator) {
-                Administrator administrator = (Administrator) employee;
-                user = (User) administrator;
-                ApproveBookingForm approveForm = new ApproveBookingForm();
-                approveForm.setVisible(true);
-            }
-        } catch (RemoteException ex) {
-            Logger.getLogger(LoginForm.class.getName()).log(Level.SEVERE, null, ex);
+        } else if (employee instanceof Administrator) {
+            Administrator administrator = (Administrator) employee;
+            user = (User) administrator;
+            ApproveBookingForm approveForm = new ApproveBookingForm();
+            approveForm.setVisible(true);
         }
 
     }//GEN-LAST:event_loginButtonActionPerformed
