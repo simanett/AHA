@@ -5,23 +5,20 @@
  */
 package com.aha.userinterface;
 
+import com.aha.Client;
 import com.aha.businesslogic.model.Booking;
 import com.aha.businesslogic.model.Flight;
 import com.aha.businesslogic.model.Passenger;
 import com.aha.businesslogic.model.Seat;
-import com.aha.businesslogic.model.User;
-import com.aha.data.BookingRepository;
-import com.aha.data.PassengerRepository;
-import com.aha.data.UserRepository;
-import java.awt.Color;
+import com.aha.service.BookingService;
+import com.aha.service.PassengerService;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigInteger;
+import java.rmi.RemoteException;
 import java.security.SecureRandom;
-import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,9 +32,10 @@ import javax.swing.JRadioButton;
  */
 public class SelectSeatForm extends javax.swing.JFrame {
 
-    //UserRepository userRepository = new UserRepository();
-    PassengerRepository passengerRepository = new PassengerRepository();
-    BookingRepository repository = new BookingRepository();
+
+    
+    private final PassengerService passengerService = Client.passengerService;
+    private final BookingService bookingService = Client.bookingService;
     
     private Flight flight;
     private Seat selectedSeat;
@@ -69,54 +67,58 @@ public class SelectSeatForm extends javax.swing.JFrame {
     }
     
     private void drawSeatRadioButtons() {
-        List<Seat> bookedSeats = repository.getBookedSeatsOfFlight(flight);
-        List<Seat> seats = flight.getAirplane().getSeats();
-        
-        seatsPanel.setLayout(new GridLayout(0, 7, 0, 0));
-
-        // Empty label - top left
-        seatsPanel.add(new JLabel());
-
-        // Set title
-        for (char letter = 'A'; letter <= 'F'; letter++) {
-            JLabel label = new JLabel(String.valueOf(letter));
-            label.setHorizontalAlignment(JLabel.CENTER);
-            seatsPanel.add(label);
-        }
-        
-        for (final Seat seat : seats) {
-            if (seat.getLetter().equals("A")) {
-                JLabel label = new JLabel(String.valueOf(seat.getRow()));
+        try {
+            List<Seat> bookedSeats = bookingService.getBookedSeatsOfFlight(flight);
+            List<Seat> seats = flight.getAirplane().getSeats();
+            
+            seatsPanel.setLayout(new GridLayout(0, 7, 0, 0));
+            
+            // Empty label - top left
+            seatsPanel.add(new JLabel());
+            
+            // Set title
+            for (char letter = 'A'; letter <= 'F'; letter++) {
+                JLabel label = new JLabel(String.valueOf(letter));
+                label.setHorizontalAlignment(JLabel.CENTER);
                 seatsPanel.add(label);
             }
             
-            JRadioButton seatButton = new JRadioButton();
-            
-            ActionListener seatButtonListener = new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    selectedSeat = seat;
-                    selectSeatLabel.setText(seat.getRow() + seat.getLetter());
-                    
-                    int price = (int)(flight.getBasicPrice() * seat.getMultiplier());
-                    priceLabel.setText(String.valueOf(price) + "Ft");
+            for (final Seat seat : seats) {
+                if (seat.getLetter().equals("A")) {
+                    JLabel label = new JLabel(String.valueOf(seat.getRow()));
+                    seatsPanel.add(label);
                 }
-            };
-            seatButton.addActionListener(seatButtonListener);
-
-            // Only allow booking there is no existing booking on seat
-            if(bookedSeats.contains(seat)) {
-                seatButton.setEnabled(false);
+                
+                JRadioButton seatButton = new JRadioButton();
+                
+                ActionListener seatButtonListener = new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        selectedSeat = seat;
+                        selectSeatLabel.setText(seat.getRow() + seat.getLetter());
+                        
+                        int price = (int)(flight.getBasicPrice() * seat.getMultiplier());
+                        priceLabel.setText(String.valueOf(price) + "Ft");
+                    }
+                };
+                seatButton.addActionListener(seatButtonListener);
+                
+                // Only allow booking there is no existing booking on seat
+                if(bookedSeats.contains(seat)) {
+                    seatButton.setEnabled(false);
+                }
+                
+                seatButtonGroup.add(seatButton);
+                seatsPanel.add(seatButton);
+                
+                if(originalBooking != null && seat.equals(originalBooking.getSeat())) {
+                    seatButton.setEnabled(true);
+                    seatButton.doClick();
+                }
+                
             }
-         
-            seatButtonGroup.add(seatButton);
-            seatsPanel.add(seatButton);
-            
-            if(originalBooking != null && seat.equals(originalBooking.getSeat())) {
-                seatButton.setEnabled(true);
-                seatButton.doClick();
-            }
-            
+        } catch (RemoteException ex) {
+            Logger.getLogger(SelectSeatForm.class.getName()).log(Level.SEVERE, null, ex);
         }
         
     }
@@ -289,9 +291,17 @@ public class SelectSeatForm extends javax.swing.JFrame {
             newBooking.setPassenger(passenger);
             
             if (originalBooking != null) {
-                repository.updateSeat(newBooking);
+                try {
+                    bookingService.updateSeat(newBooking);
+                } catch (RemoteException ex) {
+                    Logger.getLogger(SelectSeatForm.class.getName()).log(Level.SEVERE, null, ex);
+                }
             } else {
-                repository.addBooking(newBooking);
+                try {
+                    bookingService.addBooking(newBooking);
+                } catch (RemoteException ex) {
+                    Logger.getLogger(SelectSeatForm.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 
             }
             

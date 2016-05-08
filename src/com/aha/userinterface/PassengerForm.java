@@ -5,23 +5,24 @@
  */
 package com.aha.userinterface;
 
+import com.aha.Client;
 import com.aha.businesslogic.model.Airport;
 import com.aha.businesslogic.model.Booking;
 import com.aha.businesslogic.model.Flight;
 import com.aha.businesslogic.model.Passenger;
-import com.aha.data.AirportRepository;
-import com.aha.data.BookingRepository;
-import com.aha.data.FlightRepository;
-import com.aha.data.PassengerRepository;
-import java.awt.Color;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
+import com.aha.service.AirportService;
+import com.aha.service.BookingService;
+import com.aha.service.FlightService;
+import com.aha.service.PassengerService;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.rmi.RemoteException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -33,10 +34,12 @@ public class PassengerForm extends javax.swing.JFrame {
 
     private Passenger passenger;
 
-    private PassengerRepository passengerRepository = new PassengerRepository();
-    private AirportRepository airportRepository = new AirportRepository();
-    private FlightRepository flightRepository = new FlightRepository();
-    private BookingRepository bookingRepository = new BookingRepository();
+    private final PassengerService passengerService = Client.passengerService;
+    private final AirportService airportService = Client.airportService;
+    private final FlightService flightService = Client.flightService;
+    private final BookingService bookingService = Client.bookingService;
+    
+    
 
     private SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy kk:mm");
 
@@ -44,10 +47,14 @@ public class PassengerForm extends javax.swing.JFrame {
      * Creates new form PassengerForm
      */
     public PassengerForm() {
-        initComponents();
-
-        List<Airport> airports = airportRepository.getAirports();
-        searchFlightsPanel.setAirports(airports);
+        try {
+            initComponents();
+            
+            List<Airport> airports = airportService.getAirports();
+            searchFlightsPanel.setAirports(airports);
+        } catch (RemoteException ex) {
+            Logger.getLogger(PassengerForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void setPassenger(Passenger newPassenger) {
@@ -68,47 +75,55 @@ public class PassengerForm extends javax.swing.JFrame {
     }
 
     private void updateBookingTable() {
-        List<Booking> bookings = bookingRepository.getActiveBookingsByPassenger(passenger);
-
-        DefaultTableModel bookingModel = (DefaultTableModel) bookingTable.getModel();
-        bookingModel.setRowCount(0);
-        for (Booking booking : bookings) {
-            bookingModel.addRow(new Object[]{
-                booking.getBookingReference(),
-                booking.getFlight().getFlightNumber(),
-                booking.getFlight().getAirportFrom(),
-                booking.getFlight().getAirportTo(),
-                DATE_FORMAT.format(booking.getFlight().getDeparture()),
-                flightArrivalToString(booking.getFlight()),
-                booking.getSeat()
-
-            });
-
+        try {
+            List<Booking> bookings = bookingService.getActiveBookingsByPassenger(passenger);
+            
+            DefaultTableModel bookingModel = (DefaultTableModel) bookingTable.getModel();
+            bookingModel.setRowCount(0);
+            for (Booking booking : bookings) {
+                bookingModel.addRow(new Object[]{
+                    booking.getBookingReference(),
+                    booking.getFlight().getFlightNumber(),
+                    booking.getFlight().getAirportFrom(),
+                    booking.getFlight().getAirportTo(),
+                    DATE_FORMAT.format(booking.getFlight().getDeparture()),
+                    flightArrivalToString(booking.getFlight()),
+                    booking.getSeat()
+                        
+                });
+                
+            }
+        } catch (RemoteException ex) {
+            Logger.getLogger(PassengerForm.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     private void listFlights(String airportCodeFrom, String airportCodeTo, Date departureFrom, Date departureTo) {
-        List<Flight> flights = flightRepository.getFilteredFlights(airportCodeFrom, airportCodeTo, departureFrom, departureTo);
-
-        DefaultTableModel listFlightModel = (DefaultTableModel) jTable1.getModel();
-        listFlightModel.setRowCount(0);
-
-        for (Flight flight : flights) {
-            listFlightModel.addRow(new Object[]{
-                flight.getId(),
-                //Flight number
-                flight.getFlightNumber(),
-                //From
-                flight.getAirportFrom().getCity(),
-                //Departure
-                DATE_FORMAT.format(flight.getDeparture()),
-                //To
-                flight.getAirportTo().getCity(),
-                //Arrival
-                flightArrivalToString(flight),
-                //Price
-                flight.getBasicPrice(), //Book flight
-            });
+        try {
+            List<Flight> flights = flightService.getFilteredFlights(airportCodeFrom, airportCodeTo, departureFrom, departureTo);
+            
+            DefaultTableModel listFlightModel = (DefaultTableModel) jTable1.getModel();
+            listFlightModel.setRowCount(0);
+            
+            for (Flight flight : flights) {
+                listFlightModel.addRow(new Object[]{
+                    flight.getId(),
+                    //Flight number
+                    flight.getFlightNumber(),
+                    //From
+                    flight.getAirportFrom().getCity(),
+                    //Departure
+                    DATE_FORMAT.format(flight.getDeparture()),
+                    //To
+                    flight.getAirportTo().getCity(),
+                    //Arrival
+                    flightArrivalToString(flight),
+                    //Price
+                    flight.getBasicPrice(), //Book flight
+                });
+            }
+        } catch (RemoteException ex) {
+            Logger.getLogger(PassengerForm.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -378,21 +393,25 @@ public class PassengerForm extends javax.swing.JFrame {
 
     private void savePersonalDetailsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_savePersonalDetailsButtonActionPerformed
 
-        String name = nameField.getText();
-        String email = emailField.getText();
-
-        Passenger tempPassenger = new Passenger();
-        tempPassenger.setName(name);
-        tempPassenger.setEmail(email);
-        tempPassenger.setId(passenger.getId());
-
-        boolean result = passengerRepository.updatePassenger(tempPassenger);
-
-        if (result) {
-            passenger = tempPassenger;
+        try {
+            String name = nameField.getText();
+            String email = emailField.getText();
+            
+            Passenger tempPassenger = new Passenger();
+            tempPassenger.setName(name);
+            tempPassenger.setEmail(email);
+            tempPassenger.setId(passenger.getId());
+            
+            boolean result = passengerService.updatePassenger(tempPassenger);
+            
+            if (result) {
+                passenger = tempPassenger;
+            }
+            
+            refresh();
+        } catch (RemoteException ex) {
+            Logger.getLogger(PassengerForm.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        refresh();
 
     }//GEN-LAST:event_savePersonalDetailsButtonActionPerformed
 
@@ -405,13 +424,18 @@ public class PassengerForm extends javax.swing.JFrame {
         DefaultTableModel listFlightModel = (DefaultTableModel) jTable1.getModel();
         int row = jTable1.getSelectedRow();
         if (row >= 0) {
-            int flightId = (int) listFlightModel.getValueAt(row, 0);
-            Flight selectedFlight = flightRepository.getFlightById(flightId);
-
-            SelectSeatForm selectSeatForm = new SelectSeatForm(selectedFlight, passenger);
-            selectSeatForm.setVisible(true);
-            this.dispose();
-        } //Set error msg if no flight is selected
+            try {
+                int flightId = (int) listFlightModel.getValueAt(row, 0);
+                Flight selectedFlight = flightService.getFlightById(flightId);
+                
+                SelectSeatForm selectSeatForm = new SelectSeatForm(selectedFlight, passenger);
+                selectSeatForm.setVisible(true);
+                this.dispose();
+            } //Set error msg if no flight is selected
+            catch (RemoteException ex) {
+                Logger.getLogger(PassengerForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
 //        else {
 //            bookFlightError.setText("Please choose a flight");
 //            bookFlightError.setForeground(Color.red);
@@ -422,13 +446,17 @@ public class PassengerForm extends javax.swing.JFrame {
         DefaultTableModel bookedFlightModel = (DefaultTableModel) bookingTable.getModel();
         int row = bookingTable.getSelectedRow();
         if (row >= 0) {
-            String bookingNumber = (String) bookedFlightModel.getValueAt(row, 0);
-            boolean result = bookingRepository.deleteBookingByBookingreference(bookingNumber);
-            int dialogResult = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete? Booking: " + bookingNumber,
-                    "Deleting booking", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
-
-            if (dialogResult == JOptionPane.OK_OPTION) {
-                updateBookingTable();
+            try {
+                String bookingNumber = (String) bookedFlightModel.getValueAt(row, 0);
+                boolean result = bookingService.deleteBookingByBookingreference(bookingNumber);
+                int dialogResult = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete? Booking: " + bookingNumber,
+                        "Deleting booking", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+                
+                if (dialogResult == JOptionPane.OK_OPTION) {
+                    updateBookingTable();
+                }
+            } catch (RemoteException ex) {
+                Logger.getLogger(PassengerForm.class.getName()).log(Level.SEVERE, null, ex);
             }
 
         }
@@ -438,21 +466,25 @@ public class PassengerForm extends javax.swing.JFrame {
         DefaultTableModel bookedFlightModel = (DefaultTableModel) bookingTable.getModel();
         int row = bookingTable.getSelectedRow();
         if (row >= 0) {
-            String bookingNumber = (String) bookedFlightModel.getValueAt(row, 0);
-
-            Booking booking = bookingRepository.getBookingByBookingReference(bookingNumber);            
-            Flight flight = flightRepository.getFlightById(booking.getFlight().getId());
-
-            SelectSeatForm changeSeat = new SelectSeatForm(flight, passenger, booking);
-            changeSeat.setVisible(true);
-            
-            changeSeat.addWindowListener(new WindowAdapter() {
-                @Override
-                public void windowClosed(WindowEvent e) {
-                    updateBookingTable();
-                }
+            try {
+                String bookingNumber = (String) bookedFlightModel.getValueAt(row, 0);
                 
-            });
+                Booking booking = bookingService.getBookingByBookingReference(bookingNumber);
+                Flight flight = flightService.getFlightById(booking.getFlight().getId());
+                
+                SelectSeatForm changeSeat = new SelectSeatForm(flight, passenger, booking);
+                changeSeat.setVisible(true);
+                
+                changeSeat.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosed(WindowEvent e) {
+                        updateBookingTable();
+                    }
+                    
+                });
+            } catch (RemoteException ex) {
+                Logger.getLogger(PassengerForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
     }//GEN-LAST:event_seatChangeButtonActionPerformed
     }
 
