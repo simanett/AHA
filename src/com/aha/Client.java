@@ -53,7 +53,7 @@ public class Client {
             System.out.println(airplaneService.getAirplanes());
             System.out.println(flightService.getFlights());
             System.out.println(passengerService.getPassengers());
-            System.out.println(userService.getUsers());
+            //System.out.println(userService.getUsers());
             System.out.println(airportService.getAirports());
             System.out.println(bookingService.getBookings());
 

@@ -5,18 +5,20 @@
  */
 package com.aha.userinterface;
 
+import com.aha.Client;
 import com.aha.businesslogic.model.Flight;
 import com.aha.businesslogic.model.Passenger;
-import com.aha.businesslogic.model.User;
-import com.aha.data.FlightRepository;
-import java.awt.Color;
+import com.aha.service.FlightService;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.rmi.RemoteException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -26,7 +28,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ListFlightsForm extends javax.swing.JFrame {
 
-    FlightRepository flightRepo = new FlightRepository();
+    private final FlightService flightService = Client.flightService;
     private final Passenger passenger;
     private Flight selectedFlight;
     SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy kk:mm");
@@ -96,26 +98,30 @@ public class ListFlightsForm extends javax.swing.JFrame {
     }
 
     private void listFlights(String airportCodeFrom, String airportCodeTo, Date departure) {
-        DefaultTableModel listFlightModel = (DefaultTableModel) jTable1.getModel();
-        listFlightModel.setRowCount(0);
-        selectedFlight = null;
-        for (Flight flight : flightRepo.getFlights()) {
-            if (flightMatchesFilter(flight, airportCodeFrom, airportCodeTo, departure)) {
-                listFlightModel.addRow(new Object[]{
-                    //Flight number
-                    flight.getFlightNumber(),
-                    //From
-                    flight.getAirportFrom().getCity(),
-                    //Departure
-                    flightDepartureToString(flight),
-                    //To
-                    flight.getAirportTo().getCity(),
-                    //Arrival
-                    flightArrivalToString(flight),
-                    //Price
-                    flight.getBasicPrice(), //Book flight
-                });
+        try {
+            DefaultTableModel listFlightModel = (DefaultTableModel) jTable1.getModel();
+            listFlightModel.setRowCount(0);
+            selectedFlight = null;
+            for (Flight flight : flightService.getFlights()) {
+                if (flightMatchesFilter(flight, airportCodeFrom, airportCodeTo, departure)) {
+                    listFlightModel.addRow(new Object[]{
+                        //Flight number
+                        flight.getFlightNumber(),
+                        //From
+                        flight.getAirportFrom().getCity(),
+                        //Departure
+                        flightDepartureToString(flight),
+                        //To
+                        flight.getAirportTo().getCity(),
+                        //Arrival
+                        flightArrivalToString(flight),
+                        //Price
+                        flight.getBasicPrice(), //Book flight
+                    });
+                }
             }
+        } catch (RemoteException ex) {
+            Logger.getLogger(ListFlightsForm.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
@@ -127,10 +133,14 @@ public class ListFlightsForm extends javax.swing.JFrame {
             public void mouseClicked(MouseEvent e) {
                 //bookFlightError.setText("");
                 if (jTable1.getSelectedRow() >= 0) {
-                    //String selectedflightNumber = String.valueOf(listFlightModel.getValueAt(jTable1.getSelectedRow(), 0));
-                    int selectedflightNumber = (int) listFlightModel.getValueAt(jTable1.getSelectedRow(), 0);
-                    selectedFlight = flightRepo.getFlightByFlightNumber(selectedflightNumber);
-                    bookedFlightLabel.setText(String.valueOf(selectedFlight.getFlightNumber()));
+                    try {
+                        //String selectedflightNumber = String.valueOf(listFlightModel.getValueAt(jTable1.getSelectedRow(), 0));
+                        int selectedflightNumber = (int) listFlightModel.getValueAt(jTable1.getSelectedRow(), 0);
+                        selectedFlight = flightService.getFlightByFlightNumber(selectedflightNumber);
+                        bookedFlightLabel.setText(String.valueOf(selectedFlight.getFlightNumber()));
+                    } catch (RemoteException ex) {
+                        Logger.getLogger(ListFlightsForm.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             }
         });

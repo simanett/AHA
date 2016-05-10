@@ -28,7 +28,7 @@ import javax.swing.JOptionPane;
 public class LoginForm extends javax.swing.JFrame {
 
     private final UserService userService = Client.userService;
-    private final PassengerService passengerRepository = Client.passengerService;
+    private final PassengerService passengerService = Client.passengerService;
     private final FlightService flightService = Client.flightService;
     private final EmployeeService employeeService = Client.employeeService;
 
@@ -116,7 +116,7 @@ public class LoginForm extends javax.swing.JFrame {
             User user = null;
             Employee employee = employeeService.getEmployeeByName(userName);
             if (employee == null) {
-                Passenger passenger = passengerRepository.getPassengerByName(userName);
+                Passenger passenger = passengerService.getPassengerByName(userName);
                 user = (User) passenger;
                 if (passenger == null) {
                     JOptionPane.showMessageDialog(null, "Invalid user name");

@@ -5,9 +5,13 @@
  */
 package com.aha.userinterface;
 
+import com.aha.Client;
 import com.aha.businesslogic.model.Booking;
-import com.aha.data.BookingRepository;
+import com.aha.service.BookingService;
+import java.rmi.RemoteException;
 import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -17,7 +21,8 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ApproveBookingForm extends javax.swing.JFrame {
 
-    private BookingRepository repository = new BookingRepository();
+    //private BookingRepository repository = new BookingRepository();
+    private final BookingService bookingService = Client.bookingService;
 
     /**
      * Creates new form ApproveBookingForm
@@ -32,35 +37,39 @@ public class ApproveBookingForm extends javax.swing.JFrame {
      * tables
      */
     private void refreshTables() {
-        SimpleDateFormat dateformat = new SimpleDateFormat("dd/MM/yyyy kk:mm");
+        try {
+            SimpleDateFormat dateformat = new SimpleDateFormat("dd/MM/yyyy kk:mm");
 
-        DefaultTableModel pendingModel = (DefaultTableModel) jTable1.getModel();
-        pendingModel.setRowCount(0);
+            DefaultTableModel pendingModel = (DefaultTableModel) jTable1.getModel();
+            pendingModel.setRowCount(0);
 
-        for (Booking pBooking : repository.getPendingBookings()) {
-            pendingModel.addRow(new Object[]{
-                pBooking.getBookingReference(),
-                pBooking.getPassenger().getName(),
-                pBooking.getFlight().getFlightNumber(),
-                pBooking.getFlight().getAirportFrom().getCode(),
-                pBooking.getFlight().getAirportTo().getCode(),
-                dateformat.format(pBooking.getFlight().getDeparture()),
-                pBooking.isApproved()
-            });
-        }
+            for (Booking pBooking : bookingService.getPendingBookings()) {
+                pendingModel.addRow(new Object[]{
+                    pBooking.getBookingReference(),
+                    pBooking.getPassenger().getName(),
+                    pBooking.getFlight().getFlightNumber(),
+                    pBooking.getFlight().getAirportFrom().getCode(),
+                    pBooking.getFlight().getAirportTo().getCode(),
+                    dateformat.format(pBooking.getFlight().getDeparture()),
+                    pBooking.isApproved()
+                });
+            }
 
-        DefaultTableModel approvedModel = (DefaultTableModel) jTable2.getModel();
-        approvedModel.setRowCount(0);
+            DefaultTableModel approvedModel = (DefaultTableModel) jTable2.getModel();
+            approvedModel.setRowCount(0);
 
-        for (Booking aBooking : repository.getApprovedBookings()) {
-            approvedModel.addRow(new Object[]{
-                aBooking.getBookingReference(),
-                aBooking.getPassenger().getName(),
-                aBooking.getFlight().getFlightNumber(),
-                aBooking.getFlight().getAirportFrom().getCode(),
-                aBooking.getFlight().getAirportTo().getCode(),
-                dateformat.format(aBooking.getFlight().getDeparture())
-            });
+            for (Booking aBooking : bookingService.getApprovedBookings()) {
+                approvedModel.addRow(new Object[]{
+                    aBooking.getBookingReference(),
+                    aBooking.getPassenger().getName(),
+                    aBooking.getFlight().getFlightNumber(),
+                    aBooking.getFlight().getAirportFrom().getCode(),
+                    aBooking.getFlight().getAirportTo().getCode(),
+                    dateformat.format(aBooking.getFlight().getDeparture())
+                });
+            }
+        } catch (RemoteException ex) {
+            Logger.getLogger(ApproveBookingForm.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -193,18 +202,21 @@ public class ApproveBookingForm extends javax.swing.JFrame {
         for (int i = 0; i < pendingModel.getRowCount(); i++) {
             boolean approved = (boolean) pendingModel.getValueAt(i, 6);
             if (approved == true) {
-                checkedExists = true;
-                // "Approve" checkbox checked, set booking state to approved
-                String bookingReference = (String) pendingModel.getValueAt(i, 0);
-                Booking pendingBooking = repository.getBookingByBookingReference(bookingReference);
-                //pendingBooking.setApproved(true);
-                repository.approveBooking(pendingBooking);
+                try {
+                    checkedExists = true;
+                    // "Approve" checkbox checked, set booking state to approved
+                    String bookingReference = (String) pendingModel.getValueAt(i, 0);
+                    Booking pendingBooking = bookingService.getBookingByBookingReference(bookingReference);
+                    //pendingBooking.setApproved(true);
+                    bookingService.approveBooking(pendingBooking);
+                } catch (RemoteException ex) {
+                    Logger.getLogger(ApproveBookingForm.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
         if (!checkedExists) {
             JOptionPane.showMessageDialog(null, "Please select the bookings to approve.");
         }
-        //repository.save();
         refreshTables();
 
     }//GEN-LAST:event_approveButtonActionPerformed
