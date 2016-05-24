@@ -38,18 +38,16 @@ public class PassengerForm extends javax.swing.JFrame {
     private final AirportService airportService = Client.airportService;
     private final FlightService flightService = Client.flightService;
     private final BookingService bookingService = Client.bookingService;
-    
-    
 
     private SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy kk:mm");
 
     /**
      * Creates new form PassengerForm
      */
-    public PassengerForm() {
+    public PassengerForm(int selectedIndex) {
         try {
             initComponents();
-            
+            jTabbedPane1.setSelectedIndex(selectedIndex);
             List<Airport> airports = airportService.getAirports();
             searchFlightsPanel.setAirports(airports);
         } catch (RemoteException ex) {
@@ -77,7 +75,7 @@ public class PassengerForm extends javax.swing.JFrame {
     private void updateBookingTable() {
         try {
             List<Booking> bookings = bookingService.getActiveBookingsByPassenger(passenger);
-            
+
             DefaultTableModel bookingModel = (DefaultTableModel) bookingTable.getModel();
             bookingModel.setRowCount(0);
             for (Booking booking : bookings) {
@@ -89,9 +87,9 @@ public class PassengerForm extends javax.swing.JFrame {
                     DATE_FORMAT.format(booking.getFlight().getDeparture()),
                     flightArrivalToString(booking.getFlight()),
                     booking.getSeat()
-                        
+
                 });
-                
+
             }
         } catch (RemoteException ex) {
             Logger.getLogger(PassengerForm.class.getName()).log(Level.SEVERE, null, ex);
@@ -101,10 +99,10 @@ public class PassengerForm extends javax.swing.JFrame {
     private void listFlights(String airportCodeFrom, String airportCodeTo, Date departureFrom, Date departureTo) {
         try {
             List<Flight> flights = flightService.getFilteredFlights(airportCodeFrom, airportCodeTo, departureFrom, departureTo);
-            
+
             DefaultTableModel listFlightModel = (DefaultTableModel) jTable1.getModel();
             listFlightModel.setRowCount(0);
-            
+
             for (Flight flight : flights) {
                 listFlightModel.addRow(new Object[]{
                     flight.getId(),
@@ -162,6 +160,7 @@ public class PassengerForm extends javax.swing.JFrame {
         emailField = new javax.swing.JTextField();
         savePersonalDetailsButton = new javax.swing.JButton();
         userLabel = new javax.swing.JLabel();
+        logoutButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -319,8 +318,6 @@ public class PassengerForm extends javax.swing.JFrame {
 
         emailLabel.setText("Email:");
 
-        nameField.setSize(new java.awt.Dimension(80, 300));
-
         savePersonalDetailsButton.setText("Save");
         savePersonalDetailsButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -344,7 +341,7 @@ public class PassengerForm extends javax.swing.JFrame {
                         .addGroup(personalDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(emailField, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(561, Short.MAX_VALUE))
+                .addContainerGap(578, Short.MAX_VALUE))
         );
         personalDetailsPanelLayout.setVerticalGroup(
             personalDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -366,24 +363,37 @@ public class PassengerForm extends javax.swing.JFrame {
 
         userLabel.setText("jLabel1");
 
+        logoutButton.setText("logout");
+        logoutButton.setToolTipText("");
+        logoutButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                logoutButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTabbedPane1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTabbedPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(userLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(56, 56, 56)
+                        .addComponent(logoutButton)))
                 .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(userLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(74, 74, 74))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(userLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(logoutButton)
+                    .addComponent(userLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 341, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -396,18 +406,18 @@ public class PassengerForm extends javax.swing.JFrame {
         try {
             String name = nameField.getText();
             String email = emailField.getText();
-            
+
             Passenger tempPassenger = new Passenger();
             tempPassenger.setName(name);
             tempPassenger.setEmail(email);
             tempPassenger.setId(passenger.getId());
-            
+
             boolean result = passengerService.updatePassenger(tempPassenger);
-            
+
             if (result) {
                 passenger = tempPassenger;
             }
-            
+
             refresh();
         } catch (RemoteException ex) {
             Logger.getLogger(PassengerForm.class.getName()).log(Level.SEVERE, null, ex);
@@ -427,7 +437,7 @@ public class PassengerForm extends javax.swing.JFrame {
             try {
                 int flightId = (int) listFlightModel.getValueAt(row, 0);
                 Flight selectedFlight = flightService.getFlightById(flightId);
-                
+
                 SelectSeatForm selectSeatForm = new SelectSeatForm(selectedFlight, passenger);
                 selectSeatForm.setVisible(true);
                 this.dispose();
@@ -451,7 +461,7 @@ public class PassengerForm extends javax.swing.JFrame {
                 boolean result = bookingService.deleteBookingByBookingreference(bookingNumber);
                 int dialogResult = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete? Booking: " + bookingNumber,
                         "Deleting booking", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
-                
+
                 if (dialogResult == JOptionPane.OK_OPTION) {
                     updateBookingTable();
                 }
@@ -468,25 +478,29 @@ public class PassengerForm extends javax.swing.JFrame {
         if (row >= 0) {
             try {
                 String bookingNumber = (String) bookedFlightModel.getValueAt(row, 0);
-                
+
                 Booking booking = bookingService.getBookingByBookingReference(bookingNumber);
                 Flight flight = flightService.getFlightById(booking.getFlight().getId());
-                
+
                 SelectSeatForm changeSeat = new SelectSeatForm(flight, passenger, booking);
                 changeSeat.setVisible(true);
-                
+
                 changeSeat.addWindowListener(new WindowAdapter() {
                     @Override
                     public void windowClosed(WindowEvent e) {
                         updateBookingTable();
                     }
-                    
+
                 });
+                this.dispose();
             } catch (RemoteException ex) {
                 Logger.getLogger(PassengerForm.class.getName()).log(Level.SEVERE, null, ex);
             }
     }//GEN-LAST:event_seatChangeButtonActionPerformed
     }
+    private void logoutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutButtonActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_logoutButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -495,7 +509,7 @@ public class PassengerForm extends javax.swing.JFrame {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -518,7 +532,7 @@ public class PassengerForm extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new PassengerForm().setVisible(true);
+                new PassengerForm(0).setVisible(true);
             }
         });
     }
@@ -535,6 +549,7 @@ public class PassengerForm extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JButton logoutButton;
     private javax.swing.JTextField nameField;
     private javax.swing.JLabel nameLabel;
     private javax.swing.JPanel personalDetailsPanel;

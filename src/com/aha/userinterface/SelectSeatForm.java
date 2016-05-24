@@ -32,11 +32,9 @@ import javax.swing.JRadioButton;
  */
 public class SelectSeatForm extends javax.swing.JFrame {
 
-
-    
     private final PassengerService passengerService = Client.passengerService;
     private final BookingService bookingService = Client.bookingService;
-    
+
     private Flight flight;
     private Seat selectedSeat;
     private Passenger passenger;
@@ -51,7 +49,7 @@ public class SelectSeatForm extends javax.swing.JFrame {
     public SelectSeatForm(Flight flight, Passenger passenger) {
         this(flight, passenger, null);
     }
-    
+
     public SelectSeatForm(Flight flight, Passenger passenger, Booking booking) {
         this.flight = flight;
         this.passenger = passenger;
@@ -65,69 +63,69 @@ public class SelectSeatForm extends javax.swing.JFrame {
         drawSeatRadioButtons();
         this.pack();
     }
-    
+
     private void drawSeatRadioButtons() {
         try {
             List<Seat> bookedSeats = bookingService.getBookedSeatsOfFlight(flight);
             List<Seat> seats = flight.getAirplane().getSeats();
-            
+
             seatsPanel.setLayout(new GridLayout(0, 7, 0, 0));
-            
+
             // Empty label - top left
             seatsPanel.add(new JLabel());
-            
+
             // Set title
             for (char letter = 'A'; letter <= 'F'; letter++) {
                 JLabel label = new JLabel(String.valueOf(letter));
                 label.setHorizontalAlignment(JLabel.CENTER);
                 seatsPanel.add(label);
             }
-            
+
             for (final Seat seat : seats) {
                 if (seat.getLetter().equals("A")) {
                     JLabel label = new JLabel(String.valueOf(seat.getRow()));
                     seatsPanel.add(label);
                 }
-                
+
                 JRadioButton seatButton = new JRadioButton();
-                
+
                 ActionListener seatButtonListener = new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         selectedSeat = seat;
                         selectSeatLabel.setText(seat.getRow() + seat.getLetter());
-                        
-                        int price = (int)(flight.getBasicPrice() * seat.getMultiplier());
+
+                        int price = (int) (flight.getBasicPrice() * seat.getMultiplier());
                         priceLabel.setText(String.valueOf(price) + "Ft");
                     }
                 };
                 seatButton.addActionListener(seatButtonListener);
-                
+
                 // Only allow booking there is no existing booking on seat
-                if(bookedSeats.contains(seat)) {
+                if (bookedSeats.contains(seat)) {
                     seatButton.setEnabled(false);
                 }
-                
+
                 seatButtonGroup.add(seatButton);
                 seatsPanel.add(seatButton);
-                
-                if(originalBooking != null && seat.equals(originalBooking.getSeat())) {
+
+                if (originalBooking != null && seat.equals(originalBooking.getSeat())) {
                     seatButton.setEnabled(true);
                     seatButton.doClick();
                 }
-                
+
             }
         } catch (RemoteException ex) {
             Logger.getLogger(SelectSeatForm.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }
-    
+
     private String generateBookingReference() {
         SecureRandom random = new SecureRandom();
-        
+
         return new BigInteger(130, random).toString(32);
-        
+
     }
 
     /**
@@ -274,22 +272,22 @@ public class SelectSeatForm extends javax.swing.JFrame {
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
-        
+
         if (selectedSeat != null) {
             Booking newBooking = new Booking();
-            
+
             if (originalBooking != null) {
                 newBooking.setBookingReference(originalBooking.getBookingReference());
             } else {
                 String reference = flight.getFlightNumber() + generateBookingReference();
-                
+
                 newBooking.setBookingReference(reference.substring(0, 20));
-                
+
             }
             newBooking.setSeat(selectedSeat);
             newBooking.setFlight(flight);
             newBooking.setPassenger(passenger);
-            
+
             if (originalBooking != null) {
                 try {
                     bookingService.updateSeat(newBooking);
@@ -302,9 +300,11 @@ public class SelectSeatForm extends javax.swing.JFrame {
                 } catch (RemoteException ex) {
                     Logger.getLogger(SelectSeatForm.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                
+
             }
-            
+            PassengerForm passengerForm = new PassengerForm(1);
+            passengerForm.setPassenger(passenger);
+            passengerForm.setVisible(true);
             this.dispose();
         } else {
             JOptionPane.showMessageDialog(null, "Please select a seat.");

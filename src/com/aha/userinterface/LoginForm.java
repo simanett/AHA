@@ -57,8 +57,7 @@ public class LoginForm extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("AHA Bernot Helga, Simonics Anett");
-
-        userNameBox.setSize(new java.awt.Dimension(84, 128));
+        setPreferredSize(new java.awt.Dimension(300, 150));
 
         userLabel.setText("Username:");
 
@@ -121,9 +120,10 @@ public class LoginForm extends javax.swing.JFrame {
                 if (passenger == null) {
                     JOptionPane.showMessageDialog(null, "Invalid user name");
                 } else {
-                    PassengerForm passengerForm = new PassengerForm();
+                    PassengerForm passengerForm = new PassengerForm(0);
                     passengerForm.setPassenger(passenger);
                     passengerForm.setVisible(true);
+                    this.dispose();
 //                ListFlightsForm listFlightsForm = new ListFlightsForm(user);
 //                listFlightsForm.setVisible(true);
                 }
