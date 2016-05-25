@@ -43,6 +43,7 @@ public class BookingRepository implements BookingService {
                 + " BOOKINGS.SEATID, \n"
                 + " BOOKINGS.PASSENGERID, \n"
                 + " BOOKINGS.APPROVED, \n"
+                + " BOOKINGS.BAGGAGE, \n"
                 + " FLIGHTS.ID AS FLIGHT_ID, \n"
                 + " FLIGHTS.FLIGHTNUMBER, \n"
                 + " FLIGHTS.DEPARTURE, \n"
@@ -79,6 +80,7 @@ public class BookingRepository implements BookingService {
 
                 String bookingRef = rs.getString("BOOKINGREFERENCE");
                 int seatId = rs.getInt("SEATID");
+                int baggage = rs.getInt("BAGGAGE");
                 int rownumber = rs.getInt("ROWNUMBER");
                 String columnLetter = rs.getString("COLUMNLETTER");
                 double multiplier = rs.getDouble("MULTIPLIER");
@@ -139,6 +141,7 @@ public class BookingRepository implements BookingService {
                 booking.setPassenger(passenger);
                 booking.setSeat(seat);
                 booking.setFlight(flight);
+                booking.setBaggage(baggage);
             }
 
         } catch (SQLException e) {
@@ -170,6 +173,7 @@ public class BookingRepository implements BookingService {
                 + " BOOKINGS.PASSENGERID, \n"
                 + " FLIGHTS.ID AS FLIGHT_ID, \n"
                 + " BOOKINGS.APPROVED, \n"
+                + " BOOKINGS.BAGGAGE, \n"
                 + " FLIGHTS.FLIGHTNUMBER, \n"
                 + " FLIGHTS.DEPARTURE, \n"
                 + " FLIGHTS.FLIGHTDURATION, \n"
@@ -201,6 +205,7 @@ public class BookingRepository implements BookingService {
 
                 String bookingRef = rs.getString("BOOKINGREFERENCE");
                 int seatId = rs.getInt("SEATID");
+                int baggage = rs.getInt("BAGGAGE");
                 int rownumber = rs.getInt("ROWNUMBER");
                 String columnLetter = rs.getString("COLUMNLETTER");
                 double multiplier = rs.getDouble("MULTIPLIER");
@@ -261,6 +266,7 @@ public class BookingRepository implements BookingService {
                 booking.setPassenger(passenger);
                 booking.setSeat(seat);
                 booking.setFlight(flight);
+                booking.setBaggage(baggage);
 
                 bookings.add(booking);
             }
@@ -288,6 +294,7 @@ public class BookingRepository implements BookingService {
                 + " BOOKINGS.SEATID, \n"
                 + " BOOKINGS.PASSENGERID, \n"
                 + " BOOKINGS.APPROVED, \n"
+                + " BOOKINGS.BAGGAGE, \n"
                 + " FLIGHTS.ID AS FLIGHT_ID, \n"
                 + " FLIGHTS.FLIGHTNUMBER, \n"
                 + " FLIGHTS.DEPARTURE, \n"
@@ -324,6 +331,7 @@ public class BookingRepository implements BookingService {
 
                 String bookingRef = rs.getString("BOOKINGREFERENCE");
                 int seatId = rs.getInt("SEATID");
+                int baggage = rs.getInt("BAGGAGE");
                 int flightId = rs.getInt("FLIGHT_ID");
                 int basicprice = rs.getInt("BASICPRICE");
                 int passengerId = rs.getInt("PASSENGERID");
@@ -384,6 +392,7 @@ public class BookingRepository implements BookingService {
                 booking.setPassenger(passenger);
                 booking.setFlight(flight);
                 booking.setSeat(seat);
+                booking.setBaggage(baggage);
 
                 bookings.add(booking);
             }
@@ -452,6 +461,7 @@ public class BookingRepository implements BookingService {
                 + " BOOKINGS.FLIGHTID, \n"
                 + " BOOKINGS.PASSENGERID, \n"
                 + " BOOKINGS.APPROVED, \n"
+                + " BOOKINGS.BAGGAGE, \n"
                 + " FLIGHTS.FLIGHTNUMBER, \n"
                 + " FLIGHTS.DEPARTURE, \n"
                 + " FLIGHTS.FLIGHTDURATION, \n"
@@ -483,6 +493,7 @@ public class BookingRepository implements BookingService {
             while (rs.next()) {
                 String bookingRef = rs.getString("BOOKINGREFERENCE");
                 int seatId = rs.getInt("SEATID");
+                int baggage = rs.getInt("BAGGAGE");
                 int rownumber = rs.getInt("ROWNUMBER");
                 String columnLetter = rs.getString("COLUMNLETTER");
                 double multiplier = rs.getDouble("MULTIPLIER");
@@ -544,6 +555,7 @@ public class BookingRepository implements BookingService {
                 booking.setPassenger(passenger);
                 booking.setFlight(flight);
                 booking.setSeat(seat);
+                booking.setBaggage(baggage);
 
                 approvedBookings.add(booking);
             }
@@ -579,6 +591,7 @@ public class BookingRepository implements BookingService {
                 + " BOOKINGS.FLIGHTID, \n"
                 + " BOOKINGS.PASSENGERID, \n"
                 + " BOOKINGS.APPROVED, \n"
+                + " BOOKINGS.BAGGAGE, \n"
                 + " FLIGHTS.FLIGHTNUMBER, \n"
                 + " FLIGHTS.DEPARTURE, \n"
                 + " FLIGHTS.FLIGHTDURATION, \n"
@@ -610,6 +623,7 @@ public class BookingRepository implements BookingService {
             while (rs.next()) {
                 String bookingRef = rs.getString("BOOKINGREFERENCE");
                 int seatId = rs.getInt("SEATID");
+                int baggage = rs.getInt("BAGGAGE");
                 int rownumber = rs.getInt("ROWNUMBER");
                 String columnLetter = rs.getString("COLUMNLETTER");
                 double multiplier = rs.getDouble("MULTIPLIER");
@@ -670,6 +684,7 @@ public class BookingRepository implements BookingService {
                 booking.setPassenger(passenger);
                 booking.setSeat(seat);
                 booking.setFlight(flight);
+                booking.setBaggage(baggage);
 
                 pendingBookings.add(booking);
             }
@@ -748,8 +763,8 @@ public class BookingRepository implements BookingService {
     public boolean addBooking(Booking booking) {
         boolean result = false;
         PreparedStatement stmt = null;
-        String query = " insert into AHA.BOOKINGS (BOOKINGREFERENCE, SEATID, FLIGHTID, PASSENGERID) "
-                + "values (?, ?, ?, ?) ";
+        String query = " insert into AHA.BOOKINGS (BOOKINGREFERENCE, SEATID, FLIGHTID, PASSENGERID, BAGGAGE) "
+                + "values (?, ?, ?, ?, ?) ";
 
         System.out.println(booking);
 
@@ -759,6 +774,7 @@ public class BookingRepository implements BookingService {
             stmt.setInt(2, booking.getSeat().getId());
             stmt.setInt(3, booking.getFlight().getId());
             stmt.setInt(4, booking.getPassenger().getId());
+            stmt.setInt(5, booking.getBaggage());
 
             int modifiedRows = stmt.executeUpdate();
 
@@ -815,12 +831,13 @@ public class BookingRepository implements BookingService {
 
         PreparedStatement stmt = null;
         String query = "UPDATE BOOKINGS\n"
-                + "SET SEATID= ? \n"
+                + "SET SEATID= ?, BAGGAGE=? \n"
                 + "WHERE BOOKINGREFERENCE=? ";
         try {
             stmt = AHA.connection.prepareStatement(query);
             stmt.setInt(1, booking.getSeat().getId());
-            stmt.setString(2, booking.getBookingReference());
+            stmt.setInt(2, booking.getBaggage());
+            stmt.setString(3, booking.getBookingReference());
             int modifiedrows = stmt.executeUpdate();
 
         } catch (SQLException e) {

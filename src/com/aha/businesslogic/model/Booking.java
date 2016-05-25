@@ -18,6 +18,15 @@ public class Booking implements Serializable {
     private boolean approved;
     private Flight flight;
     private Seat seat;
+    private int baggage;
+
+    public int getBaggage() {
+        return baggage;
+    }
+
+    public void setBaggage(int baggage) {
+        this.baggage = baggage;
+    }
 
     public Seat getSeat() {
         return seat;
