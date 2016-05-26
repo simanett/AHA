@@ -68,7 +68,11 @@ public class PassengerForm extends javax.swing.JFrame {
 
         nameField.setText(name);
         emailField.setText(email);
+        if (passenger.isVip()) {
+            name = name + " - VIP MEMBER";
+        }
         userLabel.setText(name);
+
         updateBookingTable();
     }
 
@@ -278,7 +282,7 @@ public class PassengerForm extends javax.swing.JFrame {
             }
         });
 
-        seatChangeButton.setText("Seat change");
+        seatChangeButton.setText("Change booking");
         seatChangeButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 seatChangeButtonActionPerformed(evt);
@@ -292,12 +296,12 @@ public class PassengerForm extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 832, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 849, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(DeleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(seatChangeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(seatChangeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -381,8 +385,8 @@ public class PassengerForm extends javax.swing.JFrame {
                     .addComponent(jTabbedPane1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(userLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(56, 56, 56)
+                        .addComponent(userLabel)
+                        .addGap(222, 222, 222)
                         .addComponent(logoutButton)))
                 .addContainerGap())
         );

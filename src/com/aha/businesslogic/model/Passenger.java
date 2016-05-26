@@ -11,7 +11,16 @@ package com.aha.businesslogic.model;
  */
 public class Passenger extends User {
 
-    public Passenger() {
+   
+         private boolean vip;
 
+    public boolean isVip() {
+        return vip;
     }
+
+    public void setVip(boolean vip) {
+        this.vip = vip;
+    }
+
+    
 }

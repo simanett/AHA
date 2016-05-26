@@ -36,7 +36,7 @@ public class PassengerRepository implements PassengerService {
         Passenger passenger = null;
         PreparedStatement stmt = null;
 
-        String query = "select ID, NAME, EMAIL "
+        String query = "select ID, NAME, EMAIL, VIP "
                 + "from AHA.PASSENGERS where ID=?";
         try {
             stmt = AHA.connection.prepareStatement(query);
@@ -48,9 +48,11 @@ public class PassengerRepository implements PassengerService {
                 int passengerId = rs.getInt("ID");
                 String name = rs.getString("NAME");
                 String email = rs.getString("EMAIL");
+                boolean vip = rs.getBoolean("VIP");
                 passenger.setId(passengerId);
                 passenger.setName(name);
                 passenger.setEmail(email);
+                passenger.setVip(vip);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -73,7 +75,7 @@ public class PassengerRepository implements PassengerService {
         Passenger passenger = null;
         PreparedStatement stmt = null;
 
-        String query = "select ID, NAME, EMAIL "
+        String query = "select ID, NAME, EMAIL, VIP "
                 + "from AHA.PASSENGERS where NAME=?";
 
         try {
@@ -87,9 +89,11 @@ public class PassengerRepository implements PassengerService {
                 int id = rs.getInt("ID");
                 String name = rs.getString("NAME");
                 String email = rs.getString("EMAIL");
+                boolean vip = rs.getBoolean("VIP");
                 passenger.setId(id);
                 passenger.setName(name);
                 passenger.setEmail(email);
+                passenger.setVip(vip);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -116,7 +120,7 @@ public class PassengerRepository implements PassengerService {
         Passenger passenger = null;
         PreparedStatement stmt = null;
 
-        String query = "select ID, NAME, EMAIL "
+        String query = "select ID, NAME, EMAIL, VIP "
                 + "from AHA.PASSENGERS where EMAIL=?";
 
         try {
@@ -130,9 +134,11 @@ public class PassengerRepository implements PassengerService {
                 int id = rs.getInt("ID");
                 String passengerName = rs.getString("NAME");
                 String email = rs.getString("EMAIL");
+                boolean vip = rs.getBoolean("VIP");
                 passenger.setId(id);
                 passenger.setName(passengerName);
                 passenger.setEmail(email);
+                passenger.setVip(vip);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -158,7 +164,7 @@ public class PassengerRepository implements PassengerService {
 
         List<Passenger> passengers = new ArrayList<>();
         Statement stmt = null;
-        String query = "select ID, NAME, EMAIL "
+        String query = "select ID, NAME, EMAIL, VIP "
                 + "from AHA.PASSENGERS ";
         try {
             stmt = AHA.connection.createStatement();
@@ -167,11 +173,14 @@ public class PassengerRepository implements PassengerService {
                 int id = rs.getInt("ID");
                 String name = rs.getString("NAME");
                 String email = rs.getString("EMAIL");
+                boolean vip = rs.getBoolean("VIP");
                 Passenger passenger = new Passenger();
                 passenger.setId(id);
                 passenger.setName(name);
                 passenger.setEmail(email);
+                passenger.setVip(vip);
                 passengers.add(passenger);
+                
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -191,13 +200,14 @@ public class PassengerRepository implements PassengerService {
     @Override
     public void addPassenger(Passenger passenger) {
         PreparedStatement stmt = null;
-        String query = "insert into AHA.PASSENGERS (id, name, email) "
-                + "values (?, ?, ?)";
+        String query = "insert into AHA.PASSENGERS (id, name, email,VIP) "
+                + "values (?, ?, ?,?)";
         try {
             stmt = AHA.connection.prepareStatement(query);
             stmt.setInt(1, this.getMaxPassengerId() + 1);
             stmt.setString(2, passenger.getName());
             stmt.setString(3, passenger.getEmail());
+            stmt.setBoolean(4, true);
             int modifiedRows = stmt.executeUpdate();
             System.out.println("Modified rows:");
             System.out.println(modifiedRows);
@@ -218,13 +228,14 @@ public class PassengerRepository implements PassengerService {
     public boolean updatePassenger(Passenger passenger) {
         PreparedStatement stmt = null;
         boolean result = false;
-        String query = "update AHA.PASSENGERS set name = ?, email= ? where id = ? ";
+        String query = "update AHA.PASSENGERS set name = ?, email= ?, vip= ? where id = ? ";
 
         try {
             stmt = AHA.connection.prepareStatement(query);
             stmt.setString(1, passenger.getName());
             stmt.setString(2, passenger.getEmail());
-            stmt.setInt(3, passenger.getId());
+            stmt.setBoolean(3, passenger.isVip());
+            stmt.setInt(4, passenger.getId());
             int modifiedRows = stmt.executeUpdate();
             System.out.println("Modified rows:");
             System.out.println(modifiedRows);

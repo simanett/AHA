@@ -29,8 +29,8 @@
                   <Component id="jTabbedPane1" alignment="1" max="32767" attributes="0"/>
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                      <Component id="userLabel" min="-2" pref="99" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="56" max="-2" attributes="0"/>
+                      <Component id="userLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="222" max="-2" attributes="0"/>
                       <Component id="logoutButton" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -206,12 +206,12 @@
                   <Group type="102" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jScrollPane2" pref="832" max="32767" attributes="0"/>
+                          <Component id="jScrollPane2" pref="849" max="32767" attributes="0"/>
                           <Group type="102" attributes="0">
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                               <Component id="DeleteButton" min="-2" pref="125" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="seatChangeButton" min="-2" pref="125" max="-2" attributes="0"/>
+                              <Component id="seatChangeButton" min="-2" pref="134" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
@@ -310,7 +310,7 @@
             </Component>
             <Component class="javax.swing.JButton" name="seatChangeButton">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Seat change"/>
+                <Property name="text" type="java.lang.String" value="Change booking"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="seatChangeButtonActionPerformed"/>

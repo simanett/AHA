@@ -61,6 +61,10 @@ public class SelectSeatForm extends javax.swing.JFrame {
         String date = new SimpleDateFormat("dd/MM/yyyy kk:mm").format(flight.getDeparture());
         jLabel5.setText(date);
         drawSeatRadioButtons();
+        if (passenger.isVip()) {
+            vipLabel.setText("As a VIP member you get 10% off");
+
+        }
         if (booking != null) {
             baggageBox1.setSelectedIndex(booking.getBaggage());
             flexiBox.setSelectedIndex(booking.getTicketType());
@@ -132,6 +136,7 @@ public class SelectSeatForm extends javax.swing.JFrame {
             int selectedBaggage = baggageBox1.getSelectedIndex();
             switch (selectedBaggage) {
                 case 1:
+                    
                     price += 5000;
                     break;
                 case 2:
@@ -151,7 +156,12 @@ public class SelectSeatForm extends javax.swing.JFrame {
                     break;
 
             }
-            priceLabel.setText(String.valueOf(price) +"Ft");
+            if (passenger.isVip()) {
+                price *= 0.9;
+
+            }
+
+            priceLabel.setText(String.valueOf(price) + "Ft");
         }
 
     }
@@ -195,6 +205,7 @@ public class SelectSeatForm extends javax.swing.JFrame {
         baggageBox1 = new javax.swing.JComboBox<>();
         flexLabel = new javax.swing.JLabel();
         flexiBox = new javax.swing.JComboBox<>();
+        vipLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("AHA Bernot Helga, Simonics Anett");
@@ -410,22 +421,27 @@ public class SelectSeatForm extends javax.swing.JFrame {
                 .addGap(39, 39, 39)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 358, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 49, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
                         .addComponent(okButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(cancelButton)
-                        .addGap(108, 108, 108))))
+                        .addGap(108, 108, 108))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addComponent(vipLabel))
+                            .addComponent(jLabel2)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 358, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 49, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel2)
-                .addGap(44, 44, 44)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(vipLabel)
+                .addGap(16, 16, 16)
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -522,6 +538,7 @@ public class SelectSeatForm extends javax.swing.JFrame {
     private javax.swing.JPanel seatsPanel;
     private javax.swing.JLabel selectSeatLabel;
     private javax.swing.JLabel toLabel;
+    private javax.swing.JLabel vipLabel;
     // End of variables declaration//GEN-END:variables
 
 }
