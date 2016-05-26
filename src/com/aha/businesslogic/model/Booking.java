@@ -19,6 +19,15 @@ public class Booking implements Serializable {
     private Flight flight;
     private Seat seat;
     private int baggage;
+    private int ticketType;
+
+    public int getTicketType() {
+        return ticketType;
+    }
+
+    public void setTicketType(int ticketType) {
+        this.ticketType = ticketType;
+    }
 
     public int getBaggage() {
         return baggage;

@@ -63,6 +63,7 @@ public class SelectSeatForm extends javax.swing.JFrame {
         drawSeatRadioButtons();
         if (booking != null) {
             baggageBox1.setSelectedIndex(booking.getBaggage());
+            flexiBox.setSelectedIndex(booking.getTicketType());
             updatePrice();
         }
 
@@ -141,7 +142,16 @@ public class SelectSeatForm extends javax.swing.JFrame {
                     break;
 
             }
-            priceLabel.setText(String.valueOf(price) + "Ft");
+
+            int selectedTicket = flexiBox.getSelectedIndex();
+            switch (selectedTicket) {
+
+                case 1:
+                    price += 5000;
+                    break;
+
+            }
+            priceLabel.setText(String.valueOf(price) +"Ft");
         }
 
     }
@@ -183,6 +193,8 @@ public class SelectSeatForm extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         priceLabel = new javax.swing.JLabel();
         baggageBox1 = new javax.swing.JComboBox<>();
+        flexLabel = new javax.swing.JLabel();
+        flexiBox = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("AHA Bernot Helga, Simonics Anett");
@@ -215,10 +227,7 @@ public class SelectSeatForm extends javax.swing.JFrame {
             .addGap(0, 374, Short.MAX_VALUE)
         );
 
-        java.awt.GridBagLayout jPanel1Layout = new java.awt.GridBagLayout();
-        new java.awt.GridBagLayout().columnWidths = new int[] {0, 30, 0};
-        new java.awt.GridBagLayout().rowHeights = new int[] {0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0};
-        jPanel1.setLayout(jPanel1Layout);
+        jPanel1.setLayout(new java.awt.GridBagLayout());
 
         jLabel1.setText("Flight number:");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -334,7 +343,7 @@ public class SelectSeatForm extends javax.swing.JFrame {
         jLabel7.setText("Price:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 12;
+        gridBagConstraints.gridy = 14;
         gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
         gridBagConstraints.ipadx = 5;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
@@ -344,7 +353,7 @@ public class SelectSeatForm extends javax.swing.JFrame {
         priceLabel.setText("No seat selected");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 12;
+        gridBagConstraints.gridy = 14;
         gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
         gridBagConstraints.ipadx = 5;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
@@ -365,6 +374,31 @@ public class SelectSeatForm extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.weighty = 0.8;
         jPanel1.add(baggageBox1, gridBagConstraints);
+
+        flexLabel.setText("Ticket Type");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 12;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
+        gridBagConstraints.ipadx = 5;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weighty = 0.8;
+        jPanel1.add(flexLabel, gridBagConstraints);
+
+        flexiBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Normal Ticket", "Flexi Ticket + 5000 Ft" }));
+        flexiBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                flexiBoxActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 12;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
+        gridBagConstraints.ipadx = 5;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTHWEST;
+        gridBagConstraints.weighty = 0.8;
+        jPanel1.add(flexiBox, gridBagConstraints);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -429,6 +463,7 @@ public class SelectSeatForm extends javax.swing.JFrame {
             newBooking.setFlight(flight);
             newBooking.setPassenger(passenger);
             newBooking.setBaggage(baggageBox1.getSelectedIndex());
+            newBooking.setTicketType(flexiBox.getSelectedIndex());
 
             if (originalBooking != null) {
                 try {
@@ -460,10 +495,17 @@ public class SelectSeatForm extends javax.swing.JFrame {
         updatePrice();
     }//GEN-LAST:event_baggageBox1ActionPerformed
 
+    private void flexiBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flexiBoxActionPerformed
+        // TODO add your handling code here:
+        updatePrice();
+    }//GEN-LAST:event_flexiBoxActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel baggage;
     private javax.swing.JComboBox<String> baggageBox1;
     private javax.swing.JButton cancelButton;
+    private javax.swing.JLabel flexLabel;
+    private javax.swing.JComboBox<String> flexiBox;
     private javax.swing.JLabel flightNumberLabel;
     private javax.swing.JLabel fromLabel;
     private javax.swing.JLabel jLabel1;
