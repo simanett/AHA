@@ -24,7 +24,9 @@ public interface BookingService extends Remote {
      *
      * @param booking The Booking object to add
      */
-    boolean addBooking(Booking booking)throws RemoteException;
+    boolean addBooking(Booking booking) throws RemoteException;
+
+    boolean isApprovedBooking(Booking booking) throws RemoteException;
 
     /**
      * Set Booking approved status to 1.
@@ -32,20 +34,24 @@ public interface BookingService extends Remote {
      * @param booking The booking to be set approved in database
      * @return void
      */
-    void approveBooking(Booking booking)throws RemoteException;
+    void approveBooking(Booking booking) throws RemoteException;
 
-    boolean deleteBookingByBookingreference(String bookingreference)throws RemoteException;
+    boolean deleteBookingByBookingreference(String bookingreference) throws RemoteException;
 
-    List<Booking> getActiveBookingsByPassenger(Passenger inputpassenger)throws RemoteException;
+    List<Booking> getActiveBookingsByPassenger(Passenger inputpassenger) throws RemoteException;
+
+    List<Booking> getPendingBookingsByPassenger(Passenger inputpassenger) throws RemoteException;
+
+    List<Booking> getApprovedBookingsByPassenger(Passenger inputpassenger) throws RemoteException;
 
     /**
      * Return all approved Booking objects
      *
      * @return All Bookings that are approved (booking.isApproved() == true)
      */
-    List<Booking> getApprovedBookings()throws RemoteException;
+    List<Booking> getApprovedBookings() throws RemoteException;
 
-    List<Seat> getBookedSeatsOfFlight(Flight flight)throws RemoteException;
+    List<Seat> getBookedSeatsOfFlight(Flight flight) throws RemoteException;
 
     /**
      * Return the Booking object with the given booking number
@@ -53,22 +59,22 @@ public interface BookingService extends Remote {
      * @param bookingReference String that identifies the Booking object
      * @return The Booking object if exists, null otherwise
      */
-    Booking getBookingByBookingReference(String bookingReference)throws RemoteException;
+    Booking getBookingByBookingReference(String bookingReference) throws RemoteException;
 
     /**
      * Return all Booking objects
      *
      * @return All Bookings in the database
      */
-    List<Booking> getBookings()throws RemoteException;
+    List<Booking> getBookings() throws RemoteException;
 
     /**
      * Return all pending Booking objects
      *
      * @return All Bookings that are pending (booking.isApproved() == false)
      */
-    List<Booking> getPendingBookings()throws RemoteException;
+    List<Booking> getPendingBookings() throws RemoteException;
 
-    void updateSeat(Booking booking)throws RemoteException;
-    
+    void updateSeat(Booking booking) throws RemoteException;
+
 }

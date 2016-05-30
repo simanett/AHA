@@ -167,16 +167,14 @@ public class ApproveBookingForm extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(refreshButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(approveButton))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 751, Short.MAX_VALUE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING))))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 751, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -207,7 +205,7 @@ public class ApproveBookingForm extends javax.swing.JFrame {
                     // "Approve" checkbox checked, set booking state to approved
                     String bookingReference = (String) pendingModel.getValueAt(i, 0);
                     Booking pendingBooking = bookingService.getBookingByBookingReference(bookingReference);
-                    //pendingBooking.setApproved(true);
+                    pendingBooking.setApproved(true);
                     bookingService.approveBooking(pendingBooking);
                 } catch (RemoteException ex) {
                     Logger.getLogger(ApproveBookingForm.class.getName()).log(Level.SEVERE, null, ex);

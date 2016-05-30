@@ -40,6 +40,8 @@ public class SelectSeatForm extends javax.swing.JFrame {
     private Passenger passenger;
     private Booking originalBooking;
 
+    private int sourceTabNumber;
+
     /**
      * Form to
      *
@@ -47,13 +49,14 @@ public class SelectSeatForm extends javax.swing.JFrame {
      * @param user
      */
     public SelectSeatForm(Flight flight, Passenger passenger) {
-        this(flight, passenger, null);
+        this(flight, passenger, null, 0);
     }
 
-    public SelectSeatForm(Flight flight, Passenger passenger, Booking booking) {
+    public SelectSeatForm(Flight flight, Passenger passenger, Booking booking, int sourceTabNumber) {
         this.flight = flight;
         this.passenger = passenger;
         this.originalBooking = booking;
+        this.sourceTabNumber = sourceTabNumber;
         initComponents();
         flightNumberLabel.setText(String.valueOf(flight.getFlightNumber()));
         jLabel3.setText(flight.getAirportFrom().getCity());
@@ -66,7 +69,6 @@ public class SelectSeatForm extends javax.swing.JFrame {
             flexiBox.setSelectedIndex(booking.getTicketType());
             updatePrice();
         }
-
         this.pack();
     }
 
@@ -151,7 +153,7 @@ public class SelectSeatForm extends javax.swing.JFrame {
                     break;
 
             }
-            priceLabel.setText(String.valueOf(price) +"Ft");
+            priceLabel.setText(String.valueOf(price) + "Ft");
         }
 
     }
@@ -442,6 +444,9 @@ public class SelectSeatForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
+        PassengerForm passengerForm = new PassengerForm(this.sourceTabNumber);
+        passengerForm.setPassenger(passenger);
+        passengerForm.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_cancelButtonActionPerformed
 
@@ -480,7 +485,7 @@ public class SelectSeatForm extends javax.swing.JFrame {
 
             }
 
-            PassengerForm passengerForm = new PassengerForm(1);
+            PassengerForm passengerForm = new PassengerForm(this.sourceTabNumber);
             passengerForm.setPassenger(passenger);
             passengerForm.setVisible(true);
             this.dispose();

@@ -13,6 +13,7 @@ import com.aha.businesslogic.model.Booking;
 import com.aha.businesslogic.model.Flight;
 import com.aha.businesslogic.model.Passenger;
 import com.aha.businesslogic.model.Seat;
+import java.rmi.RemoteException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,6 +21,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -418,6 +421,288 @@ public class BookingRepository implements BookingService {
             }
         }
         return bookings;
+    }
+
+    @Override
+    public List<Booking> getApprovedBookingsByPassenger(Passenger inputpassenger) {
+        List<Booking> bookings = new ArrayList<>();
+        PreparedStatement stmt = null;
+
+        String query = "SELECT BOOKINGS.BOOKINGREFERENCE, \n"
+                + " BOOKINGS.SEATID, \n"
+                + " BOOKINGS.PASSENGERID, \n"
+                + " BOOKINGS.APPROVED, \n"
+                + " BOOKINGS.BAGGAGE, \n"
+                + " BOOKINGS.TICKETTYPE, \n"
+                + " FLIGHTS.ID AS FLIGHT_ID, \n"
+                + " FLIGHTS.FLIGHTNUMBER, \n"
+                + " FLIGHTS.DEPARTURE, \n"
+                + " FLIGHTS.FLIGHTDURATION, \n"
+                + " FLIGHTS.AIRPLANEID, \n"
+                + " FLIGHTS.BASICPRICE,\n"
+                + " PASSENGERS.NAME AS PASSENGER_NAME, \n"
+                + " PASSENGERS.EMAIL AS PASSENGER_EMAIL, \n"
+                + " AIRPLANES.ID AS AIRPLANE_ID, \n"
+                + " AIRPLANES.MAXDISTANCE, \n"
+                + " AIRPLANES.MODEL, \n"
+                + " AIRPORT_FROM.CODE AS FROM_CODE, \n"
+                + " AIRPORT_FROM.CITY AS FROM_CITY, \n"
+                + " AIRPORT_TO.CODE AS TO_CODE, \n"
+                + " AIRPORT_TO.CITY AS TO_CITY, \n"
+                + " SEATS.ID AS SEAT_ID, "
+                + " SEATS.ROWNUMBER, "
+                + " SEATS.COLUMNLETTER, "
+                + " SEATS.MULTIPLIER "
+                + " FROM BOOKINGS \n"
+                + " JOIN FLIGHTS ON BOOKINGS.FLIGHTID = FLIGHTS.ID \n"
+                + " JOIN PASSENGERS ON BOOKINGS.PASSENGERID = PASSENGERS.ID "
+                + " JOIN AHA.AIRPLANES ON FLIGHTS.AIRPLANEID = AIRPLANES.ID "
+                + " JOIN AHA.AIRPORTS AIRPORT_FROM ON FLIGHTS.FROMID = AIRPORT_FROM.CODE "
+                + " JOIN AHA.AIRPORTS AIRPORT_TO ON FLIGHTS.TOID = AIRPORT_TO.CODE"
+                + " JOIN AHA.SEATS ON BOOKINGS.SEATID = SEATS.ID "
+                + " WHERE PASSENGERS.ID = ? AND"
+                + " BOOKINGS.APPROVED = '1'";
+
+        try {
+            stmt = AHA.connection.prepareStatement(query);
+            stmt.setInt(1, inputpassenger.getId());
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+
+                String bookingRef = rs.getString("BOOKINGREFERENCE");
+                int seatId = rs.getInt("SEATID");
+                int baggage = rs.getInt("BAGGAGE");
+                int tickettype = rs.getInt("TICKETTYPE");
+                int flightId = rs.getInt("FLIGHT_ID");
+                int basicprice = rs.getInt("BASICPRICE");
+                int passengerId = rs.getInt("PASSENGERID");
+                String flightNumber = rs.getString("FLIGHTNUMBER");
+                boolean approved = rs.getBoolean("APPROVED");
+                Date departure = rs.getDate("DEPARTURE");
+                int flightDuration = rs.getInt("FLIGHTDURATION");
+                int airplaneId = rs.getInt("AIRPLANEID");
+                int maxdistance = rs.getInt("MAXDISTANCE");
+                String model = rs.getString("MODEL");
+                String passengerName = rs.getString("PASSENGER_NAME");
+                String passengerEmail = rs.getString("PASSENGER_EMAIL");
+                String fromCode = rs.getString("FROM_CODE");
+                String fromCity = rs.getString("FROM_CITY");
+                String toCode = rs.getString("TO_CODE");
+                String toCity = rs.getString("TO_CITY");
+                int seatsId = rs.getInt("SEAT_ID");
+                int rowNumber = rs.getInt("ROWNUMBER");
+                String columnLetter = rs.getString("COLUMNLETTER");
+                double multiplier = rs.getDouble("MULTIPLIER");
+
+                Passenger passenger = new Passenger();
+                passenger.setId(passengerId);
+                passenger.setEmail(passengerEmail);
+                passenger.setName(passengerName);
+
+                Airport fromAirport = new Airport();
+                fromAirport.setCode(fromCode);
+                fromAirport.setCity(fromCity);
+
+                Airport toAirport = new Airport();
+                toAirport.setCode(toCode);
+                toAirport.setCity(toCity);
+
+                Airplane airplane = new Airplane();
+                airplane.setId(airplaneId);
+                airplane.setMaxDistance(maxdistance);
+                airplane.setModel(model);
+
+                Flight flight = new Flight();
+                flight.setId(flightId);
+                flight.setFlightNumber(flightNumber);
+                flight.setDeparture(departure);
+                flight.setFlightDuration(flightDuration);
+                flight.setAirplane(airplane);
+                flight.setAirportFrom(fromAirport);
+                flight.setAirportTo(toAirport);
+                flight.setBasicPrice(basicprice);
+
+                Seat seat = new Seat();
+                seat.setId(seatsId);
+                seat.setRow(rowNumber);
+                seat.setLetter(columnLetter);
+                seat.setMultiplier(multiplier);
+
+                Booking booking = new Booking();
+                booking.setBookingReference(bookingRef);
+                booking.setPassenger(passenger);
+                booking.setFlight(flight);
+                booking.setSeat(seat);
+                booking.setBaggage(baggage);
+                booking.setTicketType(tickettype);
+
+                bookings.add(booking);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+        return bookings;
+    }
+
+    @Override
+    public List<Booking> getPendingBookingsByPassenger(Passenger inputpassenger) {
+        List<Booking> bookings = new ArrayList<>();
+        PreparedStatement stmt = null;
+
+        String query = "SELECT BOOKINGS.BOOKINGREFERENCE, \n"
+                + " BOOKINGS.SEATID, \n"
+                + " BOOKINGS.PASSENGERID, \n"
+                + " BOOKINGS.APPROVED, \n"
+                + " BOOKINGS.BAGGAGE, \n"
+                + " BOOKINGS.TICKETTYPE, \n"
+                + " FLIGHTS.ID AS FLIGHT_ID, \n"
+                + " FLIGHTS.FLIGHTNUMBER, \n"
+                + " FLIGHTS.DEPARTURE, \n"
+                + " FLIGHTS.FLIGHTDURATION, \n"
+                + " FLIGHTS.AIRPLANEID, \n"
+                + " FLIGHTS.BASICPRICE,\n"
+                + " PASSENGERS.NAME AS PASSENGER_NAME, \n"
+                + " PASSENGERS.EMAIL AS PASSENGER_EMAIL, \n"
+                + " AIRPLANES.ID AS AIRPLANE_ID, \n"
+                + " AIRPLANES.MAXDISTANCE, \n"
+                + " AIRPLANES.MODEL, \n"
+                + " AIRPORT_FROM.CODE AS FROM_CODE, \n"
+                + " AIRPORT_FROM.CITY AS FROM_CITY, \n"
+                + " AIRPORT_TO.CODE AS TO_CODE, \n"
+                + " AIRPORT_TO.CITY AS TO_CITY, \n"
+                + " SEATS.ID AS SEAT_ID, "
+                + " SEATS.ROWNUMBER, "
+                + " SEATS.COLUMNLETTER, "
+                + " SEATS.MULTIPLIER "
+                + " FROM BOOKINGS \n"
+                + " JOIN FLIGHTS ON BOOKINGS.FLIGHTID = FLIGHTS.ID \n"
+                + " JOIN PASSENGERS ON BOOKINGS.PASSENGERID = PASSENGERS.ID "
+                + " JOIN AHA.AIRPLANES ON FLIGHTS.AIRPLANEID = AIRPLANES.ID "
+                + " JOIN AHA.AIRPORTS AIRPORT_FROM ON FLIGHTS.FROMID = AIRPORT_FROM.CODE "
+                + " JOIN AHA.AIRPORTS AIRPORT_TO ON FLIGHTS.TOID = AIRPORT_TO.CODE"
+                + " JOIN AHA.SEATS ON BOOKINGS.SEATID = SEATS.ID "
+                + " WHERE PASSENGERS.ID = ? AND"
+                + " BOOKINGS.APPROVED = '0'";
+
+        try {
+            stmt = AHA.connection.prepareStatement(query);
+            stmt.setInt(1, inputpassenger.getId());
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+
+                String bookingRef = rs.getString("BOOKINGREFERENCE");
+                int seatId = rs.getInt("SEATID");
+                int baggage = rs.getInt("BAGGAGE");
+                int tickettype = rs.getInt("TICKETTYPE");
+                int flightId = rs.getInt("FLIGHT_ID");
+                int basicprice = rs.getInt("BASICPRICE");
+                int passengerId = rs.getInt("PASSENGERID");
+                String flightNumber = rs.getString("FLIGHTNUMBER");
+                boolean approved = rs.getBoolean("APPROVED");
+                Date departure = rs.getDate("DEPARTURE");
+                int flightDuration = rs.getInt("FLIGHTDURATION");
+                int airplaneId = rs.getInt("AIRPLANEID");
+                int maxdistance = rs.getInt("MAXDISTANCE");
+                String model = rs.getString("MODEL");
+                String passengerName = rs.getString("PASSENGER_NAME");
+                String passengerEmail = rs.getString("PASSENGER_EMAIL");
+                String fromCode = rs.getString("FROM_CODE");
+                String fromCity = rs.getString("FROM_CITY");
+                String toCode = rs.getString("TO_CODE");
+                String toCity = rs.getString("TO_CITY");
+                int seatsId = rs.getInt("SEAT_ID");
+                int rowNumber = rs.getInt("ROWNUMBER");
+                String columnLetter = rs.getString("COLUMNLETTER");
+                double multiplier = rs.getDouble("MULTIPLIER");
+
+                Passenger passenger = new Passenger();
+                passenger.setId(passengerId);
+                passenger.setEmail(passengerEmail);
+                passenger.setName(passengerName);
+
+                Airport fromAirport = new Airport();
+                fromAirport.setCode(fromCode);
+                fromAirport.setCity(fromCity);
+
+                Airport toAirport = new Airport();
+                toAirport.setCode(toCode);
+                toAirport.setCity(toCity);
+
+                Airplane airplane = new Airplane();
+                airplane.setId(airplaneId);
+                airplane.setMaxDistance(maxdistance);
+                airplane.setModel(model);
+
+                Flight flight = new Flight();
+                flight.setId(flightId);
+                flight.setFlightNumber(flightNumber);
+                flight.setDeparture(departure);
+                flight.setFlightDuration(flightDuration);
+                flight.setAirplane(airplane);
+                flight.setAirportFrom(fromAirport);
+                flight.setAirportTo(toAirport);
+                flight.setBasicPrice(basicprice);
+
+                Seat seat = new Seat();
+                seat.setId(seatsId);
+                seat.setRow(rowNumber);
+                seat.setLetter(columnLetter);
+                seat.setMultiplier(multiplier);
+
+                Booking booking = new Booking();
+                booking.setBookingReference(bookingRef);
+                booking.setPassenger(passenger);
+                booking.setFlight(flight);
+                booking.setSeat(seat);
+                booking.setBaggage(baggage);
+                booking.setTicketType(tickettype);
+
+                bookings.add(booking);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+        return bookings;
+    }
+
+    @Override
+    public boolean isApprovedBooking(Booking booking) throws RemoteException {
+        try {
+            PreparedStatement stmt = null;
+            String query = "SELECT * FROM BOOKINGS \n"
+                    + " WHERE BOOKINGS.BOOKINGREFERENCE = ? AND"
+                    + " BOOKINGS.APPROVED = '1'";
+            stmt = AHA.connection.prepareStatement(query);
+            stmt.setString(1, booking.getBookingReference());
+            ResultSet rs = stmt.executeQuery();
+            boolean bookingReferenceExists = rs.next();
+            if (bookingReferenceExists) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(BookingRepository.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
     }
 
     /**

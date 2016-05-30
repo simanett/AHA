@@ -74,12 +74,12 @@ public class PassengerForm extends javax.swing.JFrame {
 
     private void updateBookingTable() {
         try {
-            List<Booking> bookings = bookingService.getActiveBookingsByPassenger(passenger);
+            List<Booking> activeBookings = bookingService.getPendingBookingsByPassenger(passenger);
 
-            DefaultTableModel bookingModel = (DefaultTableModel) bookingTable.getModel();
-            bookingModel.setRowCount(0);
-            for (Booking booking : bookings) {
-                bookingModel.addRow(new Object[]{
+            DefaultTableModel activeBookingModel = (DefaultTableModel) bookingTable.getModel();
+            activeBookingModel.setRowCount(0);
+            for (Booking booking : activeBookings) {
+                activeBookingModel.addRow(new Object[]{
                     booking.getBookingReference(),
                     booking.getFlight().getFlightNumber(),
                     booking.getFlight().getAirportFrom(),
@@ -87,10 +87,25 @@ public class PassengerForm extends javax.swing.JFrame {
                     DATE_FORMAT.format(booking.getFlight().getDeparture()),
                     flightArrivalToString(booking.getFlight()),
                     booking.getSeat()
-
                 });
-
             }
+
+            List<Booking> approvedBookings = bookingService.getApprovedBookingsByPassenger(passenger);
+
+            DefaultTableModel approvedBookingModel = (DefaultTableModel) bookingTable1.getModel();
+            approvedBookingModel.setRowCount(0);
+            for (Booking booking : approvedBookings) {
+                approvedBookingModel.addRow(new Object[]{
+                    booking.getBookingReference(),
+                    booking.getFlight().getFlightNumber(),
+                    booking.getFlight().getAirportFrom(),
+                    booking.getFlight().getAirportTo(),
+                    DATE_FORMAT.format(booking.getFlight().getDeparture()),
+                    flightArrivalToString(booking.getFlight()),
+                    booking.getSeat()
+                });
+            }
+
         } catch (RemoteException ex) {
             Logger.getLogger(PassengerForm.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -153,6 +168,10 @@ public class PassengerForm extends javax.swing.JFrame {
         bookingTable = new javax.swing.JTable();
         DeleteButton = new javax.swing.JButton();
         seatChangeButton = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        bookingTable1 = new javax.swing.JTable();
+        jlbl_pendingBookings = new javax.swing.JLabel();
+        jlbl_approvedBookings = new javax.swing.JLabel();
         personalDetailsPanel = new javax.swing.JPanel();
         nameLabel = new javax.swing.JLabel();
         emailLabel = new javax.swing.JLabel();
@@ -232,11 +251,11 @@ public class PassengerForm extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(searchFlightsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 224, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 284, Short.MAX_VALUE)
                 .addComponent(bookflightButton))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                    .addContainerGap(50, Short.MAX_VALUE)
+                    .addContainerGap(109, Short.MAX_VALUE)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(34, 34, 34)))
         );
@@ -285,6 +304,38 @@ public class PassengerForm extends javax.swing.JFrame {
             }
         });
 
+        bookingTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "Booking Reference", "Flight Number", "From", "To", "Departure", "Arrival", "Seat"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane3.setViewportView(bookingTable1);
+
+        jlbl_pendingBookings.setText("Pending bookings");
+
+        jlbl_approvedBookings.setText("Approved bookings");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -297,19 +348,31 @@ public class PassengerForm extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(DeleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(seatChangeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(seatChangeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 832, Short.MAX_VALUE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jlbl_pendingBookings)
+                            .addComponent(jlbl_approvedBookings))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE)
+                .addGap(7, 7, 7)
+                .addComponent(jlbl_pendingBookings)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(seatChangeButton)
                     .addComponent(DeleteButton))
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jlbl_approvedBookings)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20))
         );
 
         jTabbedPane1.addTab("Manage Bookings", jPanel2);
@@ -356,14 +419,14 @@ public class PassengerForm extends javax.swing.JFrame {
                     .addComponent(emailLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(savePersonalDetailsButton)
-                .addContainerGap(182, Short.MAX_VALUE))
+                .addContainerGap(260, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Edit Personal Details", personalDetailsPanel);
 
         userLabel.setText("jLabel1");
 
-        logoutButton.setText("logout");
+        logoutButton.setText("Logout");
         logoutButton.setToolTipText("");
         logoutButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -393,9 +456,9 @@ public class PassengerForm extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(logoutButton)
                     .addComponent(userLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 341, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(18, 18, 18)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 382, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -438,37 +501,35 @@ public class PassengerForm extends javax.swing.JFrame {
                 int flightId = (int) listFlightModel.getValueAt(row, 0);
                 Flight selectedFlight = flightService.getFlightById(flightId);
 
-                SelectSeatForm selectSeatForm = new SelectSeatForm(selectedFlight, passenger);
+                SelectSeatForm selectSeatForm = new SelectSeatForm(selectedFlight, passenger, null, 1);
                 selectSeatForm.setVisible(true);
                 this.dispose();
-            } //Set error msg if no flight is selected
-            catch (RemoteException ex) {
+            } catch (RemoteException ex) {
                 Logger.getLogger(PassengerForm.class.getName()).log(Level.SEVERE, null, ex);
             }
+        } else {
+            JOptionPane.showMessageDialog(null, "Please choose a flight.");
         }
-//        else {
-//            bookFlightError.setText("Please choose a flight");
-//            bookFlightError.setForeground(Color.red);
-//        }
     }//GEN-LAST:event_bookflightButtonActionPerformed
 
     private void DeleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteButtonActionPerformed
         DefaultTableModel bookedFlightModel = (DefaultTableModel) bookingTable.getModel();
+        //boolean checkedExists = false;
         int row = bookingTable.getSelectedRow();
         if (row >= 0) {
             try {
                 String bookingNumber = (String) bookedFlightModel.getValueAt(row, 0);
-                boolean result = bookingService.deleteBookingByBookingreference(bookingNumber);
                 int dialogResult = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete? Booking: " + bookingNumber,
                         "Deleting booking", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
-
                 if (dialogResult == JOptionPane.OK_OPTION) {
+                    boolean result = bookingService.deleteBookingByBookingreference(bookingNumber);
                     updateBookingTable();
                 }
             } catch (RemoteException ex) {
                 Logger.getLogger(PassengerForm.class.getName()).log(Level.SEVERE, null, ex);
             }
-
+        } else {
+            JOptionPane.showMessageDialog(null, "Please choose a booking to delete.");
         }
     }//GEN-LAST:event_DeleteButtonActionPerformed
 
@@ -478,11 +539,10 @@ public class PassengerForm extends javax.swing.JFrame {
         if (row >= 0) {
             try {
                 String bookingNumber = (String) bookedFlightModel.getValueAt(row, 0);
-
                 Booking booking = bookingService.getBookingByBookingReference(bookingNumber);
                 Flight flight = flightService.getFlightById(booking.getFlight().getId());
 
-                SelectSeatForm changeSeat = new SelectSeatForm(flight, passenger, booking);
+                SelectSeatForm changeSeat = new SelectSeatForm(flight, passenger, booking, 1);
                 changeSeat.setVisible(true);
 
                 changeSeat.addWindowListener(new WindowAdapter() {
@@ -490,13 +550,15 @@ public class PassengerForm extends javax.swing.JFrame {
                     public void windowClosed(WindowEvent e) {
                         updateBookingTable();
                     }
-
                 });
                 this.dispose();
             } catch (RemoteException ex) {
                 Logger.getLogger(PassengerForm.class.getName()).log(Level.SEVERE, null, ex);
             }
     }//GEN-LAST:event_seatChangeButtonActionPerformed
+        else {
+            JOptionPane.showMessageDialog(null, "Please choose a booking to modify.");
+        }
     }
     private void logoutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutButtonActionPerformed
         this.dispose();
@@ -541,14 +603,18 @@ public class PassengerForm extends javax.swing.JFrame {
     private javax.swing.JButton DeleteButton;
     private javax.swing.JButton bookflightButton;
     private javax.swing.JTable bookingTable;
+    private javax.swing.JTable bookingTable1;
     private javax.swing.JTextField emailField;
     private javax.swing.JLabel emailLabel;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JLabel jlbl_approvedBookings;
+    private javax.swing.JLabel jlbl_pendingBookings;
     private javax.swing.JButton logoutButton;
     private javax.swing.JTextField nameField;
     private javax.swing.JLabel nameLabel;
