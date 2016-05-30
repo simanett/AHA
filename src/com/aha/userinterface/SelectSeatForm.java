@@ -138,7 +138,7 @@ public class SelectSeatForm extends javax.swing.JFrame {
             int selectedBaggage = baggageBox1.getSelectedIndex();
             switch (selectedBaggage) {
                 case 1:
-                    
+
                     price += 5000;
                     break;
                 case 2:
@@ -204,13 +204,13 @@ public class SelectSeatForm extends javax.swing.JFrame {
         baggage = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         priceLabel = new javax.swing.JLabel();
-        baggageBox1 = new javax.swing.JComboBox<>();
+        baggageBox1 = new javax.swing.JComboBox<String>();
         flexLabel = new javax.swing.JLabel();
-        flexiBox = new javax.swing.JComboBox<>();
+        flexiBox = new javax.swing.JComboBox<String>();
         vipLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("AHA Bernot Helga, Simonics Anett");
+        setTitle("AHA Bernot Helga, Simonics Anett - Flight details");
 
         okButton.setText("OK");
         okButton.addActionListener(new java.awt.event.ActionListener() {
@@ -373,7 +373,7 @@ public class SelectSeatForm extends javax.swing.JFrame {
         gridBagConstraints.weighty = 0.8;
         jPanel1.add(priceLabel, gridBagConstraints);
 
-        baggageBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "No baggage", "15 kg baggage 5000 Ft", "20 kg baggage 7000 Ft", "15 + 20 kg baggages 10000 Ft" }));
+        baggageBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "No baggage", "15 kg baggage 5000 Ft", "20 kg baggage 7000 Ft", "15 + 20 kg baggages 10000 Ft" }));
         baggageBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 baggageBox1ActionPerformed(evt);
@@ -398,7 +398,7 @@ public class SelectSeatForm extends javax.swing.JFrame {
         gridBagConstraints.weighty = 0.8;
         jPanel1.add(flexLabel, gridBagConstraints);
 
-        flexiBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Normal Ticket", "Flexi Ticket + 5000 Ft" }));
+        flexiBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Normal Ticket", "Flexi Ticket + 5000 Ft" }));
         flexiBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 flexiBoxActionPerformed(evt);

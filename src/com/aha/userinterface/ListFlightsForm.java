@@ -212,7 +212,7 @@ public class ListFlightsForm extends javax.swing.JFrame {
         });
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("AHA Bernot Helga, Simonics Anett");
+        setTitle("AHA Bernot Helga, Simonics Anett - List flights");
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel1.setText("Welcome");

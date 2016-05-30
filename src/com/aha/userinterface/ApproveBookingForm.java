@@ -90,7 +90,7 @@ public class ApproveBookingForm extends javax.swing.JFrame {
         refreshButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("AHA Bernot Helga, Simonics Anett");
+        setTitle("AHA Bernot Helga, Simonics Anett - Approve booking");
 
         jTable1.setAutoCreateRowSorter(true);
         jTable1.setModel(new javax.swing.table.DefaultTableModel(

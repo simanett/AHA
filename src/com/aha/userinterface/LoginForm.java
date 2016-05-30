@@ -56,7 +56,7 @@ public class LoginForm extends javax.swing.JFrame {
         loginButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("AHA Bernot Helga, Simonics Anett");
+        setTitle("AHA Bernot Helga, Simonics Anett - Login");
         setPreferredSize(new java.awt.Dimension(300, 150));
 
         userLabel.setText("Username:");
