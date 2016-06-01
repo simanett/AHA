@@ -24,6 +24,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -50,6 +52,32 @@ public class PassengerForm extends javax.swing.JFrame {
             jTabbedPane1.setSelectedIndex(selectedIndex);
             List<Airport> airports = airportService.getAirports();
             searchFlightsPanel.setAirports(airports);
+
+            bookingTable1.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+                @Override
+                public void valueChanged(ListSelectionEvent e) {
+                    DefaultTableModel bookedFlightModel = (DefaultTableModel) bookingTable1.getModel();
+
+                    if (bookingTable1.getSelectedRow() >= 0) {
+                        try {
+                            String bookingNumber = (String) bookedFlightModel.getValueAt(bookingTable1.getSelectedRow(), 0);
+                            Booking booking = bookingService.getBookingByBookingReference(bookingNumber);
+                            if(booking.getTicketType()==0){
+                                JOptionPane.showMessageDialog(null, "You can't change the approved booking.\n"
+                                        + "Only Flexi Ticket bookings can be modified.");
+                                
+                                
+                            }
+                            
+                        } catch (RemoteException ex) {
+                            Logger.getLogger(PassengerForm.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        
+                        
+
+                    }
+                }
+            });
         } catch (RemoteException ex) {
             Logger.getLogger(PassengerForm.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -293,6 +321,11 @@ public class PassengerForm extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        bookingTable.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                bookingTableFocusGained(evt);
+            }
+        });
         jScrollPane2.setViewportView(bookingTable);
 
         DeleteButton.setText("Delete");
@@ -333,6 +366,11 @@ public class PassengerForm extends javax.swing.JFrame {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        bookingTable1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                bookingTable1FocusGained(evt);
             }
         });
         jScrollPane3.setViewportView(bookingTable1);
@@ -568,6 +606,14 @@ public class PassengerForm extends javax.swing.JFrame {
     private void logoutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutButtonActionPerformed
         this.dispose();
     }//GEN-LAST:event_logoutButtonActionPerformed
+
+    private void bookingTableFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_bookingTableFocusGained
+        bookingTable1.clearSelection();
+    }//GEN-LAST:event_bookingTableFocusGained
+
+    private void bookingTable1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_bookingTable1FocusGained
+        bookingTable.clearSelection();
+    }//GEN-LAST:event_bookingTable1FocusGained
 
     /**
      * @param args the command line arguments

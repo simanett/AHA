@@ -312,6 +312,9 @@
                       <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
                     </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="bookingTableFocusGained"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>
@@ -394,6 +397,9 @@
                       <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
                     </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="bookingTable1FocusGained"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>
