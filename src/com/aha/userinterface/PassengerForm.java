@@ -62,18 +62,15 @@ public class PassengerForm extends javax.swing.JFrame {
                         try {
                             String bookingNumber = (String) bookedFlightModel.getValueAt(bookingTable1.getSelectedRow(), 0);
                             Booking booking = bookingService.getBookingByBookingReference(bookingNumber);
-                            if(booking.getTicketType()==0){
+                            if (booking.getTicketType() == 0) {
                                 JOptionPane.showMessageDialog(null, "You can't change the approved booking.\n"
                                         + "Only Flexi Ticket bookings can be modified.");
-                                
-                                
+
                             }
-                            
+
                         } catch (RemoteException ex) {
                             Logger.getLogger(PassengerForm.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                        
-                        
 
                     }
                 }
@@ -557,13 +554,27 @@ public class PassengerForm extends javax.swing.JFrame {
 
     private void DeleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteButtonActionPerformed
         DefaultTableModel bookedFlightModel = (DefaultTableModel) bookingTable.getModel();
+        DefaultTableModel bookedFlightModel1 = (DefaultTableModel) bookingTable1.getModel();
         //boolean checkedExists = false;
-        int row = bookingTable.getSelectedRow();
-        if (row >= 0) {
+        int rowPending = bookingTable.getSelectedRow();
+        int rowApproved = bookingTable1.getSelectedRow();
+        if (rowPending >= 0) {
             try {
-                String bookingNumber = (String) bookedFlightModel.getValueAt(row, 0);
+                String bookingNumber = (String) bookedFlightModel.getValueAt(rowPending, 0);
                 int dialogResult = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete? Booking: " + bookingNumber,
-                        "Deleting booking", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+                        "Deleting pending booking", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+                if (dialogResult == JOptionPane.OK_OPTION) {
+                    boolean result = bookingService.deleteBookingByBookingreference(bookingNumber);
+                    updateBookingTable();
+                }
+            } catch (RemoteException ex) {
+                Logger.getLogger(PassengerForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else if (rowApproved >= 0) {
+            try {
+                String bookingNumber = (String) bookedFlightModel1.getValueAt(rowApproved, 0);
+                int dialogResult = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete? Booking: " + bookingNumber,
+                        "Deleting approved booking", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
                 if (dialogResult == JOptionPane.OK_OPTION) {
                     boolean result = bookingService.deleteBookingByBookingreference(bookingNumber);
                     updateBookingTable();
@@ -578,10 +589,12 @@ public class PassengerForm extends javax.swing.JFrame {
 
     private void seatChangeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seatChangeButtonActionPerformed
         DefaultTableModel bookedFlightModel = (DefaultTableModel) bookingTable.getModel();
-        int row = bookingTable.getSelectedRow();
-        if (row >= 0) {
+        DefaultTableModel bookedFlightModel1 = (DefaultTableModel) bookingTable1.getModel();
+        int rowPending = bookingTable.getSelectedRow();
+        int rowApproved = bookingTable1.getSelectedRow();
+        if (rowPending >= 0) {
             try {
-                String bookingNumber = (String) bookedFlightModel.getValueAt(row, 0);
+                String bookingNumber = (String) bookedFlightModel.getValueAt(rowPending, 0);
                 Booking booking = bookingService.getBookingByBookingReference(bookingNumber);
                 Flight flight = flightService.getFlightById(booking.getFlight().getId());
 
@@ -599,7 +612,26 @@ public class PassengerForm extends javax.swing.JFrame {
                 Logger.getLogger(PassengerForm.class.getName()).log(Level.SEVERE, null, ex);
             }
     }//GEN-LAST:event_seatChangeButtonActionPerformed
-        else {
+        else if (rowApproved >= 0) {
+            try {
+                String bookingNumber = (String) bookedFlightModel1.getValueAt(rowApproved, 0);
+                Booking booking = bookingService.getBookingByBookingReference(bookingNumber);
+                Flight flight = flightService.getFlightById(booking.getFlight().getId());
+
+                SelectSeatForm changeSeat = new SelectSeatForm(flight, passenger, booking, 1);
+                changeSeat.setVisible(true);
+
+                changeSeat.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosed(WindowEvent e) {
+                        updateBookingTable();
+                    }
+                });
+                this.dispose();
+            } catch (RemoteException ex) {
+                Logger.getLogger(PassengerForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
             JOptionPane.showMessageDialog(null, "Please choose a booking to modify.");
         }
     }
