@@ -8,6 +8,7 @@ package com.aha;
 import com.aha.service.AirplaneService;
 import com.aha.service.AirportService;
 import com.aha.service.BookingService;
+import com.aha.service.EmailService;
 import com.aha.service.EmployeeService;
 import com.aha.service.FlightService;
 import com.aha.service.PassengerService;
@@ -35,6 +36,7 @@ public class Client {
     public static UserService userService;
     public static AirportService airportService;
     public static BookingService bookingService;
+    public static EmailService emailService;
 
     public static void main(String[] args) throws SQLException {
         try {
@@ -47,6 +49,7 @@ public class Client {
             userService = (UserService) reg.lookup("UserService");
             airportService = (AirportService) reg.lookup("AirportService");
             bookingService = (BookingService) reg.lookup("BookingService");
+            emailService = (EmailService) reg.lookup("EmailService");
 
             //stub.getEmployees();
             System.out.println(employeeService.getEmployees());

@@ -6,11 +6,13 @@
 package com.aha.userinterface;
 
 import com.aha.Client;
+import com.aha.businesslogic.EmailSender;
 import com.aha.businesslogic.model.Booking;
 import com.aha.businesslogic.model.Flight;
 import com.aha.businesslogic.model.Passenger;
 import com.aha.businesslogic.model.Seat;
 import com.aha.service.BookingService;
+import com.aha.service.EmailService;
 import com.aha.service.PassengerService;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -34,6 +36,7 @@ public class SelectSeatForm extends javax.swing.JFrame {
 
     private final PassengerService passengerService = Client.passengerService;
     private final BookingService bookingService = Client.bookingService;
+    private final EmailService emailService = Client.emailService;
 
     private Flight flight;
     private Seat selectedSeat;
@@ -489,12 +492,14 @@ public class SelectSeatForm extends javax.swing.JFrame {
             if (originalBooking != null) {
                 try {
                     bookingService.updateSeat(newBooking);
+                    emailService.sendConfirmation(newBooking);
                 } catch (RemoteException ex) {
                     Logger.getLogger(SelectSeatForm.class.getName()).log(Level.SEVERE, null, ex);
                 }
             } else {
                 try {
                     bookingService.addBooking(newBooking);
+                    emailService.sendConfirmation(newBooking);
                 } catch (RemoteException ex) {
                     Logger.getLogger(SelectSeatForm.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -504,6 +509,7 @@ public class SelectSeatForm extends javax.swing.JFrame {
             PassengerForm passengerForm = new PassengerForm(this.sourceTabNumber);
             passengerForm.setPassenger(passenger);
             passengerForm.setVisible(true);
+
             this.dispose();
         } else {
             JOptionPane.showMessageDialog(null, "Please select a seat.");

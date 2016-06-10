@@ -5,6 +5,7 @@
  */
 package com.aha;
 
+import com.aha.businesslogic.EmailSender;
 import com.aha.data.AirplaneRepository;
 import com.aha.data.AirportRepository;
 import com.aha.data.BookingRepository;
@@ -15,11 +16,11 @@ import com.aha.data.UserRepository;
 import com.aha.service.AirplaneService;
 import com.aha.service.AirportService;
 import com.aha.service.BookingService;
+import com.aha.service.EmailService;
 import com.aha.service.EmployeeService;
 import com.aha.service.FlightService;
 import com.aha.service.PassengerService;
 import com.aha.service.UserService;
-import com.aha.userinterface.LoginForm;
 import java.rmi.AccessException;
 import java.rmi.AlreadyBoundException;
 import java.rmi.Remote;
@@ -46,15 +47,26 @@ public class AHA {
      */
     public static void main(String[] args) throws InterruptedException {
 //        try {
-        if (args.length != 3) {
+        if (args.length < 3) {
             System.out.println("Invalid number of arguments, program has to be started with following arguments:");
             System.out.println("[url] [user] [password]");
+            System.out.println("[url] [user] [password] [email] [password]");
+
             System.exit(1);
         }
+        
         String dbUrl = args[0];
         String dbUserName = args[1];
         String dbPassWord = args[2];
-
+        
+        String email = null;
+        String emailPassword = null;
+        
+        if (args.length == 5) {
+            email = args[3];
+            emailPassword = args[4];
+        }
+        
         connection = connect(dbUrl, dbUserName, dbPassWord);
 
         EmployeeRepository employeeRepository = new EmployeeRepository();
@@ -64,6 +76,8 @@ public class AHA {
         UserRepository userRepository = new UserRepository();
         AirportRepository airportRepository = new AirportRepository();
         BookingRepository bookingRepository = new BookingRepository();
+        
+        EmailSender emailSender = new EmailSender(email, emailPassword);
 
         try {
             //ezt:
@@ -75,6 +89,9 @@ public class AHA {
 
             AirportService airportService = (AirportService) UnicastRemoteObject.exportObject(airportRepository, 0);
             BookingService bookingService = (BookingService) UnicastRemoteObject.exportObject(bookingRepository, 0);
+            
+            EmailService emailService = (EmailService) UnicastRemoteObject.exportObject(emailSender, 0);
+            
             Registry reg = LocateRegistry.createRegistry(1234);
             System.setProperty("java.rmi.server.hostname", "localhost");
             //ezt:
@@ -85,6 +102,7 @@ public class AHA {
             reg.bind("UserService", (Remote) userService);
             reg.bind("AirportService", airportService);
             reg.bind("BookingService", bookingService);
+            reg.bind("EmailService", emailService);
 
             System.out.println("Fut a szerver...");
             //Thread.sleep(120000);
