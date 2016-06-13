@@ -59,13 +59,16 @@ public class PassengerForm extends javax.swing.JFrame {
                     DefaultTableModel bookedFlightModel = (DefaultTableModel) bookingTable1.getModel();
 
                     if (bookingTable1.getSelectedRow() >= 0) {
+
                         try {
                             String bookingNumber = (String) bookedFlightModel.getValueAt(bookingTable1.getSelectedRow(), 0);
                             Booking booking = bookingService.getBookingByBookingReference(bookingNumber);
                             if (booking.getTicketType() == 0) {
                                 JOptionPane.showMessageDialog(null, "You can't change the approved booking.\n"
                                         + "Only Flexi Ticket bookings can be modified.");
-
+                                seatChangeButton.setEnabled(false);
+                            } else {
+                                seatChangeButton.setEnabled(true);
                             }
 
                         } catch (RemoteException ex) {
