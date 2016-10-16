@@ -67,7 +67,7 @@ public class AHA {
             emailPassword = args[4];
         }
         
-        connection = connect(dbUrl, dbUserName, dbPassWord);
+        connect(dbUrl, dbUserName, dbPassWord);
 
         EmployeeRepository employeeRepository = new EmployeeRepository();
         AirplaneRepository airplaneRepository = new AirplaneRepository();
@@ -118,9 +118,13 @@ public class AHA {
 //        loginForm.setVisible(true);
 //
     }
+    
+    public static void connect(String url, String user, String password) {
 
-    private static Connection connect(String url, String user, String password) {
-
+        if (connection != null) {
+            return;
+        }
+        
         System.out.println("-------- Oracle JDBC Connection Testing ------");
         try {
             // Check if oracle driver is available
@@ -128,27 +132,25 @@ public class AHA {
         } catch (ClassNotFoundException e) {
             System.out.println("Where is your Oracle JDBC Driver?");
             e.printStackTrace();
-            return null;
+            return;
         }
 
         System.out.println("Oracle JDBC Driver Registered!");
 
-        Connection newConnection = null;
         try {
-            newConnection = DriverManager.getConnection(url, user, password);
+            connection = DriverManager.getConnection(url, user, password);
         } catch (SQLException e) {
             System.out.println("Connection Failed! Check output console");
             e.printStackTrace();
-            return null;
+            return;
         }
 
-        if (newConnection != null) {
+        if (connection != null) {
             System.out.println("Connection successfully created");
         } else {
             System.out.println("Failed to make connection!");
         }
 
-        return newConnection;
 //
     }
 }

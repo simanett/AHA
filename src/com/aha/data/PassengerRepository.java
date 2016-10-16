@@ -32,7 +32,7 @@ public class PassengerRepository implements PassengerService {
      * @return the Passenger object if exists, null otherwise.
      */
     @Override
-    public Passenger getPassengerById(int id) throws SQLException {
+    public Passenger getPassengerById(int id) {
         Passenger passenger = null;
         PreparedStatement stmt = null;
 
@@ -58,7 +58,11 @@ public class PassengerRepository implements PassengerService {
             e.printStackTrace();
         } finally {
             if (stmt != null) {
-                stmt.close();
+                try {
+                    stmt.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
             }
         }
         return passenger;
@@ -160,7 +164,7 @@ public class PassengerRepository implements PassengerService {
      * @return all Passengers in the database.
      */
     @Override
-    public List<Passenger> getPassengers() throws SQLException {
+    public List<Passenger> getPassengers()  {
 
         List<Passenger> passengers = new ArrayList<>();
         Statement stmt = null;
@@ -180,13 +184,17 @@ public class PassengerRepository implements PassengerService {
                 passenger.setEmail(email);
                 passenger.setVip(vip);
                 passengers.add(passenger);
-                
+
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             if (stmt != null) {
-                stmt.close();
+                try {
+                    stmt.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(PassengerRepository.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
         return passengers;
@@ -239,8 +247,8 @@ public class PassengerRepository implements PassengerService {
             int modifiedRows = stmt.executeUpdate();
             System.out.println("Modified rows:");
             System.out.println(modifiedRows);
-            
-            if(modifiedRows > 0) {
+
+            if (modifiedRows > 0) {
                 result = true;
             }
         } catch (SQLException e) {

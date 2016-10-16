@@ -123,7 +123,7 @@ public class LoginForm extends javax.swing.JFrame {
                     PassengerForm passengerForm = new PassengerForm(0);
                     passengerForm.setPassenger(passenger);
                     passengerForm.setVisible(true);
-                    this.dispose();
+  //                  this.dispose();
 //                ListFlightsForm listFlightsForm = new ListFlightsForm(user);
 //                listFlightsForm.setVisible(true);
                 }
@@ -132,7 +132,7 @@ public class LoginForm extends javax.swing.JFrame {
                 user = (User) operator;
                 ApproveBookingForm approveForm = new ApproveBookingForm();
                 approveForm.setVisible(true);
-                this.dispose();
+              //  this.dispose();
             } else if (employee instanceof CrewMember) {
                 JOptionPane.showMessageDialog(null, "Welcome, crew member!");
 //            CrewMember crewMember = (CrewMember) employee;
@@ -144,7 +144,7 @@ public class LoginForm extends javax.swing.JFrame {
                 user = (User) administrator;
                 ApproveBookingForm approveForm = new ApproveBookingForm();
                 approveForm.setVisible(true);
-                this.dispose();
+               // this.dispose();
             }
         } catch (RemoteException ex) {
             Logger.getLogger(LoginForm.class.getName()).log(Level.SEVERE, null, ex);
