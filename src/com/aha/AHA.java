@@ -54,19 +54,19 @@ public class AHA {
 
             System.exit(1);
         }
-        
+
         String dbUrl = args[0];
         String dbUserName = args[1];
         String dbPassWord = args[2];
-        
+
         String email = null;
         String emailPassword = null;
-        
+
         if (args.length == 5) {
             email = args[3];
             emailPassword = args[4];
         }
-        
+
         connect(dbUrl, dbUserName, dbPassWord);
 
         EmployeeRepository employeeRepository = new EmployeeRepository();
@@ -76,7 +76,7 @@ public class AHA {
         UserRepository userRepository = new UserRepository();
         AirportRepository airportRepository = new AirportRepository();
         BookingRepository bookingRepository = new BookingRepository();
-        
+
         EmailSender emailSender = new EmailSender(email, emailPassword);
 
         try {
@@ -89,9 +89,9 @@ public class AHA {
 
             AirportService airportService = (AirportService) UnicastRemoteObject.exportObject(airportRepository, 0);
             BookingService bookingService = (BookingService) UnicastRemoteObject.exportObject(bookingRepository, 0);
-            
+
             EmailService emailService = (EmailService) UnicastRemoteObject.exportObject(emailSender, 0);
-            
+
             Registry reg = LocateRegistry.createRegistry(1234);
             System.setProperty("java.rmi.server.hostname", "localhost");
             //ezt:
@@ -118,20 +118,32 @@ public class AHA {
 //        loginForm.setVisible(true);
 //
     }
-    
+
     public static void connect(String url, String user, String password) {
 
         if (connection != null) {
             return;
         }
-        
+
         System.out.println("-------- Oracle JDBC Connection Testing ------");
         try {
             // Check if oracle driver is available
-            Class.forName("oracle.jdbc.driver.OracleDriver");
+            //Class.forName("oracle.jdbc.driver.OracleDriver");
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            
+            
+
         } catch (ClassNotFoundException e) {
             System.out.println("Where is your Oracle JDBC Driver?");
             e.printStackTrace();
+            return;
+        } catch (InstantiationException ex) {
+            System.out.println("Where is your Oracle JDBC Driver?");
+            ex.printStackTrace();
+            return;
+        } catch (IllegalAccessException ex) {
+            System.out.println("Where is your Oracle JDBC Driver?");
+            ex.printStackTrace();
             return;
         }
 
