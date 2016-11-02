@@ -386,7 +386,7 @@ public class FlightRepository implements FlightService {
      * @return All Flights in the application state
      */
     @Override
-    public List<Flight> getFilteredFlights(String fromAirportCode, String toAirportCode, Date fromDate, Date toDate) {
+    public List<Flight> getFilteredFlights(String fromAirportCity, String toAirportCity, Date fromDate, Date toDate) {
         List<Flight> flights = new ArrayList<>();
         PreparedStatement stmt = null;
 
@@ -406,12 +406,12 @@ public class FlightRepository implements FlightService {
                 + "JOIN AHA.AIRPLANES ON FLIGHTS.AIRPLANEID = AIRPLANES.ID\n"
                 + "JOIN AHA.AIRPORTS AIRPORT_FROM ON FLIGHTS.FROMID = AIRPORT_FROM.CODE \n"
                 + "JOIN AHA.AIRPORTS AIRPORT_TO ON FLIGHTS.TOID = AIRPORT_TO.CODE "
-                + "WHERE AIRPORT_FROM.CODE = ? and AIRPORT_TO.CODE = ? and FLIGHTS.DEPARTURE between ? and ?";
+                + "WHERE AIRPORT_FROM.CITY = ? and AIRPORT_TO.CITY = ? and FLIGHTS.DEPARTURE between ? and ?";
 
         try {
             stmt = AHA.connection.prepareStatement(query);
-            stmt.setString(1, fromAirportCode);
-            stmt.setString(2, toAirportCode);
+            stmt.setString(1, fromAirportCity);
+            stmt.setString(2, toAirportCity);
             stmt.setDate(3, new java.sql.Date(fromDate.getTime()));
             stmt.setDate(4, new java.sql.Date(toDate.getTime()));
             

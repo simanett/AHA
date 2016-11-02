@@ -127,7 +127,7 @@ public class AHA {
 
         System.out.println("-------- Oracle JDBC Connection Testing ------");
         try {
-            // Check if oracle driver is available
+            // Check if mysql driver is available
             //Class.forName("oracle.jdbc.driver.OracleDriver");
             Class.forName("com.mysql.jdbc.Driver").newInstance();
             
