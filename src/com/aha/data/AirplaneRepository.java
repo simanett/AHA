@@ -62,7 +62,7 @@ public class AirplaneRepository implements AirplaneService {
                 int seatId = rs.getInt("SEAT_ID");
                 int seatRow = rs.getInt("ROWNUMBER");
                 String seatColumn = rs.getString("COLUMNLETTER");
-
+                seat.setId(seatId);
                 seat.setLetter(seatColumn);
                 seat.setRow(seatRow);
 
